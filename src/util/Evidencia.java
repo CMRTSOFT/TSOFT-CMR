@@ -30,7 +30,6 @@ public class Evidencia {
 	public void createPDF(ArrayList<String> arrEvidencia, String caso, String path, boolean stateCase)
 			throws MalformedURLException, IOException {
 
-		System.out.println("nueva fila");
 		String estadoCaso;
 
 		if (stateCase) {
