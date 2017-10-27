@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Default suite]">
+  <test name="Default test(failed)">
+    <classes>
+      <class name="Apertura.TC001_Aperturar_Cuenta_Modulo_Apertura_Inmediata">
+        <methods>
+          <include name="afterClass"/>
+          <include name="beforeClass"/>
+          <include name="TC001"/>
+        </methods>
+      </class> <!-- Apertura.TC001_Aperturar_Cuenta_Modulo_Apertura_Inmediata -->
+    </classes>
+  </test> <!-- Default test(failed) -->
+</suite> <!-- Failed suite [Default suite] -->

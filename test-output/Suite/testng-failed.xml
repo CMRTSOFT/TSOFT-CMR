@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Suite]">
+  <test name="Test(failed)">
+    <classes>
+      <class name="Busqueda_Contrato.TC001_Atencion_Cliente_Busqueda_Contrato_PAN">
+        <methods>
+          <include name="BeforeTest"/>
+          <include name="test"/>
+        </methods>
+      </class> <!-- Busqueda_Contrato.TC001_Atencion_Cliente_Busqueda_Contrato_PAN -->
+    </classes>
+  </test> <!-- Test(failed) -->
+</suite> <!-- Failed suite [Suite] -->
