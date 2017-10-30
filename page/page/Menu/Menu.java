@@ -157,4 +157,27 @@ public class Menu {
 		return msg;
 	}
 
+	public String menuModificacionContrato(WebDriver driver) {
+		String msg = "OK";
+		try {
+			msg = FunctionGeneric.clickObjectByXpath("Menú Modificaciones ", "table", "id",
+					"BotonBarraMenuBarraMenuModificaciones", "click", driver);
+			if (!msg.equals("OK"))
+				return msg;
+			msg = FunctionGeneric.clickObjectByXpath("Menú Contrato", "td", "id",
+					"MenuOptionBarraMenuModificacionesContratos", "click", driver);
+			if(!msg.equals("OK"))
+				return msg;
+			// BotonBarraMenuBarraMenuModificaciones
+			driver.switchTo().frame((new WebDriverWait(driver, 30)).until(
+					ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/esperaAux.jsp']"))));
+			if (!FunctionGeneric.findObject("name", "SISTEMA", driver))
+				msg = "No se ha logrado acceder a pantalla contrato";
+		} catch (Exception e) {
+			System.out.println("ERROR EN LA SELECCIÓN DE MENÚ CONTRATO "+e.getMessage());
+			msg = "ERROR EN LA SELECCIÓN DE MENÚ CONTRATO";
+		}
+		return msg;
+	}
+
 }
