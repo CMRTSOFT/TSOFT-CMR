@@ -28,7 +28,7 @@ public class TC001_Sucursal_Lean_Traspasos {
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
-	private String nameClass, lab, idLab, rutaAlm;
+	private String nameClass, lab, idLab, rutaAlm, pathResultados;
 	private ITestCase ITestCase;
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
@@ -40,15 +40,15 @@ public class TC001_Sucursal_Lean_Traspasos {
 	public void beforeClass() {
 
 		try {
+			
+			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
 			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			menu = new Menu();
-			tras = new Traspaso();
-			busContrato = new BusquedaContrato();
+
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
 			matriz = LeerExcel.retornaDatosExcel(this.getClass().getPackage().getName(), nameClass);
@@ -57,8 +57,11 @@ public class TC001_Sucursal_Lean_Traspasos {
 			idLab = excel.valorCol("ID_LABORATORIO", matriz);
 			rutaAlm = excel.valorCol("RUTA_ALM", matriz);
 
+			pathResultados = rutaAlm + "\\" + lab + "\\";
+
 			ITestCase = alm.createItestCase(wrapper, lab, idLab, nameClass, rutaAlm);
 			ITestCaseRun = alm.createITestCaseRun(wrapper, ITestCase);
+			LeerExcel.setTextRow("ID_RUN", Integer.toString(ALM.returnIDRun(ITestCase) - 1), nameClass);
 
 		} catch (Exception e) {
 			System.out.println("Error BeforeClass: " + e.getMessage());
@@ -68,7 +71,9 @@ public class TC001_Sucursal_Lean_Traspasos {
   @Test
   public void test() {
 	  try {			
-			driver = login.openUrlSatif();
+		  
+			driver = login.openUrlSatif(excel.valorCol("AMBIENTE", matriz));
+			
 			estado = login.ingresoLogin(excel.valorCol("Usuario", matriz), excel.valorCol("Password", matriz), driver);
 			if (!FunctionGeneric.stateStep("Login", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
@@ -140,12 +145,15 @@ public class TC001_Sucursal_Lean_Traspasos {
   
   @AfterClass
 	public void afterClass() {
+	  
 		try {
-			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, flagState);
-			alm.AttachmentEvi(wrapper, ITestCaseRun, nameClass);
+			
 			funge.closeWindows(driver, 0);
-			funge.deleteFile(nameClass);
+			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
+			FunctionGeneric.updateStateTestCase(flagState, nameClass);
+			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);
 			System.exit(0);
+			
 		} catch (Exception e) {
 			System.out.println("Error AfterClass: " + e.getMessage());
 		}

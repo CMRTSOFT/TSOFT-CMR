@@ -82,7 +82,7 @@ public class FunctionGeneric {
 		}
 	}
 
-	public boolean validaAlert(WebDriver driver) {
+	public static boolean validaAlert(WebDriver driver) {
 		try {
 			driver.switchTo().alert();
 			return true;

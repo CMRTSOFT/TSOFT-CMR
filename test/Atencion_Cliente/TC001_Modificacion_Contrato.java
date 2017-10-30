@@ -34,7 +34,9 @@ public class TC001_Modificacion_Contrato {
 
 	@BeforeClass
 	public void beforeClass() {
+		
 		try {
+			
 			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
@@ -83,7 +85,7 @@ public class TC001_Modificacion_Contrato {
 				afterClass();
 			}
 
-			estado = menu.menuModificacionContrato(driver);
+			//estado = menu.menuModificacionContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Modificación Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -94,9 +96,6 @@ public class TC001_Modificacion_Contrato {
 				flagState = false;
 				afterClass();
 			}
-
-			
-
 
 		} catch (Exception e) {
 			System.out.println("Error Test: " + e.getMessage());

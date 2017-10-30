@@ -1,4 +1,4 @@
-package Seguridad;
+/*package Seguridad;
 
 import static org.junit.Assert.*;
 
@@ -80,4 +80,4 @@ public class TC005_Liberar_Rut_Observaciones {
 		System.exit(0);
 	}
 
-}
+}*/

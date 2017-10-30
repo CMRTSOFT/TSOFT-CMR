@@ -329,7 +329,7 @@ public class Menu {
 		}
 		return msg;
 	}
-	
+
 	public String menuMantenimientoMerchant(WebDriver driver) {
 		String msg = "OK";
 		try {
@@ -350,7 +350,7 @@ public class Menu {
 		}
 		return msg;
 	}
-	
+
 	public String menuNegocioEmisorContrato(WebDriver driver) {
 		String msg = "OK";
 		try {
@@ -371,7 +371,7 @@ public class Menu {
 		}
 		return msg;
 	}
-	
+
 	public String menuNegocioEmisor(WebDriver driver) {
 		String msg = "OK";
 		try {
@@ -391,32 +391,31 @@ public class Menu {
 		}
 		return msg;
 	}
-	
+
 	public String menuSeguridadPerfil(WebDriver driver) {
 		String msg = "OK";
 		try {
-			/*if (driver.findElements(By.xpath("//table[@id='BotonBarraMenuBarraMenuSeguridad']")).size() == 0) {
-				msg = "No se ha encontrado el Menú";
-				return msg;
-			}
-			if (driver.findElements(By.xpath("//td[@id='MenuOptionBarraMenuSeguridadPerfiles de Usuario']"))
-					.size() == 0) {
-				msg = "No se ha encontrado el Menú";
-				return msg;
-			}
-			WebElement menuSeguridad = driver.findElement(By.xpath("//table[@id='BotonBarraMenuBarraMenuSeguridad']"));
-			menuSeguridad.click();
-			WebElement subMenuPerfil = driver
-					.findElement(By.xpath("//td[@id='MenuOptionBarraMenuSeguridadPerfiles de Usuario']"));
+			/*
+			 * if (driver.findElements(By.xpath(
+			 * "//table[@id='BotonBarraMenuBarraMenuSeguridad']")).size() == 0) { msg =
+			 * "No se ha encontrado el Menú"; return msg; } if (driver.findElements(By.
+			 * xpath("//td[@id='MenuOptionBarraMenuSeguridadPerfiles de Usuario']")) .size()
+			 * == 0) { msg = "No se ha encontrado el Menú"; return msg; } WebElement
+			 * menuSeguridad =
+			 * driver.findElement(By.xpath("//table[@id='BotonBarraMenuBarraMenuSeguridad']"
+			 * )); menuSeguridad.click(); WebElement subMenuPerfil = driver .findElement(By.
+			 * xpath("//td[@id='MenuOptionBarraMenuSeguridadPerfiles de Usuario']"));
+			 * 
+			 * subMenuPerfil.click();
+			 */
 
-			subMenuPerfil.click();
-			*/
-			
-			msg = FunctionGeneric.clickObjectByXpath("Menú Seguridad", "table", "id", "BotonBarraMenuBarraMenuSeguridad", "click", driver);
+			msg = FunctionGeneric.clickObjectByXpath("Menú Seguridad", "table", "id",
+					"BotonBarraMenuBarraMenuSeguridad", "click", driver);
 			if (!msg.equals("OK"))
 				return msg;
-			
-			msg = FunctionGeneric.clickObject("Sub Menú Perfil", "id", "MenuOptionBarraMenuSeguridadPerfiles de Usuario", "click", driver);
+
+			msg = FunctionGeneric.clickObject("Sub Menú Perfil", "id",
+					"MenuOptionBarraMenuSeguridadPerfiles de Usuario", "click", driver);
 			if (!msg.equals("OK"))
 				return msg;
 
@@ -426,27 +425,85 @@ public class Menu {
 		}
 		return msg;
 	}
-	
+
 	public String menuSeguridadUsuario(WebDriver driver) {
 		String msg = "OK";
 		try {
-		
-			msg = FunctionGeneric.clickObjectByXpath("Menú Seguridad", "INPUT", "id", "BotonBarraMenuBarraMenuSeguridad", "click", driver);
+
+			msg = FunctionGeneric.clickObjectByXpath("Menú Seguridad", "INPUT", "id",
+					"BotonBarraMenuBarraMenuSeguridad", "click", driver);
 			if (!msg.equals("OK"))
 				return msg;
-			//WebElement menuSeguridad = driver.findElement(By.xpath("//table[@id='BotonBarraMenuBarraMenuSeguridad']"));
-			//menuSeguridad.click();
-			msg = FunctionGeneric.clickObjectByXpath("Sub Menú Usuario", "INPUT", "td", "MenuOptionBarraMenuSeguridadUsuarios", "click", driver);
+			// WebElement menuSeguridad =
+			// driver.findElement(By.xpath("//table[@id='BotonBarraMenuBarraMenuSeguridad']"));
+			// menuSeguridad.click();
+			msg = FunctionGeneric.clickObjectByXpath("Sub Menú Usuario", "INPUT", "td",
+					"MenuOptionBarraMenuSeguridadUsuarios", "click", driver);
 			if (!msg.equals("OK"))
 				return msg;
-			//WebElement subMenuUsuario = driver.findElement(By.xpath("//td[@id='MenuOptionBarraMenuSeguridadUsuarios']"));
-			//subMenuUsuario.click();
-			 
+			// WebElement subMenuUsuario =
+			// driver.findElement(By.xpath("//td[@id='MenuOptionBarraMenuSeguridadUsuarios']"));
+			// subMenuUsuario.click();
+
 		} catch (Exception e) {
 			System.out.println("Error Menú Seguridad " + e.toString());
-			msg = "Error Menú Seguridad " ;
+			msg = "Error Menú Seguridad ";
+		}
+		return msg;
+	}
+
+	public String menuVentaSeguros(WebDriver driver) {
+		String msg = "OK";
+		try {
+			// TD id="MenuOptionBarraMenuVenta de Seguros
+			Set<String> winSet = driver.getWindowHandles();
+			List<String> winList = new ArrayList<String>(winSet);
+			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
+				msg = "No se encontró Ventana 2";
+				System.exit(0);
+			}
+			winSet = driver.getWindowHandles();
+			winList = new ArrayList<String>(winSet);
+			driver.switchTo().window(winList.get(winList.size() - 1));
+			// TD id=MenuOptionBarraMenuVencimientos
+			WebElement menuVencimiento = (new WebDriverWait(driver, 60)).until(ExpectedConditions
+					.presenceOfElementLocated(By.xpath("//TD[@id='MenuOptionBarraMenuVenta de Seguros']")));
+			menuVencimiento.click();
+
+		} catch (Exception e) {
+			System.out.println("ERROR EN EL MENÚ SEGURO DE VENTAS " + e.getMessage());
+			msg = "ERROR EN EL MENÚ SEGURO DE VENTAS " + e.getMessage();
+		}
+		return msg;
+	}
+
+	public String menuVencimiento(WebDriver driver) {
+		String msg = "OK";
+		try {
+			Thread.sleep(3000);
+			if (FunctionGeneric.validaAlert(driver)) {
+				driver.switchTo().alert().accept();
+			}
+			Set<String> winSet = driver.getWindowHandles();
+			List<String> winList = new ArrayList<String>(winSet);
+			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
+				msg = "No se encontró Ventana 2";
+				return msg;
+			}
+			winSet = driver.getWindowHandles();
+			winList = new ArrayList<String>(winSet);
+			driver.switchTo().window(winList.get(winList.size() - 1));
+
+			// TD id=MenuOptionBarraMenuVencimientos
+			WebElement menuVencimiento = (new WebDriverWait(driver, 60)).until(ExpectedConditions
+					.presenceOfElementLocated(By.xpath("//TD[@id='MenuOptionBarraMenuVencimientos']")));
+			menuVencimiento.click();
+
+			Thread.sleep(3000);
+			// System.out.println("HTML " + driver.getPageSource());
+		} catch (Exception e) {
+			System.out.println("ERROR EN EL MENÚ VENCIMIENTO - ATENCIÓN CLIENTE " + e.getMessage());
 		}
 		return msg;
 	}
 }
-

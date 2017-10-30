@@ -74,7 +74,7 @@ public class TC004_Aumento_Cupo_Exitoso {
 	}
 	
   @Test
-  public void f() {
+  public void Test() {
 	  
 	  try {
 			driver = login.openUrlSatif(excel.valorCol("AMBIENTE", matriz));
@@ -109,43 +109,8 @@ public class TC004_Aumento_Cupo_Exitoso {
 				afterClass();
 			}
 			
-			
-			
-			//menu.subMenuModificacionCupo(driver);
-			/*
-			login.ingresoLogin("LBIANCHI", "QA123456", driver);
-			Thread.sleep(3000);
-			resultado = menu.menuBusquedaContrato(driver);
-			if (!resultado.equalsIgnoreCase("OK"))
-				afterClass();
-			Thread.sleep(3000);
-			resultado = busContrato.formularioContrato("9.552.288-2", driver);
-			if (!resultado.equalsIgnoreCase("OK"))
-				afterClass();
-			Thread.sleep(3000);
-			if (busContrato.validarCuentas(driver)) {
-				Thread.sleep(3000);
-				resultado = busContrato.seleccionarProducto("CMR VISA", driver);
-				if (!resultado.equalsIgnoreCase("OK"))
-					afterClass();
-
-			}
-
-			Thread.sleep(3000);
-			resultado = menu.subMenuModificacionCupo(driver);
-			if (!resultado.equalsIgnoreCase("OK"))
-				afterClass();
-			
-			resultado = aumen.formAumentoCupo(driver);
-			if (!resultado.equalsIgnoreCase("OK"))
-				afterClass();
-			
-			*/
-			
-			
-			
 		} catch (Exception e) {
-			System.out.println("ERROR AL EJECUTAR CASO AUMENTO CUPO "+e.getMessage());
+			System.out.println("Error AfterClass: " + e.getMessage());
 			flagState = false;
 			afterClass();
 		}
