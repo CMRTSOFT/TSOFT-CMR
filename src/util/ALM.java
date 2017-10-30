@@ -27,7 +27,7 @@ public class ALM {
 
 	public void addExecutionSteps(ALMServiceWrapper wrapper, String estado, String paso, ITestCaseRun ITestCaseRun) {
 		try {
-
+			
 			if (estado.equals("Pass")) {
 				wrapper.addStep(ITestCaseRun, paso, StatusAs.PASSED, paso, "", "");
 			} else {
@@ -44,16 +44,33 @@ public class ALM {
 		
 		ITestCase ITestCase = null;
 		try {
-
+			
 			int id = Integer.parseInt(idLab);
 			ruta = ruta.substring(5, ruta.length());
-		
 			ITestCase = wrapper.updateResult(ruta, labEjecucion, id, caso, StatusAs.NOT_COMPLETED);
 
 		} catch (Exception e) {
 
 		}
 		return ITestCase;
+	}
+	
+	public void updateItestCase(ALMServiceWrapper wrapper, String labEjecucion, String idLab, String caso,
+			String ruta, boolean estado) {
+
+		try {
+
+			int id = Integer.parseInt(idLab);
+			ruta = ruta.substring(5, ruta.length());
+			
+			if(estado) {
+				wrapper.updateResult(ruta, labEjecucion, id, caso, StatusAs.PASSED);
+			}else {
+				wrapper.updateResult(ruta, labEjecucion, id, caso, StatusAs.FAILED);
+			}
+		} catch (Exception e) {
+
+		}
 	}
 
 	public ITestCaseRun createITestCaseRun(ALMServiceWrapper wrapper, ITestCase ITestCase) {

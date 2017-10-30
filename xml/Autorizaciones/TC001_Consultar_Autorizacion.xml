@@ -3,7 +3,7 @@
 <suite name="Suite">
   <test name="Test">
     <classes>
-      <class name="Autorizaciones.TC031_Consultar_Autorizacion"/>
+      <class name="Autorizaciones.TC001_Consultar_Autorizacion"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

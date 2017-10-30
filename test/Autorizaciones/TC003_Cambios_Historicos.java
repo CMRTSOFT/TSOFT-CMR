@@ -62,7 +62,7 @@ public class TC003_Cambios_Historicos {
 			ITestCase = alm.createItestCase(wrapper, lab, idLab, nameClass, rutaAlm);
 			ITestCaseRun = alm.createITestCaseRun(wrapper, ITestCase);
 			
-			LeerExcel.setTextRow(Integer.toString(ALM.returnIDRun(ITestCase)-1));
+			LeerExcel.setTextRow("ID_RUN",Integer.toString(ALM.returnIDRun(ITestCase)-1),nameClass);
 
 		} catch (Exception e) {
 			System.out.println("Error BeforeClass: " + e.getMessage());
@@ -139,6 +139,7 @@ public class TC003_Cambios_Historicos {
 
 			funge.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
+			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);
 			System.exit(0);
 

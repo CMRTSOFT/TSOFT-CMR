@@ -684,4 +684,13 @@ public class FunctionGeneric {
 			System.out.println("Error al mover el archivo");
 		}
 	}
+	
+	public static void updateStateTestCase(boolean estado, String caso) {
+		if(estado) {
+			LeerExcel.setTextRow("ESTADO", "Pass", caso);
+		}else {
+			LeerExcel.setTextRow("ESTADO", "Fail", caso);
+		}
+		
+	}
 }

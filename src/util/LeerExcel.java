@@ -73,19 +73,19 @@ public class LeerExcel {
 				contadorFilas++;
 
 			}
-			
-			if(matriz.length < 2) {
+
+			if (matriz.length < 2) {
 				System.out.println("El archivo excel: '" + caso + ".xlsx' no contiene datos");
 				workbook.close();
 				System.exit(0);
 			}
-				
+
 			workbook.close();
 		} catch (Exception e) {
 			System.out.println("El archivo excel: '" + caso + ".xlsx' no existe");
 			System.exit(0);
 		}
-		
+
 		return matriz;
 	}
 
@@ -130,30 +130,59 @@ public class LeerExcel {
 		return valor;
 	}
 
-	public static void setTextRow(String value) {
+	public static void setTextRow(String columna, String valor, String caso) {
 
 		try {
-			ruta_xlsx = "C:\\desarrollos\\Ejecucion_Automatizada\\Datos_Temporales\\TC031_Consultar_Autorizacion.xlsx";
+			ruta_xlsx = "C:\\desarrollos\\Ejecucion_Automatizada\\Datos_Temporales\\" + caso + ".xlsx";
 			FileInputStream file = new FileInputStream(new File(ruta_xlsx));
 			XSSFWorkbook workbook = new XSSFWorkbook(file);
 			XSSFSheet sheet = workbook.getSheetAt(0);
-			
+
 			Cell cell = null;
-			
-            XSSFRow sheetrow = sheet.getRow(1);
-            if(sheetrow == null){
-                sheetrow = sheet.createRow(1);
-            }
 
-            cell = sheetrow.getCell(countCol(sheet)-1);
-            
-            if(cell == null)
-                cell = sheetrow.createCell(countCol(sheet)-1);
+			XSSFRow sheetrow = sheet.getRow(1);
+			Iterator<Row> rowIterator = sheet.iterator();
+			Row row;
+			int countCol = 0;
+			boolean flag = false;
+			while (rowIterator.hasNext()) {
+				
+				row = rowIterator.next();
+				Iterator<Cell> cellIterator = row.cellIterator();
+				
+				
+				while (cellIterator.hasNext()) {
+					cell = cellIterator.next();
+					System.out.println(cell.getStringCellValue());
+					if(cell.getStringCellValue().equals(columna)) {
+						if (sheetrow == null) {
+							sheetrow = sheet.createRow(1);
+						}
+						cell = sheetrow.getCell(countCol);
+						cell.setCellValue(valor);
+						flag = true;
+						break;
+					}
+					//cell = cellIterator.next();
+					countCol++;
+				}
+				
+				if(flag)
+					break;
+			}
 
-            cell.setCellValue(value); 
-            
-			FileOutputStream fos =new FileOutputStream(new File(ruta_xlsx));
-	        workbook.write(fos);
+			/*if (sheetrow == null) {
+				sheetrow = sheet.createRow(1);
+			}
+			cell = sheetrow.getCell(countCol(sheet) - 1);
+
+			if (cell == null)
+				cell = sheetrow.createCell(countCol(sheet) - 1);
+
+			cell.setCellValue(valor);*/
+
+			FileOutputStream fos = new FileOutputStream(new File(ruta_xlsx));
+			workbook.write(fos);
 			workbook.close();
 
 		} catch (Exception e) {
