@@ -33,8 +33,7 @@ public class LoginSatif {
 			driver = new InternetExplorerDriver(capabilities);
 			
 			if (ambiente.replace(" ", "").toUpperCase().equals("QA1")) {
-				//driver.navigate().to("http://108.20.1.41:10061/sat/index.jsp");
-				driver.navigate().to("http://www.google.cl");
+				driver.navigate().to("http://108.20.1.41:10061/sat/index.jsp");
 			} else if (ambiente.replace(" ", "").toUpperCase().equals("QA4")) {
 				driver.navigate().to("http://desacloud960.falabella.cl:8580/sat/index.jsp");
 			}

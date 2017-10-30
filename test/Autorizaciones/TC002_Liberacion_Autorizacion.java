@@ -16,7 +16,7 @@ import org.testng.annotations.BeforeClass;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 
-public class TC032_Liberacion_Autorizacion {
+public class TC002_Liberacion_Autorizacion {
 
 	private WebDriver driver;
 	private LoginSatif login;

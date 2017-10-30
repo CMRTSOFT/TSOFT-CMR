@@ -16,7 +16,7 @@ import org.testng.annotations.BeforeClass;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 
-public class TC033_Cambios_Historicos {
+public class TC003_Cambios_Historicos {
 
 	private WebDriver driver;
 	private LoginSatif login;
