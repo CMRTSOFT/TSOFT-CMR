@@ -56,7 +56,7 @@ public class TC001_Consultar_Autorizacion {
 			lab = excel.valorCol("LABORATORIO", matriz);
 			idLab = excel.valorCol("ID_LABORATORIO", matriz);
 			rutaAlm = excel.valorCol("RUTA_ALM", matriz);
-
+		
 			pathResultados = rutaAlm + "\\" + lab + "\\";
 
 			ITestCase = alm.createItestCase(wrapper, lab, idLab, nameClass, rutaAlm);
