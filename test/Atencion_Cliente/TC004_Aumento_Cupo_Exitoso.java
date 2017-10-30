@@ -14,6 +14,7 @@ import page.Login.LoginSatif;
 import page.Menu.Menu;
 import page.AtencionCliente.AumentoCupo;
 import page.AtencionCliente.BusquedaContrato;
+import page.AtencionCliente.Detalle;
 import util.ALM;
 import util.Evidencia;
 import util.FunctionGeneric;
@@ -31,7 +32,7 @@ public class TC004_Aumento_Cupo_Exitoso {
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
-	private String nameClass, lab, idLab, rutaAlm;
+	private String nameClass, lab, idLab, rutaAlm, pathResultados;
 	private ITestCase ITestCase;
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
@@ -45,14 +46,14 @@ public class TC004_Aumento_Cupo_Exitoso {
 		try {
 
 			menu = new Menu();
+			busContrato = new BusquedaContrato();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
 			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			busContrato = new BusquedaContrato();
-			aumen = new AumentoCupo();
+
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
 			matriz = LeerExcel.retornaDatosExcel(this.getClass().getPackage().getName(), nameClass);
@@ -60,10 +61,13 @@ public class TC004_Aumento_Cupo_Exitoso {
 			lab = excel.valorCol("LABORATORIO", matriz);
 			idLab = excel.valorCol("ID_LABORATORIO", matriz);
 			rutaAlm = excel.valorCol("RUTA_ALM", matriz);
+		
+			pathResultados = rutaAlm + "\\" + lab + "\\";
 
 			ITestCase = alm.createItestCase(wrapper, lab, idLab, nameClass, rutaAlm);
 			ITestCaseRun = alm.createITestCaseRun(wrapper, ITestCase);
-
+			LeerExcel.setTextRow("ID_RUN",Integer.toString(ALM.returnIDRun(ITestCase)-1), nameClass);
+			
 		} catch (Exception e) {
 			System.out.println("Error BeforeClass: " + e.getMessage());
 		}
@@ -73,7 +77,7 @@ public class TC004_Aumento_Cupo_Exitoso {
   public void f() {
 	  
 	  try {
-			driver = login.openUrlSatif();
+			driver = login.openUrlSatif(excel.valorCol("AMBIENTE", matriz));
 			
 			estado = login.ingresoLogin(excel.valorCol("Usuario", matriz), excel.valorCol("Password", matriz), driver);
 			if (!FunctionGeneric.stateStep("Login", estado, ITestCaseRun, wrapper)) {
@@ -151,11 +155,13 @@ public class TC004_Aumento_Cupo_Exitoso {
   @AfterClass
 	public void afterClass() {
 		try {
-			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, flagState);
-			alm.AttachmentEvi(wrapper, ITestCaseRun, nameClass);
+			
 			funge.closeWindows(driver, 0);
-			funge.deleteFile(nameClass);
+			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
+			FunctionGeneric.updateStateTestCase(flagState, nameClass);
+			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);
 			System.exit(0);
+			
 		} catch (Exception e) {
 			System.out.println("Error AfterClass: " + e.getMessage());
 		}

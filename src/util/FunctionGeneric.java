@@ -693,4 +693,20 @@ public class FunctionGeneric {
 		}
 		
 	}
+	
+	public static void deleteAllText(WebElement element) {
+		try {
+			Robot robot = new Robot();
+			element.click();
+			robot.keyPress(KeyEvent.VK_CONTROL);
+			robot.keyPress(KeyEvent.VK_A);
+			robot.keyRelease(KeyEvent.VK_CONTROL);
+			robot.keyRelease(KeyEvent.VK_A);
+			robot.keyPress(KeyEvent.VK_BACK_SPACE);
+			robot.keyRelease(KeyEvent.VK_BACK_SPACE);
+		} catch (Exception e) {
+			System.out.println("ERROR AL ELIMINAR TODO EL TEXTO DEL CAMPO " + e.getMessage());
+		}
+	}
+	
 }

@@ -50,11 +50,11 @@ public class BusquedaContrato {
 	}
 
 	public String seleccionarProducto(String producto, WebDriver driver) {
-		
+
 		String msg = "OK";
 
 		try {
-			
+
 			msg = FunctionGeneric.clickObject("Link Producto", "link", producto, "click", driver);
 
 		} catch (Exception e) {
@@ -75,38 +75,38 @@ public class BusquedaContrato {
 			Select cboTipoTarjeta = new Select(driver.findElement(By.xpath("//SELECT[@name='MPMF_BINENTTIP']")));
 			WebElement cboTarjeta = driver.findElement(By.xpath("//SELECT[@name='MPMF_BINENTTIP']"));
 			WebElement btnAceptar = driver.findElement(By.name("ELIMINAR"));
-			
+
 			if (cboTarjeta.isDisplayed()) {
 				index = FunctionGeneric.returnPositionDataCBO(cboTarjeta, tipoTarjeta);
 			} else {
 				msg = "No se encontró en combobox de N° Tarjeta";
-				
+
 			}
 
 			if (index >= 0) {
 				cboTipoTarjeta.selectByIndex(index);
 			} else {
 				msg = "No se encontró Valor en combobox N° Tarjeta";
-				
+
 			}
 
 			if (txtNumTarjeta.isDisplayed()) {
 				txtNumTarjeta.sendKeys(numTarjeta);
 			} else {
-				if (msg.equals("OK")) 
+				if (msg.equals("OK"))
 					msg = "";
-				
+
 				msg = msg + "No se encontró el campo N° Tarjeta \n";
-				
+
 			}
 			if (btnAceptar.isDisplayed()) {
 				btnAceptar.click();
 			} else {
-				if (msg.equals("OK")) 
+				if (msg.equals("OK"))
 					msg = "";
-				
+
 				msg = msg + "No se encontró el botón Aceptar \n";
-				
+
 			}
 
 		} catch (Exception e) {
@@ -116,5 +116,43 @@ public class BusquedaContrato {
 		return msg;
 	}
 
+	public String formContratoContrato(String numContrato, WebDriver driver) {
+		String msg = "OK";
+		try {
+			if (driver.findElements(By.xpath("//INPUT[@name='ALTACUENTA']")).size() == 0) {
+				msg = "No se encontró el campo Contrato \\n";
+				System.exit(0);
+			}
+			if (driver.findElements(By.xpath("//INPUT[@name='ELIMINAR']")).size() == 0) {
+				msg = "No se encontró el botón Aceptar \\n";
+				System.exit(0);
+			}
+			WebElement txtContrato = driver.findElement(By.xpath("//INPUT[@name='ALTACUENTA']"));
+			WebElement btnAceptar = driver.findElement(By.name("ELIMINAR"));
+			if (txtContrato.isDisplayed()) {
+				txtContrato.sendKeys(numContrato);
+			} else {
+				if (msg.equals("OK"))
+					msg = "";
 
+				msg = msg + "No se encontró el campo Contrato \n";
+				System.exit(0);
+			}
+
+			if (btnAceptar.isDisplayed()) {
+				btnAceptar.click();
+			} else {
+				if (msg.equals("OK"))
+					msg = "";
+
+				msg = msg + "No se encontró el botón Aceptar \n";
+				System.exit(0);
+			}
+
+		} catch (Exception e) {
+			System.out.println("Error con el Formulario de Contrato CONTRATO " + e.toString());
+			msg = "Error con el Formulario de Contrato CONTRATO " + e.toString();
+		}
+		return msg;
+	}
 }

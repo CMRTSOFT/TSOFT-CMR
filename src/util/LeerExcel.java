@@ -146,15 +146,14 @@ public class LeerExcel {
 			int countCol = 0;
 			boolean flag = false;
 			while (rowIterator.hasNext()) {
-				
+
 				row = rowIterator.next();
 				Iterator<Cell> cellIterator = row.cellIterator();
-				
-				
+
 				while (cellIterator.hasNext()) {
 					cell = cellIterator.next();
-					System.out.println(cell.getStringCellValue());
-					if(cell.getStringCellValue().equals(columna)) {
+					
+					if (cell.getStringCellValue().equals(columna)) {
 						if (sheetrow == null) {
 							sheetrow = sheet.createRow(1);
 						}
@@ -163,23 +162,22 @@ public class LeerExcel {
 						flag = true;
 						break;
 					}
-					//cell = cellIterator.next();
+					// cell = cellIterator.next();
 					countCol++;
 				}
-				
-				if(flag)
+
+				if (flag)
 					break;
 			}
 
-			/*if (sheetrow == null) {
-				sheetrow = sheet.createRow(1);
-			}
-			cell = sheetrow.getCell(countCol(sheet) - 1);
-
-			if (cell == null)
-				cell = sheetrow.createCell(countCol(sheet) - 1);
-
-			cell.setCellValue(valor);*/
+			/*
+			 * if (sheetrow == null) { sheetrow = sheet.createRow(1); } cell =
+			 * sheetrow.getCell(countCol(sheet) - 1);
+			 * 
+			 * if (cell == null) cell = sheetrow.createCell(countCol(sheet) - 1);
+			 * 
+			 * cell.setCellValue(valor);
+			 */
 
 			FileOutputStream fos = new FileOutputStream(new File(ruta_xlsx));
 			workbook.write(fos);
