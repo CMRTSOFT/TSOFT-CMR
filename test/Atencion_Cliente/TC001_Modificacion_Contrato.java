@@ -14,6 +14,7 @@ import util.ALM;
 import util.Evidencia;
 import util.FunctionGeneric;
 import util.LeerExcel;
+import page.AtencionCliente.BusquedaContrato;
 import page.AtencionCliente.Contrato;
 
 public class TC001_Modificacion_Contrato {
@@ -31,6 +32,7 @@ public class TC001_Modificacion_Contrato {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private Contrato contrato;
+	private BusquedaContrato busContrato;
 
 	@BeforeClass
 	public void beforeClass() {
@@ -45,6 +47,7 @@ public class TC001_Modificacion_Contrato {
 			funge = new FunctionGeneric();
 			login = new LoginSatif();
 			contrato = new Contrato();
+			busContrato = new BusquedaContrato();
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
 			matriz = LeerExcel.retornaDatosExcel(this.getClass().getPackage().getName(), nameClass);
@@ -85,7 +88,24 @@ public class TC001_Modificacion_Contrato {
 				afterClass();
 			}
 
-			//estado = menu.menuModificacionContrato(driver);
+			estado = menu.menuBusquedaContrato(driver);
+			if (!FunctionGeneric.stateStep("Menú Busqueda de Contrato", estado, ITestCaseRun, wrapper)) {
+				flagState = false;
+				afterClass();
+			}
+
+			estado = busContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
+			if (!FunctionGeneric.stateStep("Buscar Contrato", estado, ITestCaseRun, wrapper)) {
+				flagState = false;
+				afterClass();
+			}
+
+			estado = busContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
+			if (!FunctionGeneric.stateStep("Seleccionar Producto", estado, ITestCaseRun, wrapper)) {
+				flagState = false;
+				afterClass();
+			}
+			estado = menu.menuModificacionContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Modificación Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
