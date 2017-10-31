@@ -10,7 +10,7 @@ public class Cliente {
 	public String formModificaCliente(String calidadVivienda, String celular, WebDriver driver) {
 		String msg = "OK";
 		try {
-			// name=CALIDAD
+			// name=CALIDAD calidad
 			msg = FunctionGeneric.selecCBO("Combobox Dia de Pago", "name", "CALIDAD", calidadVivienda, false, driver);
 			if (!msg.equals("OK"))
 				return msg;
