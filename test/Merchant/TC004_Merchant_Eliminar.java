@@ -4,7 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import atu.alm.wrapper.ALMServiceWrapper;
 import atu.alm.wrapper.ITestCase;
 import atu.alm.wrapper.ITestCaseRun;
@@ -17,6 +16,7 @@ import util.FunctionGeneric;
 import util.LeerExcel;
 
 public class TC004_Merchant_Eliminar {
+
 	private Menu menu;
 	private LeerExcel excel;
 	private WebDriver driver;
@@ -45,6 +45,7 @@ public class TC004_Merchant_Eliminar {
 			wrapper = alm.conectALM();
 			funge = new FunctionGeneric();
 			login = new LoginSatif();
+			merchant = new Merchant();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -66,10 +67,10 @@ public class TC004_Merchant_Eliminar {
 	}
 
 	@Test
-	public void test() {
+	public void Test() {
 
 		try {
-			
+
 			driver = login.openUrlSatif(excel.valorCol("AMBIENTE", matriz));
 
 			estado = login.ingresoLogin(excel.valorCol("Usuario", matriz), excel.valorCol("Password", matriz), driver);
@@ -77,49 +78,28 @@ public class TC004_Merchant_Eliminar {
 				flagState = false;
 				afterClass();
 			}
-			
+
 			estado = menu.menuMantenimientoMerchant(driver);
 			if (!FunctionGeneric.stateStep("Menú Mantenimiento Merchant", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			
+
 			estado = merchant.formDeleteMerchant(excel.valorCol("NumeroComercio", matriz),
 					excel.valorCol("MotivoBaja", matriz), driver);
 			if (!FunctionGeneric.stateStep("Eliminar Comecio Merchant", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			
+
 			estado = merchant.confirmDeleteMerchant(driver);
 			if (!FunctionGeneric.stateStep("Confirmar Eliminar Comercio Merchant", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			
-			
-			
-			/*
-			resultado = login.ingresoLogin("LBIANCHI", "QA123456", driver);
-			Thread.sleep(3000);
-			if (!resultado.equalsIgnoreCase("OK"))
-				afterClass();
 
-			resultado = menu.menuMantenimientoMerchant(driver);
-			if (!resultado.equalsIgnoreCase("OK"))
-				afterClass();
-
-			resultado = merchant.formDeleteMerchant("10001816","ELIMINAR COMERCIO",driver);
-			if (!resultado.equalsIgnoreCase("OK"))
-				afterClass();
-			resultado = merchant.confirmDeleteMerchant(driver);
-			if (!resultado.equalsIgnoreCase("OK"))
-				afterClass();
-				
-			*/
-			
 		} catch (Exception e) {
-			System.out.println("ERROR EN LA EJECUCIÓN DEL CASO NEGOCIO EMISOR MANTENEDOR CONTRATO " + e.getMessage());
+			System.out.println("Error Test: " + e.getMessage());
 			flagState = false;
 			afterClass();
 		}
@@ -128,15 +108,15 @@ public class TC004_Merchant_Eliminar {
 
 	@AfterClass
 	public void afterClass() {
-		
+
 		try {
-			
+
 			funge.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);
 			System.exit(0);
-			
+
 		} catch (Exception e) {
 			System.out.println("Error AfterClass: " + e.getMessage());
 		}

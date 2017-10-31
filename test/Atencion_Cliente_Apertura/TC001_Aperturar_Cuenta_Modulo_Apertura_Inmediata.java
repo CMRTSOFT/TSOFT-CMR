@@ -48,6 +48,7 @@ public class TC001_Aperturar_Cuenta_Modulo_Apertura_Inmediata {
 			login = new LoginSatif();
 			evaluador = new Evaluador();
 			apertura = new AperturaCuenta();
+
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
 			matriz = LeerExcel.retornaDatosExcel(this.getClass().getPackage().getName(), nameClass);
@@ -55,13 +56,13 @@ public class TC001_Aperturar_Cuenta_Modulo_Apertura_Inmediata {
 			lab = excel.valorCol("LABORATORIO", matriz);
 			idLab = excel.valorCol("ID_LABORATORIO", matriz);
 			rutaAlm = excel.valorCol("RUTA_ALM", matriz);
-			
+
 			pathResultados = rutaAlm + "\\" + lab + "\\";
 
 			ITestCase = alm.createItestCase(wrapper, lab, idLab, nameClass, rutaAlm);
 			ITestCaseRun = alm.createITestCaseRun(wrapper, ITestCase);
-			
-			LeerExcel.setTextRow("ID_RUN",Integer.toString(ALM.returnIDRun(ITestCase)-1),nameClass);
+
+			LeerExcel.setTextRow("ID_RUN", Integer.toString(ALM.returnIDRun(ITestCase) - 1), nameClass);
 
 		} catch (Exception e) {
 			System.out.println("Error BeforeClass: " + e.getMessage());

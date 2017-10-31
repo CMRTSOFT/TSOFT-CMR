@@ -4,7 +4,6 @@ import org.junit.AfterClass;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import atu.alm.wrapper.ALMServiceWrapper;
 import atu.alm.wrapper.ITestCase;
 import atu.alm.wrapper.ITestCaseRun;
@@ -17,6 +16,7 @@ import util.FunctionGeneric;
 import util.LeerExcel;
 
 public class TC002_Fidelizacion_Consulta_Puntos {
+
 	private WebDriver driver;
 	private LoginSatif login;
 	private Menu menu;
@@ -45,6 +45,7 @@ public class TC002_Fidelizacion_Consulta_Puntos {
 			wrapper = alm.conectALM();
 			funge = new FunctionGeneric();
 			login = new LoginSatif();
+			fide = new Fidelizacion();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -53,77 +54,79 @@ public class TC002_Fidelizacion_Consulta_Puntos {
 			lab = excel.valorCol("LABORATORIO", matriz);
 			idLab = excel.valorCol("ID_LABORATORIO", matriz);
 			rutaAlm = excel.valorCol("RUTA_ALM", matriz);
-		
+
 			pathResultados = rutaAlm + "\\" + lab + "\\";
 
 			ITestCase = alm.createItestCase(wrapper, lab, idLab, nameClass, rutaAlm);
 			ITestCaseRun = alm.createITestCaseRun(wrapper, ITestCase);
-			LeerExcel.setTextRow("ID_RUN",Integer.toString(ALM.returnIDRun(ITestCase)-1), nameClass);
+			LeerExcel.setTextRow("ID_RUN", Integer.toString(ALM.returnIDRun(ITestCase) - 1), nameClass);
 
 		} catch (Exception e) {
 			System.out.println("Error BeforeClass: " + e.getMessage());
 		}
 	}
-	
-  @Test
-  public void test() {
-	  try {
+
+	@Test
+	public void Test() {
+
+		try {
+
 			driver = login.openUrlSatif(excel.valorCol("AMBIENTE", matriz));
-			
+
 			estado = login.ingresoLogin(excel.valorCol("Usuario", matriz), excel.valorCol("Password", matriz), driver);
 			if (!FunctionGeneric.stateStep("Login", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 			Thread.sleep(3000);
-			
+
 			estado = menu.menuFidelizacion(driver);
 			if (!FunctionGeneric.stateStep("Menú Fidelización", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			
+
 			estado = menu.subMenuFideCuentasGlobales(driver);
 			if (!FunctionGeneric.stateStep("Menú Fidelización Cuentas Globales", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			
+
 			estado = fide.formBusqueda(excel.valorCol("Rut", matriz), driver);
 			if (!FunctionGeneric.stateStep("Menú Fidelización Cuentas Globales", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			
+
 			estado = fide.selectAccountmovements(driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Movimientos en Cuenta", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			
-			estado =  fide.validarMovimientos(driver);
+
+			estado = fide.validarMovimientos(driver);
 			if (!FunctionGeneric.stateStep("Validar Movimientos en Cuenta", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 		} catch (Exception e) {
-			System.out.println("ERROR EN LA EJECUCIÓN DEL CASO NEGOCIO EMISOR MANTENEDOR CONTRATO " + e.getMessage());
+			System.out.println("Error Test: " + e.getMessage());
 			flagState = false;
 			afterClass();
 		}
-  }
-  
-  @AfterClass
+	}
+
+	@AfterClass
 	public void afterClass() {
-	  
+
 		try {
-			
+
 			funge.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);
 			System.exit(0);
-			
+
 		} catch (Exception e) {
 			System.out.println("Error AfterClass: " + e.getMessage());
 		}

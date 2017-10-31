@@ -4,7 +4,6 @@ import org.junit.AfterClass;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import atu.alm.wrapper.ALMServiceWrapper;
 import atu.alm.wrapper.ITestCase;
 import atu.alm.wrapper.ITestCaseRun;
@@ -18,6 +17,7 @@ import util.FunctionGeneric;
 import util.LeerExcel;
 
 public class TC008_Bloquear_Pin {
+
 	private WebDriver driver;
 	private LoginSatif login;
 	private Menu menu;
@@ -47,6 +47,8 @@ public class TC008_Bloquear_Pin {
 			wrapper = alm.conectALM();
 			funge = new FunctionGeneric();
 			login = new LoginSatif();
+			busContrato = new BusquedaContrato();
+			tarClave = new TarjetaClave();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -66,14 +68,14 @@ public class TC008_Bloquear_Pin {
 			System.out.println("Error BeforeClass: " + e.getMessage());
 		}
 	}
-	
-  @Test
-  public void Test() {
-	  
-	  try {
+
+	@Test
+	public void Test() {
+
+		try {
 
 			driver = login.openUrlSatif(excel.valorCol("AMBIENTE", matriz));
-			
+
 			estado = login.ingresoLogin(excel.valorCol("Usuario", matriz), excel.valorCol("Password", matriz), driver);
 			if (!FunctionGeneric.stateStep("Login", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
@@ -108,32 +110,32 @@ public class TC008_Bloquear_Pin {
 				flagState = false;
 				afterClass();
 			}
-			
+
 			estado = tarClave.validaBloqueoPIN(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			
+
 		} catch (Exception e) {
-			System.out.println("Error Caso de Prueba Generar Clave " + e.toString());
+			System.out.println("Error Test: " + e.getLocalizedMessage());
 			flagState = false;
 			afterClass();
 		}
-	  
-  }
-  
-  @AfterClass
+
+	}
+
+	@AfterClass
 	public void afterClass() {
-	  
+
 		try {
-			
+
 			funge.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);
 			System.exit(0);
-			
+
 		} catch (Exception e) {
 			System.out.println("Error AfterClass: " + e.getMessage());
 		}

@@ -36,9 +36,9 @@ public class TC003_Aperturar_Cuenta_Modulo_Apertura_Inmediata_Faltan_Datos {
 
 	@BeforeClass
 	public void beforeClass() {
-		
+
 		try {
-			
+
 			menu = new Menu();
 			excel = new LeerExcel();
 			login = new LoginSatif();
@@ -56,13 +56,13 @@ public class TC003_Aperturar_Cuenta_Modulo_Apertura_Inmediata_Faltan_Datos {
 			lab = excel.valorCol("LABORATORIO", matriz);
 			idLab = excel.valorCol("ID_LABORATORIO", matriz);
 			rutaAlm = excel.valorCol("RUTA_ALM", matriz);
-			
+
 			pathResultados = rutaAlm + "\\" + lab + "\\";
 
 			ITestCase = alm.createItestCase(wrapper, lab, idLab, nameClass, rutaAlm);
 			ITestCaseRun = alm.createITestCaseRun(wrapper, ITestCase);
-			
-			LeerExcel.setTextRow("ID_RUN",Integer.toString(ALM.returnIDRun(ITestCase)-1),nameClass);
+
+			LeerExcel.setTextRow("ID_RUN", Integer.toString(ALM.returnIDRun(ITestCase) - 1), nameClass);
 
 		} catch (Exception e) {
 			System.out.println("Error BeforeClass: " + e.getMessage());
@@ -72,11 +72,11 @@ public class TC003_Aperturar_Cuenta_Modulo_Apertura_Inmediata_Faltan_Datos {
 
 	@Test
 	public void Test() {
-		
+
 		try {
-			
+
 			driver = login.openUrlSatif(excel.valorCol("AMBIENTE", matriz));
-			
+
 			estado = login.validarURL("SATIF v.13.00.");
 			if (!FunctionGeneric.stateStep("Abrir Url SATIF", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
@@ -140,15 +140,15 @@ public class TC003_Aperturar_Cuenta_Modulo_Apertura_Inmediata_Faltan_Datos {
 
 	@AfterMethod
 	public void afterClass() {
-		
+
 		try {
-			
+
 			funge.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);
 			System.exit(0);
-			
+
 		} catch (Exception e) {
 			System.out.println("Error AfterClass: " + e.getMessage());
 		}

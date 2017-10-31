@@ -4,7 +4,6 @@ import org.junit.AfterClass;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import atu.alm.wrapper.ALMServiceWrapper;
 import atu.alm.wrapper.ITestCase;
 import atu.alm.wrapper.ITestCaseRun;
@@ -18,6 +17,7 @@ import util.FunctionGeneric;
 import util.LeerExcel;
 
 public class TC006_Usos_Multiclave {
+
 	private WebDriver driver;
 	private LoginSatif login;
 	private Menu menu;
@@ -47,6 +47,8 @@ public class TC006_Usos_Multiclave {
 			wrapper = alm.conectALM();
 			funge = new FunctionGeneric();
 			login = new LoginSatif();
+			busContrato = new BusquedaContrato();
+			tarClave = new TarjetaClave();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -68,10 +70,10 @@ public class TC006_Usos_Multiclave {
 	}
 
 	@Test
-	public void test() {
-		
+	public void Test() {
+
 		try {
-			
+
 			driver = login.openUrlSatif(excel.valorCol("AMBIENTE", matriz));
 
 			estado = login.ingresoLogin(excel.valorCol("Usuario", matriz), excel.valorCol("Password", matriz), driver);
@@ -115,7 +117,7 @@ public class TC006_Usos_Multiclave {
 			}
 
 		} catch (Exception e) {
-			System.out.println("Error Caso de Prueba Generar Clave " + e.toString());
+			System.out.println("Error Test: " + e.getMessage());
 		}
 
 	}

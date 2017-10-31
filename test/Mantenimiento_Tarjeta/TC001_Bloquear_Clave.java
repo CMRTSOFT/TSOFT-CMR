@@ -4,7 +4,6 @@ import org.junit.AfterClass;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import atu.alm.wrapper.ALMServiceWrapper;
 import atu.alm.wrapper.ITestCase;
 import atu.alm.wrapper.ITestCaseRun;
@@ -18,6 +17,7 @@ import util.FunctionGeneric;
 import util.LeerExcel;
 
 public class TC001_Bloquear_Clave {
+
 	private WebDriver driver;
 	private LoginSatif login;
 	private Menu menu;
@@ -37,8 +37,9 @@ public class TC001_Bloquear_Clave {
 
 	@BeforeClass
 	public void beforeClass() {
+
 		try {
-			
+
 			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
@@ -46,6 +47,8 @@ public class TC001_Bloquear_Clave {
 			wrapper = alm.conectALM();
 			funge = new FunctionGeneric();
 			login = new LoginSatif();
+			emiAcBl = new EmitirActivarBloquear();
+			busContrato = new BusquedaContrato();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -54,12 +57,12 @@ public class TC001_Bloquear_Clave {
 			lab = excel.valorCol("LABORATORIO", matriz);
 			idLab = excel.valorCol("ID_LABORATORIO", matriz);
 			rutaAlm = excel.valorCol("RUTA_ALM", matriz);
-		
+
 			pathResultados = rutaAlm + "\\" + lab + "\\";
 
 			ITestCase = alm.createItestCase(wrapper, lab, idLab, nameClass, rutaAlm);
 			ITestCaseRun = alm.createITestCaseRun(wrapper, ITestCase);
-			LeerExcel.setTextRow("ID_RUN",Integer.toString(ALM.returnIDRun(ITestCase)-1), nameClass);
+			LeerExcel.setTextRow("ID_RUN", Integer.toString(ALM.returnIDRun(ITestCase) - 1), nameClass);
 
 		} catch (Exception e) {
 			System.out.println("Error BeforeClass: " + e.getMessage());
@@ -67,12 +70,12 @@ public class TC001_Bloquear_Clave {
 	}
 
 	@Test
-	public void test() {
-		
+	public void Test() {
+
 		try {
-			
+
 			driver = login.openUrlSatif(excel.valorCol("AMBIENTE", matriz));
-			
+
 			estado = login.ingresoLogin(excel.valorCol("Usuario", matriz), excel.valorCol("Password", matriz), driver);
 			if (!FunctionGeneric.stateStep("Login", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
@@ -109,7 +112,7 @@ public class TC001_Bloquear_Clave {
 				afterClass();
 			}
 		} catch (Exception e) {
-			System.out.println("Error Test Simulación " + e.toString());
+			System.out.println("Error Test: " + e.toString());
 			flagState = false;
 			afterClass();
 		}
@@ -117,15 +120,15 @@ public class TC001_Bloquear_Clave {
 
 	@AfterClass
 	public void afterClass() {
-		
+
 		try {
-			
+
 			funge.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);
 			System.exit(0);
-			
+
 		} catch (Exception e) {
 			System.out.println("Error AfterClass: " + e.getMessage());
 		}

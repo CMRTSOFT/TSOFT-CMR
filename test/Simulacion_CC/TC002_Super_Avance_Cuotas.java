@@ -4,7 +4,6 @@ import org.junit.AfterClass;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import atu.alm.wrapper.ALMServiceWrapper;
 import atu.alm.wrapper.ITestCase;
 import atu.alm.wrapper.ITestCaseRun;
@@ -18,6 +17,7 @@ import util.FunctionGeneric;
 import util.LeerExcel;
 
 public class TC002_Super_Avance_Cuotas {
+
 	private WebDriver driver;
 	private LoginSatif login;
 	private Menu menu;
@@ -39,7 +39,7 @@ public class TC002_Super_Avance_Cuotas {
 	public void beforeClass() {
 
 		try {
-			
+
 			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
@@ -47,6 +47,8 @@ public class TC002_Super_Avance_Cuotas {
 			wrapper = alm.conectALM();
 			funge = new FunctionGeneric();
 			login = new LoginSatif();
+			simulaCC = new SimulacionCC();
+			busContrato = new BusquedaContrato();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -68,10 +70,10 @@ public class TC002_Super_Avance_Cuotas {
 	}
 
 	@Test
-	public void test() {
-		
+	public void Test() {
+
 		try {
-			
+
 			driver = login.openUrlSatif(excel.valorCol("AMBIENTE", matriz));
 
 			estado = login.ingresoLogin(excel.valorCol("Usuario", matriz), excel.valorCol("Password", matriz), driver);
@@ -107,15 +109,14 @@ public class TC002_Super_Avance_Cuotas {
 
 			Thread.sleep(3000);
 			estado = simulaCC.formularioSimulacionCC(excel.valorCol("Monto", matriz),
-					excel.valorCol("NumeroCuota", matriz), excel.valorCol("MesDiferido", matriz),
-					"AVCE", driver);
+					excel.valorCol("NumeroCuota", matriz), excel.valorCol("MesDiferido", matriz), "AVCE", driver);
 			if (!FunctionGeneric.stateStep("Formulario Simulación CC", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
 		} catch (Exception e) {
-			System.out.println("Error Test Simulación " + e.toString());
+			System.out.println("Error Test: " + e.toString());
 			flagState = false;
 			afterClass();
 		}
@@ -124,15 +125,15 @@ public class TC002_Super_Avance_Cuotas {
 
 	@AfterClass
 	public void afterClass() {
-		
+
 		try {
-			
+
 			funge.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);
 			System.exit(0);
-			
+
 		} catch (Exception e) {
 			System.out.println("Error AfterClass: " + e.getMessage());
 		}

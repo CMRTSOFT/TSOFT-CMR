@@ -4,7 +4,6 @@ import org.junit.AfterClass;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import atu.alm.wrapper.ALMServiceWrapper;
 import atu.alm.wrapper.ITestCase;
 import atu.alm.wrapper.ITestCaseRun;
@@ -18,6 +17,7 @@ import util.FunctionGeneric;
 import util.LeerExcel;
 
 public class TC004_Sucursal_Lean_Reestructuraciones {
+
 	private WebDriver driver;
 	private LoginSatif login;
 	private Menu menu;
@@ -47,6 +47,8 @@ public class TC004_Sucursal_Lean_Reestructuraciones {
 			wrapper = alm.conectALM();
 			funge = new FunctionGeneric();
 			login = new LoginSatif();
+			busContrato = new BusquedaContrato();
+			reest = new Reestructuracion();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -69,6 +71,7 @@ public class TC004_Sucursal_Lean_Reestructuraciones {
 
 	@Test
 	public void Test() {
+
 		try {
 
 			driver = login.openUrlSatif(excel.valorCol("AMBIENTE", matriz));
@@ -121,7 +124,7 @@ public class TC004_Sucursal_Lean_Reestructuraciones {
 			}
 
 		} catch (Exception e) {
-			System.out.println("ERROR AL EJECUTAR CASO RE-ESTRUCTRACIÓN " + e.getMessage());
+			System.out.println("Error Test: " + e.getMessage());
 			flagState = false;
 			afterClass();
 		}

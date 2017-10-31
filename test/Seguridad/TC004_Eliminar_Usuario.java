@@ -4,7 +4,6 @@ import org.junit.AfterClass;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import atu.alm.wrapper.ALMServiceWrapper;
 import atu.alm.wrapper.ITestCase;
 import atu.alm.wrapper.ITestCaseRun;
@@ -17,6 +16,7 @@ import util.FunctionGeneric;
 import util.LeerExcel;
 
 public class TC004_Eliminar_Usuario {
+
 	private WebDriver driver;
 	private LoginSatif login;
 	private Menu menu;
@@ -35,9 +35,9 @@ public class TC004_Eliminar_Usuario {
 
 	@BeforeClass
 	public void beforeClass() {
-		
+
 		try {
-			
+
 			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
@@ -45,6 +45,7 @@ public class TC004_Eliminar_Usuario {
 			wrapper = alm.conectALM();
 			funge = new FunctionGeneric();
 			login = new LoginSatif();
+			usu = new Usuario();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -64,20 +65,20 @@ public class TC004_Eliminar_Usuario {
 			System.out.println("Error BeforeClass: " + e.getMessage());
 		}
 	}
-	
-  @Test
-  public void test() {
-	  
-	  try {
-		  
+
+	@Test
+	public void Test() {
+
+		try {
+
 			driver = login.openUrlSatif(excel.valorCol("AMBIENTE", matriz));
-			
+
 			estado = login.ingresoLogin(excel.valorCol("Usuario", matriz), excel.valorCol("Password", matriz), driver);
 			if (!FunctionGeneric.stateStep("Login", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			
+
 			estado = menu.menuSeguridadUsuario(driver);
 			if (!FunctionGeneric.stateStep("Menú Seguridad Usuario", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
@@ -89,38 +90,38 @@ public class TC004_Eliminar_Usuario {
 				flagState = false;
 				afterClass();
 			}
-			
+
 			estado = usu.deleteUser(driver);
 			if (!FunctionGeneric.stateStep("Formulario Busqueda Usuario", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			
+
 			estado = usu.validarEliminarUser(driver);
 			if (!FunctionGeneric.stateStep("Validar Eliminar Usuario", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			
+
 		} catch (Exception e) {
-			System.out.println("ERROR AL EJECUTAR CASO ELIMINAR USUARIO "+e.getMessage());
+			System.out.println("Error Test: " + e.getMessage());
 			flagState = false;
 			afterClass();
 		}
-	  
-  }
-  
-  @AfterClass
+
+	}
+
+	@AfterClass
 	public void afterClass() {
-	  
+
 		try {
-			
+
 			funge.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);
 			System.exit(0);
-			
+
 		} catch (Exception e) {
 			System.out.println("Error AfterClass: " + e.getMessage());
 		}

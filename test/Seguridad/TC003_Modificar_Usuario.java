@@ -4,7 +4,6 @@ import org.junit.AfterClass;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import atu.alm.wrapper.ALMServiceWrapper;
 import atu.alm.wrapper.ITestCase;
 import atu.alm.wrapper.ITestCaseRun;
@@ -17,6 +16,7 @@ import util.FunctionGeneric;
 import util.LeerExcel;
 
 public class TC003_Modificar_Usuario {
+	
 	private WebDriver driver;
 	private LoginSatif login;
 	private Menu menu;
@@ -35,9 +35,9 @@ public class TC003_Modificar_Usuario {
 
 	@BeforeClass
 	public void beforeClass() {
-		
+
 		try {
-			
+
 			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
@@ -45,6 +45,7 @@ public class TC003_Modificar_Usuario {
 			wrapper = alm.conectALM();
 			funge = new FunctionGeneric();
 			login = new LoginSatif();
+			usu = new Usuario();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -59,17 +60,17 @@ public class TC003_Modificar_Usuario {
 			ITestCase = alm.createItestCase(wrapper, lab, idLab, nameClass, rutaAlm);
 			ITestCaseRun = alm.createITestCaseRun(wrapper, ITestCase);
 			LeerExcel.setTextRow("ID_RUN", Integer.toString(ALM.returnIDRun(ITestCase) - 1), nameClass);
-			
+
 		} catch (Exception e) {
 			System.out.println("Error BeforeClass: " + e.getMessage());
 		}
 	}
 
 	@Test
-	public void test() {
-		
+	public void Test() {
+
 		try {
-			
+
 			driver = login.openUrlSatif(excel.valorCol("AMBIENTE", matriz));
 
 			estado = login.ingresoLogin(excel.valorCol("Usuario", matriz), excel.valorCol("Password", matriz), driver);
@@ -106,15 +107,15 @@ public class TC003_Modificar_Usuario {
 
 	@AfterClass
 	public void afterClass() {
-		
+
 		try {
-			
+
 			funge.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);
 			System.exit(0);
-			
+
 		} catch (Exception e) {
 			System.out.println("Error AfterClass: " + e.getMessage());
 		}

@@ -1,13 +1,8 @@
 package page.Menu;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -50,7 +45,7 @@ public class Menu {
 					"BotonBarraMenuBarraMenuAtención_al_cliente", "click", driver);
 			if (!msg.equals("OK"))
 				return msg;
-			
+
 			msg = FunctionGeneric.clickObjectByXpath("Menú Búsqueda de Contrato", "td", "id",
 					"MenuOptionBarraMenuAtención_al_clienteBúsqueda de contrato", "click", driver);
 			if (!msg.equals("OK"))
@@ -122,12 +117,12 @@ public class Menu {
 					driver);
 			if (!msg.equals("OK"))
 				return msg;
-			
+
 			msg = FunctionGeneric.clickObject("Menu Evaluador", "id",
 					"BotonBarraMenuAdmisiónBarraMenuAdmisiónEvaluador", "click", driver);
 			if (!msg.equals("OK"))
 				return msg;
-			
+
 			msg = FunctionGeneric.clickObject("Menu Evaluador de Solicitudes", "id",
 					"MenuOptionBarraMenuAdmisiónEvaluadorEvaluador de Solicitudes", "click", driver);
 
@@ -150,7 +145,7 @@ public class Menu {
 					driver);
 			if (!msg.equals("OK"))
 				return msg;
-			
+
 			FunctionGeneric.clickObjectByXpath("Menú Detalle", "td", "id", "MenuOptionBarraMenuDetalle", "click",
 					driver);
 
@@ -169,247 +164,232 @@ public class Menu {
 
 		try {
 
-			Set<String> winSet = driver.getWindowHandles();
-			List<String> winList = new ArrayList<String>(winSet);
-			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
-				msg = msg + "No se encontró el ventana de menú \n";
-				return msg;
-			}
-
-			driver.switchTo().window(winList.get(winList.size() - 1));
-
-			Thread.sleep(2000);
-			WebElement subMenuSimulacionCC = (new WebDriverWait(driver, 30)).until(ExpectedConditions
-					.presenceOfElementLocated(By.xpath("//td[@id='MenuOptionBarraMenuSimulación CC']")));
-			subMenuSimulacionCC.click();
+			driver = FunctionGeneric.waitWindows(2, driver);
+			msg = FunctionGeneric.clickObject("Menú Simulación CC", "id", "MenuOptionBarraMenuSimulación CC", "click",
+					driver);
 
 		} catch (Exception e) {
 			System.out.println("Error Submenú Simulación CC" + e.toString());
-			msg = "Error Submenú Simulación CC" + e.toString();
+			msg = "Error Submenú Simulación CC";
 		}
 
 		return msg;
 	}
 
 	public String menuSolicitud(WebDriver driver) {
-		String msg = "OK";
-		try {
-			Set<String> winSet = driver.getWindowHandles();
-			List<String> winList = new ArrayList<String>(winSet);
-			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
-				msg = "No se encontró Ventana 2";
-				return msg;
-			}
-			winSet = driver.getWindowHandles();
-			winList = new ArrayList<String>(winSet);
-			driver.switchTo().window(winList.get(winList.size() - 1));
 
-			WebElement menuSolicitud = (new WebDriverWait(driver, 60)).until(
-					ExpectedConditions.presenceOfElementLocated(By.xpath("//td[@id='MenuOptionBarraMenuSolicitud']")));
-			menuSolicitud.click();
+		String msg = "OK";
+
+		try {
+
+			driver = FunctionGeneric.waitWindows(2, driver);
+			msg = FunctionGeneric.clickObject("Menú Solicitud", "id", "MenuOptionBarraMenuSolicitud", "click", driver);
 
 		} catch (Exception e) {
-			System.out.println("ERROR EN MENÚ SOLICITUD " + e.getMessage());
-			msg = "ERROR EN MENÚ SOLICITUD " + e.getMessage();
+			msg = "Error en Menú Solicitud";
 		}
+
 		return msg;
 	}
 
 	public String menuComprasDeuda(WebDriver driver) {
-		String msg = "OK";
-		try {
-			// MenuOptionBarraMenuCompras Deudas
 
-			Thread.sleep(3000);
-			Set<String> winSet = driver.getWindowHandles();
-			List<String> winList = new ArrayList<String>(winSet);
-			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
-				msg = msg + "No se encontró el ventana de menú \n";
-				return msg;
-			}
-			winSet = driver.getWindowHandles();
-			winList = new ArrayList<String>(winSet);
-			driver.switchTo().window(winList.get(winList.size() - 1));
-			WebElement menuCompras = (new WebDriverWait(driver, 60)).until(ExpectedConditions
-					.presenceOfElementLocated(By.xpath("//TD[@id='MenuOptionBarraMenuCompras Deudas']")));
-			menuCompras.click();
+		String msg = "OK";
+
+		try {
+
+			driver = FunctionGeneric.waitWindows(2, driver);
+			msg = FunctionGeneric.clickObject("Menú Compras Deudas", "id", "MenuOptionBarraMenuCompras Deudas", "click",
+					driver);
 
 		} catch (Exception e) {
-			System.out.println("ERROR AL ENCONTRAR MENU COMPRAS DEUDAS " + e.getMessage());
-			msg = "ERROR AL ENCONTRAR MENU COMPRAS DEUDAS " + e.getMessage();
+			msg = "Error en Menú Compras Deudas";
 		}
+
 		return msg;
 	}
 
 	public String menuFidelizacion(WebDriver driver) {
+
 		String msg = "OK";
+
 		try {
-			// TD ID MenuOptionBarraMenuFidelización
-			WebElement menuFidelizacion = (new WebDriverWait(driver, 60)).until(ExpectedConditions
-					.presenceOfElementLocated(By.xpath("//TD[@id='MenuOptionBarraMenuFidelización']")));
-			menuFidelizacion.click();
+
+			msg = FunctionGeneric.clickObject("Menú Fidelización", "id", "MenuOptionBarraMenuFidelización", "click",
+					driver);
 
 		} catch (Exception e) {
-			System.out.println("ERROR EN EL MENÚ FIDELIZACIÓN " + e.getMessage());
-			msg = "ERROR EN EL MENÚ FIDELIZACIÓN " + e.getMessage();
+			msg = "Error en Menú Fidelización";
 		}
+
 		return msg;
 	}
 
 	public String subMenuFideEstadoCuenta(WebDriver driver) {
+
 		String msg = "OK";
+
 		try {
-			// MenuOptionBarraMenuTitulares_CuentasEE CC
-			WebElement menuTitulares = (new WebDriverWait(driver, 60)).until(ExpectedConditions
-					.presenceOfElementLocated(By.xpath("//TABLE[@id='BotonBarraMenuBarraMenuTitulares_Cuentas']")));
-			menuTitulares.click();
-			WebElement subMenuEstadoCuenta = (new WebDriverWait(driver, 60)).until(ExpectedConditions
-					.presenceOfElementLocated(By.xpath("//TD[@id='MenuOptionBarraMenuTitulares_CuentasEE CC']")));
-			subMenuEstadoCuenta.click();
+
+			msg = FunctionGeneric.clickObject("Menú Titulares", "id", "MenuOptionBarraMenuFidelización", "click",
+					driver);
+			if (!msg.equals("OK"))
+				return msg;
+
+			msg = FunctionGeneric.clickObject("Menú Estado de Cuenta", "id", "MenuOptionBarraMenuFidelización", "click",
+					driver);
+
 		} catch (Exception e) {
-			System.out.println("ERROR EN EL MENÚ FIDELIZACIÓN ESTADO CUENTA " + e.getMessage());
-			msg = "ERROR EN EL MENÚ FIDELIZACIÓN ESTADO CUENTA " + e.getMessage();
+			msg = "Error en Menú Fidelización Estado de Cuenta";
 		}
+
 		return msg;
 	}
 
 	public String subMenuFideCuentasGlobales(WebDriver driver) {
+
 		String msg = "OK";
+
 		try {
-			// Table id BotonBarraMenuBarraMenuTitulares_Cuentas
-			// TD ID MenuOptionBarraMenuTitulares_CuentasConsulta Global Cuentas
-			WebElement menuGlobalCuenta = (new WebDriverWait(driver, 60)).until(ExpectedConditions
-					.presenceOfElementLocated(By.xpath("//TABLE[@id='BotonBarraMenuBarraMenuTitulares_Cuentas']")));
-			menuGlobalCuenta.click();
-			WebElement subMenuGlobalCuenta = (new WebDriverWait(driver, 60))
-					.until(ExpectedConditions.presenceOfElementLocated(
-							By.xpath("//TD[@id='MenuOptionBarraMenuTitulares_CuentasConsulta Global Cuentas']")));
-			subMenuGlobalCuenta.click();
+
+			msg = FunctionGeneric.clickObject("Menú Titulares", "id", "BotonBarraMenuBarraMenuTitulares_Cuentas",
+					"click", driver);
+			if (!msg.equals("OK"))
+				return msg;
+
+			msg = FunctionGeneric.clickObject("Menú Global Cuenta", "id",
+					"MenuOptionBarraMenuTitulares_CuentasConsulta Global Cuenta", "click", driver);
 
 		} catch (Exception e) {
-			System.out.println("ERROR EN EL MENU CUENTAS GLOBALES " + e.getMessage());
-			msg = "ERROR EN EL MENU CUENTAS GLOBALES " + e.getMessage();
+			msg = "Error en el Menú Cuentas Globales";
 		}
+
 		return msg;
 	}
 
 	public String menuTarjetasClaves(WebDriver driver) {
-		String msg = "OK";
-		try {
-			Thread.sleep(4000);
-			Set<String> winSet = driver.getWindowHandles();
-			List<String> winList = new ArrayList<String>(winSet);
-			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
-				msg = msg + "No se encontró el ventana de menú \n";
-				return msg;
-			}
-			winSet = driver.getWindowHandles();
-			winList = new ArrayList<String>(winSet);
-			driver.switchTo().window(winList.get(winList.size() - 1));
 
-			WebElement menuTarjetaClave = (new WebDriverWait(driver, 60)).until(ExpectedConditions
-					.presenceOfElementLocated(By.xpath("//TD[@id='MenuOptionBarraMenuTarjetas Clave']")));
-			menuTarjetaClave.click();
+		String msg = "OK";
+
+		try {
+
+			driver = FunctionGeneric.waitWindows(2, driver);
+
+			msg = FunctionGeneric.clickObject("Menú Tarjetas Claves", "id", "MenuOptionBarraMenuTarjetas Clave",
+					"click", driver);
+
 		} catch (Exception e) {
-			System.out.println("ERROR AL SELECCIONAR MENU TARJETAS CLAVES " + e.getMessage());
-			msg = "ERROR AL SELECCIONAR MENU TARJETAS CLAVES " + e.getMessage();
+			msg = "Error en Menú Tarjetas Claves";
 		}
+
 		return msg;
 	}
 
 	public String menuRechazosMerchant(WebDriver driver) {
+
 		String msg = "OK";
+
 		try {
-			WebElement Adquirencia = driver.findElement(By.xpath("//table[@id='BotonBarraMenuBarraMenuAdquirencia']"));
-			WebElement subRechazoMerchant = driver
-					.findElement(By.xpath("//td[@id='MenuOptionBarraMenuAdquirenciaRechazos Merchant']"));
-			Adquirencia.click();
-			subRechazoMerchant.click();
+
+			msg = FunctionGeneric.clickObject("Menú Adquirencia", "id", "BotonBarraMenuBarraMenuAdquirencia", "click",
+					driver);
+			if (!msg.equals("OK"))
+				return msg;
+
+			msg = FunctionGeneric.clickObject("Menú Rechazos Merchant", "id",
+					"MenuOptionBarraMenuAdquirenciaRechazos Merchant", "click", driver);
+
 		} catch (Exception e) {
-			System.out.println("ERROR EN EL MENU RECHAZOS MERCHANT " + e.getMessage());
-			msg = "ERROR EN EL MENU RECHAZOS MERCHANT " + e.getMessage();
+
+			msg = "Error en Menú Adquirencia Rechazos Merchant";
 		}
+
 		return msg;
 	}
 
 	public String menuMantenimientoMerchant(WebDriver driver) {
+
 		String msg = "OK";
+
 		try {
-			WebElement menuAdquirencia = (new WebDriverWait(driver, 60)).until(ExpectedConditions
-					.presenceOfElementLocated(By.xpath("//TABLE[@id='BotonBarraMenuBarraMenuAdquirencia']")));
-			menuAdquirencia.click();
-			WebElement menuMerchant = (new WebDriverWait(driver, 60)).until(ExpectedConditions.presenceOfElementLocated(
-					By.xpath("//TABLE[@id='BotonBarraMenuAdquirenciaBarraMenuAdquirenciaMerchant']")));
-			menuMerchant.click();
-			WebElement menuMantMerchant = (new WebDriverWait(driver, 60))
-					.until(ExpectedConditions.presenceOfElementLocated(
-							By.xpath("//TD[@id='MenuOptionBarraMenuAdquirenciaMerchantMantenimiento Merchant']")));
-			menuMantMerchant.click();
+
+			msg = FunctionGeneric.clickObject("Menú Adquirencia", "id", "BotonBarraMenuBarraMenuAdquirencia", "click",
+					driver);
+			if (!msg.equals("OK"))
+				return msg;
+
+			msg = FunctionGeneric.clickObject("Menú Merchant", "id",
+					"BotonBarraMenuAdquirenciaBarraMenuAdquirenciaMerchant", "click", driver);
+			if (!msg.equals("OK"))
+				return msg;
+
+			msg = FunctionGeneric.clickObject("Menú Mantenimiento Merchant", "id",
+					"MenuOptionBarraMenuAdquirenciaMerchantMantenimiento Merchant", "click", driver);
 
 		} catch (Exception e) {
-			System.out.println("ERROR EN EL MENÚ MANTENIMIENTO MERCHANT " + e.getMessage());
-			msg = "ERROR EN EL MENÚ MANTENIMIENTO MERCHANT " + e.getMessage();
+			msg = "Error en el Menú Mantenimiento Merchant";
 		}
+
 		return msg;
 	}
 
 	public String menuNegocioEmisorContrato(WebDriver driver) {
+
 		String msg = "OK";
+
 		try {
-			WebElement menuNegocioEmisor = (new WebDriverWait(driver, 60)).until(ExpectedConditions
-					.presenceOfElementLocated(By.xpath("//TABLE[@id='BotonBarraMenuBarraMenuNegocio_Emisor']")));
-			menuNegocioEmisor.click();
-			WebElement subMenuContrato = (new WebDriverWait(driver, 60))
-					.until(ExpectedConditions.presenceOfElementLocated(
-							By.xpath("//TABLE[@id='BotonBarraMenuNegocio_EmisorBarraMenuNegocio_EmisorContrato']")));
-			subMenuContrato.click();
-			WebElement menuMantContra = (new WebDriverWait(driver, 60))
-					.until(ExpectedConditions.presenceOfElementLocated(By
-							.xpath("//TD[@id='MenuOptionBarraMenuNegocio_EmisorContratoMantenimiento de contratos']")));
-			menuMantContra.click();
+
+			msg = FunctionGeneric.clickObject("Menú Negocio Emisor", "id", "BotonBarraMenuBarraMenuNegocio_Emisor",
+					"click", driver);
+			if (!msg.equals("OK"))
+				return msg;
+
+			msg = FunctionGeneric.clickObject("Menú Contrato", "id",
+					"BotonBarraMenuNegocio_EmisorBarraMenuNegocio_EmisorContrato", "click", driver);
+			if (!msg.equals("OK"))
+				return msg;
+
+			msg = FunctionGeneric.clickObject("Menú Mantenimiento de Contratos", "id",
+					"MenuOptionBarraMenuNegocio_EmisorContratoMantenimiento de contratos", "click", driver);
+
 		} catch (Exception e) {
-			System.out.println("ERROR EN EL MENÚ NEGOCIO EMISOR CONTRATO " + e.getMessage());
-			msg = "ERROR EN EL MENÚ NEGOCIO EMISOR CONTRATO " + e.getMessage();
+			msg = "Error en el Menú Negocio Emisor Contrato";
 		}
+
 		return msg;
 	}
 
 	public String menuNegocioEmisor(WebDriver driver) {
+
 		String msg = "OK";
+
 		try {
-			WebElement menuNegocioEmisor = (new WebDriverWait(driver, 60)).until(ExpectedConditions
-					.presenceOfElementLocated(By.xpath("//TABLE[@id='BotonBarraMenuBarraMenuNegocio_Emisor']")));
-			menuNegocioEmisor.click();
-			WebElement subMenuTarje = (new WebDriverWait(driver, 60)).until(ExpectedConditions.presenceOfElementLocated(
-					By.xpath("//TABLE[@id='BotonBarraMenuNegocio_EmisorBarraMenuNegocio_EmisorTarjeta']")));
-			subMenuTarje.click();
-			WebElement menuMantTarje = (new WebDriverWait(driver, 60))
-					.until(ExpectedConditions.presenceOfElementLocated(
-							By.xpath("//TD[@id='MenuOptionBarraMenuNegocio_EmisorTarjetaMantenimiento de tarjetas']")));
-			menuMantTarje.click();
+
+			msg = FunctionGeneric.clickObject("Menú Negocio Emisor", "id", "BotonBarraMenuBarraMenuNegocio_Emisor",
+					"click", driver);
+			if (!msg.equals("OK"))
+				return msg;
+
+			msg = FunctionGeneric.clickObject("Menú Tarjeta", "id",
+					"BotonBarraMenuNegocio_EmisorBarraMenuNegocio_EmisorTarjeta", "click", driver);
+			if (!msg.equals("OK"))
+				return msg;
+
+			msg = FunctionGeneric.clickObject("Menú Mantenimiento de Tarjetas", "id",
+					"MenuOptionBarraMenuNegocio_EmisorTarjetaMantenimiento de tarjetas", "click", driver);
+
 		} catch (Exception e) {
-			System.out.println("Error Menú Negocio Emisor " + e.getMessage());
-			msg = "Error Menú Negocio Emisor " + e.getMessage();
+			msg = "Error Menú Negocio Emisor Mantenimiento de Tarjetas";
 		}
+
 		return msg;
 	}
 
 	public String menuSeguridadPerfil(WebDriver driver) {
+
 		String msg = "OK";
+
 		try {
-			/*
-			 * if (driver.findElements(By.xpath(
-			 * "//table[@id='BotonBarraMenuBarraMenuSeguridad']")).size() == 0) { msg =
-			 * "No se ha encontrado el Menú"; return msg; } if (driver.findElements(By.
-			 * xpath("//td[@id='MenuOptionBarraMenuSeguridadPerfiles de Usuario']")) .size()
-			 * == 0) { msg = "No se ha encontrado el Menú"; return msg; } WebElement
-			 * menuSeguridad =
-			 * driver.findElement(By.xpath("//table[@id='BotonBarraMenuBarraMenuSeguridad']"
-			 * )); menuSeguridad.click(); WebElement subMenuPerfil = driver .findElement(By.
-			 * xpath("//td[@id='MenuOptionBarraMenuSeguridadPerfiles de Usuario']"));
-			 * 
-			 * subMenuPerfil.click();
-			 */
 
 			msg = FunctionGeneric.clickObjectByXpath("Menú Seguridad", "table", "id",
 					"BotonBarraMenuBarraMenuSeguridad", "click", driver);
@@ -418,139 +398,129 @@ public class Menu {
 
 			msg = FunctionGeneric.clickObject("Sub Menú Perfil", "id",
 					"MenuOptionBarraMenuSeguridadPerfiles de Usuario", "click", driver);
-			if (!msg.equals("OK"))
-				return msg;
 
 		} catch (Exception e) {
-			System.out.println("Error Menú Seguridad " + e.toString());
-			msg = "Error Menú Busqueda Contrato ";
+			msg = "Error Menú Seguridad Perfil de Usuario";
 		}
+
 		return msg;
 	}
 
 	public String menuSeguridadUsuario(WebDriver driver) {
+
 		String msg = "OK";
+
 		try {
 
 			msg = FunctionGeneric.clickObjectByXpath("Menú Seguridad", "INPUT", "id",
 					"BotonBarraMenuBarraMenuSeguridad", "click", driver);
 			if (!msg.equals("OK"))
 				return msg;
-			// WebElement menuSeguridad =
-			// driver.findElement(By.xpath("//table[@id='BotonBarraMenuBarraMenuSeguridad']"));
-			// menuSeguridad.click();
-			msg = FunctionGeneric.clickObjectByXpath("Sub Menú Usuario", "INPUT", "td",
+
+			msg = FunctionGeneric.clickObjectByXpath("Menú Usuario", "INPUT", "td",
 					"MenuOptionBarraMenuSeguridadUsuarios", "click", driver);
-			if (!msg.equals("OK"))
-				return msg;
-			// WebElement subMenuUsuario =
-			// driver.findElement(By.xpath("//td[@id='MenuOptionBarraMenuSeguridadUsuarios']"));
-			// subMenuUsuario.click();
 
 		} catch (Exception e) {
-			System.out.println("Error Menú Seguridad " + e.toString());
-			msg = "Error Menú Seguridad ";
+			msg = "Error Menú Seguridad Usuario";
 		}
+
 		return msg;
 	}
 
 	public String menuVentaSeguros(WebDriver driver) {
+
 		String msg = "OK";
+
 		try {
-			// TD id="MenuOptionBarraMenuVenta de Seguros
-			Set<String> winSet = driver.getWindowHandles();
-			List<String> winList = new ArrayList<String>(winSet);
-			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
-				msg = "No se encontró Ventana 2";
-				System.exit(0);
-			}
-			winSet = driver.getWindowHandles();
-			winList = new ArrayList<String>(winSet);
-			driver.switchTo().window(winList.get(winList.size() - 1));
-			// TD id=MenuOptionBarraMenuVencimientos
-			WebElement menuVencimiento = (new WebDriverWait(driver, 60)).until(ExpectedConditions
-					.presenceOfElementLocated(By.xpath("//TD[@id='MenuOptionBarraMenuVenta de Seguros']")));
-			menuVencimiento.click();
+
+			driver = FunctionGeneric.waitWindows(2, driver);
+
+			msg = FunctionGeneric.clickObject("Menú Seguro de Ventas", "id", "MenuOptionBarraMenuVenta de Seguros",
+					"click", driver);
 
 		} catch (Exception e) {
-			System.out.println("ERROR EN EL MENÚ SEGURO DE VENTAS " + e.getMessage());
-			msg = "ERROR EN EL MENÚ SEGURO DE VENTAS " + e.getMessage();
+			msg = "Error en Menú Seguro de Ventas";
 		}
+
 		return msg;
 	}
 
 	public String menuVencimiento(WebDriver driver) {
+
 		String msg = "OK";
+
 		try {
-			Thread.sleep(3000);
-			if (FunctionGeneric.validaAlert(driver)) {
+
+			if (FunctionGeneric.validaAlert(driver))
 				driver.switchTo().alert().accept();
-			}
-			Set<String> winSet = driver.getWindowHandles();
-			List<String> winList = new ArrayList<String>(winSet);
-			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
-				msg = "No se encontró Ventana 2";
-				return msg;
-			}
-			winSet = driver.getWindowHandles();
-			winList = new ArrayList<String>(winSet);
-			driver.switchTo().window(winList.get(winList.size() - 1));
 
-			// TD id=MenuOptionBarraMenuVencimientos
-			WebElement menuVencimiento = (new WebDriverWait(driver, 60)).until(ExpectedConditions
-					.presenceOfElementLocated(By.xpath("//TD[@id='MenuOptionBarraMenuVencimientos']")));
-			menuVencimiento.click();
+			driver = FunctionGeneric.waitWindows(2, driver);
 
-			Thread.sleep(3000);
-			// System.out.println("HTML " + driver.getPageSource());
+			msg = FunctionGeneric.clickObject("Menú Vencimientos", "id", "MenuOptionBarraMenuVencimientos", "click",
+					driver);
+
 		} catch (Exception e) {
-			System.out.println("ERROR EN EL MENÚ VENCIMIENTO - ATENCIÓN CLIENTE " + e.getMessage());
+			msg = "Error en el Menú Vencimientos";
 		}
+
 		return msg;
 	}
-	
+
 	public String menuModificacionContrato(WebDriver driver) {
+
 		String msg = "OK";
+
 		try {
+
 			msg = FunctionGeneric.clickObjectByXpath("Menú Modificaciones ", "table", "id",
 					"BotonBarraMenuBarraMenuModificaciones", "click", driver);
 			if (!msg.equals("OK"))
 				return msg;
+
 			msg = FunctionGeneric.clickObjectByXpath("Menú Contrato", "td", "id",
 					"MenuOptionBarraMenuModificacionesContratos", "click", driver);
-			if(!msg.equals("OK"))
+			if (!msg.equals("OK"))
 				return msg;
-			// BotonBarraMenuBarraMenuModificaciones
+
 			driver.switchTo().frame((new WebDriverWait(driver, 30)).until(
 					ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/esperaAux.jsp']"))));
+
 			if (!FunctionGeneric.findObject("name", "SISTEMA", driver))
-				msg = "No se ha logrado acceder a pantalla contrato";
+				msg = "No se ha logrado acceder a pantalla Contrato";
+
 		} catch (Exception e) {
-			System.out.println("ERROR EN LA SELECCIÓN DE MENÚ CONTRATO "+e.getMessage());
-			msg = "ERROR EN LA SELECCIÓN DE MENÚ CONTRATO";
+			msg = "Error en el Menú Modificaciones de Contrato";
 		}
+
 		return msg;
 	}
-	
+
 	public String menuModificacionCliente(WebDriver driver) {
+
 		String msg = "OK";
+
 		try {
+
 			msg = FunctionGeneric.clickObjectByXpath("Menú Modificaciones ", "table", "id",
 					"BotonBarraMenuBarraMenuModificaciones", "click", driver);
 			if (!msg.equals("OK"))
 				return msg;
+
 			msg = FunctionGeneric.clickObjectByXpath("Menú Cliente", "td", "id",
 					"MenuOptionBarraMenuModificacionesCliente", "click", driver);
-			if(!msg.equals("OK"))
+			if (!msg.equals("OK"))
 				return msg;
+
 			driver.switchTo().frame((new WebDriverWait(driver, 30)).until(
 					ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/esperaAux.jsp']"))));
+
 			if (!FunctionGeneric.findObject("name", "SISTEMA", driver))
 				msg = "No se ha logrado acceder a pantalla contrato";
+
 		} catch (Exception e) {
-			System.out.println("ERROR EN LA SELECCIÓN DE MENÚ CLIENTE "+e.getMessage());
-			msg = "ERROR EN LA SELECCIÓN DE MENÚ CLIENTE";
+			msg = "Error en el Menú Modificaciones Cliente";
 		}
+
 		return msg;
 	}
 }

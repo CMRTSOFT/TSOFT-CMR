@@ -39,13 +39,13 @@ public class TC001_Busqueda_Contrato_PAN {
 		try {
 
 			menu = new Menu();
-			busContrato = new BusquedaContrato();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
 			funge = new FunctionGeneric();
 			login = new LoginSatif();
+			busContrato = new BusquedaContrato();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -55,8 +55,12 @@ public class TC001_Busqueda_Contrato_PAN {
 			idLab = excel.valorCol("ID_LABORATORIO", matriz);
 			rutaAlm = excel.valorCol("RUTA_ALM", matriz);
 
+			pathResultados = rutaAlm + "\\" + lab + "\\";
+
 			ITestCase = alm.createItestCase(wrapper, lab, idLab, nameClass, rutaAlm);
 			ITestCaseRun = alm.createITestCaseRun(wrapper, ITestCase);
+
+			LeerExcel.setTextRow("ID_RUN", Integer.toString(ALM.returnIDRun(ITestCase) - 1), nameClass);
 
 		} catch (Exception e) {
 			System.out.println("Error BeforeClass: " + e.getMessage());
@@ -65,7 +69,7 @@ public class TC001_Busqueda_Contrato_PAN {
 
 	@Test
 	public void Test() {
-		
+
 		try {
 
 			driver = login.openUrlSatif(excel.valorCol("AMBIENTE", matriz));
@@ -96,7 +100,7 @@ public class TC001_Busqueda_Contrato_PAN {
 			}
 
 		} catch (Exception e) {
-			System.out.println("Error Atencion Cliente Busqueda Contrato: " + e.getMessage());
+			System.out.println("Error Test: " + e.getLocalizedMessage());
 			flagState = false;
 			afterClass();
 		}
@@ -104,15 +108,15 @@ public class TC001_Busqueda_Contrato_PAN {
 
 	@AfterClass
 	public void afterClass() {
-		
+
 		try {
-			
+
 			funge.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);
 			System.exit(0);
-			
+
 		} catch (Exception e) {
 			System.out.println("Error AfterClass: " + e.getMessage());
 		}

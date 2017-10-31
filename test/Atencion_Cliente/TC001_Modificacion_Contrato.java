@@ -4,7 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import atu.alm.wrapper.ALMServiceWrapper;
 import atu.alm.wrapper.ITestCase;
 import atu.alm.wrapper.ITestCaseRun;
@@ -18,6 +17,7 @@ import page.AtencionCliente.BusquedaContrato;
 import page.AtencionCliente.Contrato;
 
 public class TC001_Modificacion_Contrato {
+	
 	private Menu menu;
 	private LeerExcel excel;
 	private WebDriver driver;
@@ -48,6 +48,7 @@ public class TC001_Modificacion_Contrato {
 			login = new LoginSatif();
 			contrato = new Contrato();
 			busContrato = new BusquedaContrato();
+			
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
 			matriz = LeerExcel.retornaDatosExcel(this.getClass().getPackage().getName(), nameClass);
