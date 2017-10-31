@@ -1,5 +1,7 @@
 package page.AtencionCliente;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -149,6 +151,41 @@ public class BusquedaContrato {
 				System.exit(0);
 			}
 
+		} catch (Exception e) {
+			System.out.println("Error con el Formulario de Contrato CONTRATO " + e.toString());
+			msg = "Error con el Formulario de Contrato CONTRATO " + e.toString();
+		}
+		return msg;
+	}
+	
+	public String formContratoNombre(String nombre, WebDriver driver) {
+		String msg = "OK";
+		try {
+			
+			// <INPUT onkeydown=TeclaNombre(FormMANTENIMIENTO,this) style="FONT-SIZE: 7pt; BORDER-TOP: 1px solid; FONT-FAMILY: Verdana; BORDER-RIGHT: 1px solid; BORDER-BOTTOM: 1px solid; BACKGROUND-POSITION: 0% 0%; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); BORDER-LEFT: 1px solid" maxLength=30 size=40 name=NOMBRES tipo="Alfanumerico">
+			
+			msg = FunctionGeneric.setTextObjectByXpath("Nombre", "INPUT", "name", "NOMBRES", nombre, "set", driver);
+			if (!msg.equals("OK"))
+				return msg;
+
+			msg = FunctionGeneric.clickObjectByXpath("Botón Aceptar", "INPUT", "name", "ELIMINAR", "click", driver);
+			if(!msg.equals("OK"))
+				return msg;
+			
+			List<WebElement> listUser = (new WebDriverWait(driver, 30)).until(ExpectedConditions
+					.presenceOfAllElementsLocatedBy((By.tagName("A"))));
+			if(listUser.size() > 0) {
+				listUser.get(0).click();
+			}else {
+				msg ="No se encontraron usuarios con ese nombre";
+				return msg;
+			}
+				
+			
+			driver.switchTo().frame((new WebDriverWait(driver, 60))
+					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/esperaAux.jsp']"))));
+			
+			
 		} catch (Exception e) {
 			System.out.println("Error con el Formulario de Contrato CONTRATO " + e.toString());
 			msg = "Error con el Formulario de Contrato CONTRATO " + e.toString();
