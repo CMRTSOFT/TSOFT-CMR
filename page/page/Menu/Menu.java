@@ -50,6 +50,7 @@ public class Menu {
 					"BotonBarraMenuBarraMenuAtención_al_cliente", "click", driver);
 			if (!msg.equals("OK"))
 				return msg;
+			
 			msg = FunctionGeneric.clickObjectByXpath("Menú Búsqueda de Contrato", "td", "id",
 					"MenuOptionBarraMenuAtención_al_clienteBúsqueda de contrato", "click", driver);
 			if (!msg.equals("OK"))
@@ -73,29 +74,26 @@ public class Menu {
 
 			driver = FunctionGeneric.waitWindows(2, driver);
 
-			WebElement menuModificaciones = (new WebDriverWait(driver, 25))
-					.until(ExpectedConditions.presenceOfElementLocated(By.id("BotonBarraMenuBarraMenuModificaciones")));
+			msg = FunctionGeneric.clickObject("Menú Modificaciones", "id", "BotonBarraMenuBarraMenuModificaciones",
+					"click", driver);
+			if (!msg.equals("OK"))
+				return msg;
 
-			menuModificaciones.click();
+			msg = FunctionGeneric.clickObject("Menú Modificar Cupo", "id",
+					"MenuOptionBarraMenuModificacionesModificar Cupo", "click", driver);
+			if (!msg.equals("OK"))
+				return msg;
 
-			Thread.sleep(1000);
+			driver.switchTo().frame((new WebDriverWait(driver, 30))
+					.until(ExpectedConditions.presenceOfElementLocated(By.name("InterfaceContrato"))));
 
-			WebElement menuModificarCupo = driver
-					.findElement(By.xpath("//td[@id='MenuOptionBarraMenuModificacionesModificar Cupo']"));
-			menuModificarCupo.click();
+			msg = FunctionGeneric.setTextObject("Cupo", "name", "CUPOSOL", "300000", "set", false, driver);
+			if (!msg.equals("OK"))
+				return msg;
 
-			Thread.sleep(4000);
-
-			WebElement FrameInterContrato = (new WebDriverWait(driver, 25))
-					.until(ExpectedConditions.presenceOfElementLocated(By.name("InterfaceContrato")));
-
-			driver.switchTo().frame(FrameInterContrato);
-
-			WebElement txtCupo = driver.findElement(By.xpath("//input[@name='CUPOSOL']"));
-			txtCupo.sendKeys("300000");
-
-			WebElement btnAceptar = driver.findElement(By.name("ACEPTAR"));
-			btnAceptar.click();
+			msg = FunctionGeneric.clickObject("Botón Aceptar Modificaciones", "name", "ACEPTAR", "click", driver);
+			if (!msg.equals("OK"))
+				return msg;
 
 			WebDriverWait wait = new WebDriverWait(driver, 15);
 			Alert myAlert = wait.until(ExpectedConditions.alertIsPresent());
@@ -103,13 +101,12 @@ public class Menu {
 
 			driver = FunctionGeneric.waitWindows(3, driver);
 
-			WebElement btnCrear = driver.findElement(By.xpath("//img[@name='Enviar']"));
-			btnCrear.click();
+			msg = FunctionGeneric.clickObject("Botón Crear", "name", "Enviar", "click", driver);
 
 		} catch (Exception e) {
-			System.out.println("Error MenÃº Busqueda Contrato  " + e.toString());
-			msg = "Error MenÃº Busqueda Contrato " + e.toString();
+			msg = "Error al acceder al Menú Modificación de Cupo";
 		}
+
 		return msg;
 	}
 
@@ -125,10 +122,12 @@ public class Menu {
 					driver);
 			if (!msg.equals("OK"))
 				return msg;
+			
 			msg = FunctionGeneric.clickObject("Menu Evaluador", "id",
 					"BotonBarraMenuAdmisiónBarraMenuAdmisiónEvaluador", "click", driver);
 			if (!msg.equals("OK"))
 				return msg;
+			
 			msg = FunctionGeneric.clickObject("Menu Evaluador de Solicitudes", "id",
 					"MenuOptionBarraMenuAdmisiónEvaluadorEvaluador de Solicitudes", "click", driver);
 
@@ -149,6 +148,9 @@ public class Menu {
 
 			msg = FunctionGeneric.clickObjectByXpath("Menú Detalle", "td", "id", "MenuOptionBarraMenuDetalle", "enter",
 					driver);
+			if (!msg.equals("OK"))
+				return msg;
+			
 			FunctionGeneric.clickObjectByXpath("Menú Detalle", "td", "id", "MenuOptionBarraMenuDetalle", "click",
 					driver);
 
