@@ -19,10 +19,8 @@ public class TC003_Mantimiento_Tarjeta {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -31,21 +29,17 @@ public class TC003_Mantimiento_Tarjeta {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private NegocioEmisor negocio;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			negocio = new NegocioEmisor();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -79,19 +73,19 @@ public class TC003_Mantimiento_Tarjeta {
 				afterClass();
 			}
 
-			estado = menu.menuNegocioEmisor(driver);
+			estado = Menu.menuNegocioEmisor(driver);
 			if (!FunctionGeneric.stateStep("Menú Negocio Emisor", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = negocio.formBusquedaPAN(excel.valorCol("Usuario", matriz), driver);
+			estado = NegocioEmisor.formBusquedaPAN(excel.valorCol("Usuario", matriz), driver);
 			if (!FunctionGeneric.stateStep("Menú Negocio Emisor", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = negocio.presionLinkPlastico(driver);
+			estado = NegocioEmisor.presionLinkPlastico(driver);
 			if (!FunctionGeneric.stateStep("Pestaña Plástico", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -109,7 +103,7 @@ public class TC003_Mantimiento_Tarjeta {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

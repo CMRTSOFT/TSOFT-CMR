@@ -20,10 +20,8 @@ public class TC007_Transferencia_Meson {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -32,23 +30,17 @@ public class TC007_Transferencia_Meson {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private SimulacionCC simulaCC;
-	private BusquedaContrato busContrato;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
-			busContrato = new BusquedaContrato();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			simulaCC = new SimulacionCC();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -81,30 +73,30 @@ public class TC007_Transferencia_Meson {
 				flagState = false;
 				afterClass();
 			}
-			estado = menu.menuBusquedaContrato(driver);
+			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			estado = busContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
+			estado = BusquedaContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
+			estado = BusquedaContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = menu.subMenuSimulacionCC(driver);
+			estado = Menu.subMenuSimulacionCC(driver);
 			if (!FunctionGeneric.stateStep("Menú Simulación CC", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = simulaCC.formularioSimulacionCC(excel.valorCol("Monto", matriz),
+			estado = SimulacionCC.formularioSimulacionCC(excel.valorCol("Monto", matriz),
 					excel.valorCol("NumeroCuotas", matriz), excel.valorCol("MesDiferido", matriz),
 					excel.valorCol("TipoCuota", matriz), driver);
 			if (!FunctionGeneric.stateStep("Login", estado, ITestCaseRun, wrapper)) {
@@ -112,14 +104,15 @@ public class TC007_Transferencia_Meson {
 				afterClass();
 			}
 
-			estado = simulaCC.transferirCuenta(excel.valorCol("Banco", matriz), excel.valorCol("TipoCuenta", matriz),
-					excel.valorCol("NumeroCuenta", matriz), excel.valorCol("Email", matriz), driver);
+			estado = SimulacionCC.transferirCuenta(excel.valorCol("Banco", matriz),
+					excel.valorCol("TipoCuenta", matriz), excel.valorCol("NumeroCuenta", matriz),
+					excel.valorCol("Email", matriz), driver);
 			if (!FunctionGeneric.stateStep("Transferir Cuenta", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = simulaCC.validaPantallaImprimir(driver);
+			estado = SimulacionCC.validaPantallaImprimir(driver);
 			if (!FunctionGeneric.stateStep("Validar Pantalla Comprobar Transferencia", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -137,7 +130,7 @@ public class TC007_Transferencia_Meson {
 	public void afterClass() {
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

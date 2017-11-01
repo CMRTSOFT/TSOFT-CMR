@@ -18,14 +18,10 @@ import org.openqa.selenium.WebDriver;
 
 public class TC001_Aperturar_Cuenta_Modulo_Apertura_Inmediata {
 
-	private Menu menu;
 	private LeerExcel excel;
 	private WebDriver driver;
 	private LoginSatif login;
 	private String[][] matriz;
-	private FunctionGeneric funge;
-	private AperturaCuenta apertura;
-	private Evaluador evaluador;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -39,16 +35,12 @@ public class TC001_Aperturar_Cuenta_Modulo_Apertura_Inmediata {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			evaluador = new Evaluador();
-			apertura = new AperturaCuenta();
-
+			
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
 			matriz = LeerExcel.retornaDatosExcel(this.getClass().getPackage().getName(), nameClass);
@@ -89,29 +81,29 @@ public class TC001_Aperturar_Cuenta_Modulo_Apertura_Inmediata {
 				afterClass();
 			}
 
-			estado = menu.menuAperturaInmediata(driver);
+			estado = Menu.menuAperturaInmediata(driver);
 			if (!FunctionGeneric.stateStep("Menú Apertura Inmediata", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = apertura.solicitudApertura(driver, excel.valorCol("Rut", matriz),
+			estado = AperturaCuenta.solicitudApertura(driver, excel.valorCol("Rut", matriz),
 					excel.valorCol("Num_Serie", matriz));
 			if (!FunctionGeneric.stateStep("Solicitud de Apertura", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			funge.cerraALTF4();
+			FunctionGeneric.cerraALTF4();
 
-			estado = funge.validaMensajeAlert("Proceso de solicitud Exitoso", driver);
+			estado = FunctionGeneric.validaMensajeAlert("Proceso de solicitud Exitoso", driver);
 			if (!FunctionGeneric.stateStep("Validar Cliente con Proceso de Solicitud Exitoso", estado, ITestCaseRun,
 					wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = apertura.validarDatosCliente(excel.valorCol("Producto", matriz),
+			estado = AperturaCuenta.validarDatosCliente(excel.valorCol("Producto", matriz),
 					excel.valorCol("Fecha_Pago", matriz), excel.valorCol("Cadena", matriz),
 					excel.valorCol("Cargo", matriz), excel.valorCol("Sueldo", matriz), driver);
 			if (!FunctionGeneric.stateStep("Validar Datos del Cliente", estado, ITestCaseRun, wrapper)) {
@@ -119,34 +111,34 @@ public class TC001_Aperturar_Cuenta_Modulo_Apertura_Inmediata {
 				afterClass();
 			}
 
-			estado = funge.validaMensajeAlert("ACTUALIZACION PRODUCTO OK", driver);
+			estado = FunctionGeneric.validaMensajeAlert("ACTUALIZACION PRODUCTO OK", driver);
 			if (!FunctionGeneric.stateStep("Validar Actualización de Datos Cliente", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = menu.menuAdmisionEvaluador(driver);
+			estado = Menu.menuAdmisionEvaluador(driver);
 			if (!FunctionGeneric.stateStep("Menú Admisión Evaluador", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = evaluador.evaluarCliente(excel.valorCol("Rut", matriz), driver);
+			estado = Evaluador.evaluarCliente(excel.valorCol("Rut", matriz), driver);
 			if (!FunctionGeneric.stateStep("Evaluar Cliente", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = evaluador.crearCuenta(driver);
+			estado = Evaluador.crearCuenta(driver);
 			if (!FunctionGeneric.stateStep("Crear Cuenta", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			funge.cerraALTF4();
-			funge.closeWindows(driver, 1);
+			FunctionGeneric.cerraALTF4();
+			FunctionGeneric.closeWindows(driver, 1);
 
-			estado = funge.validaMensajeAlert("¿Cliente Firmó Contrato?", driver);
+			estado = FunctionGeneric.validaMensajeAlert("¿Cliente Firmó Contrato?", driver);
 			if (!FunctionGeneric.stateStep("Validar Mensaje Cliente Firmó Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -164,7 +156,7 @@ public class TC001_Aperturar_Cuenta_Modulo_Apertura_Inmediata {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

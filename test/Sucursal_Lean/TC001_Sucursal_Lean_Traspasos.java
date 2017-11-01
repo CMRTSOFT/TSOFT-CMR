@@ -20,10 +20,8 @@ public class TC001_Sucursal_Lean_Traspasos {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -32,23 +30,17 @@ public class TC001_Sucursal_Lean_Traspasos {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private BusquedaContrato busContrato;
-	private Traspaso tras;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			busContrato = new BusquedaContrato();
-			tras = new Traspaso();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -81,61 +73,62 @@ public class TC001_Sucursal_Lean_Traspasos {
 				afterClass();
 			}
 
-			estado = menu.menuBusquedaContrato(driver);
+			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
+			estado = BusquedaContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
+			estado = BusquedaContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Producto", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = tras.presionaIMGTraspaso(driver);
+			estado = Traspaso.presionaIMGTraspaso(driver);
 			if (!FunctionGeneric.stateStep("Presionar Imagen Traspaso", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			estado = tras.seleccionaProducto(driver);
+			estado = Traspaso.seleccionaProducto(driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Producto a traspasar", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = tras.seleccionarSeguro(driver);
+			estado = Traspaso.seleccionarSeguro(driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Seguro", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			estado = tras.ventanaResumenSeguro(driver);
+			estado = Traspaso.ventanaResumenSeguro(driver);
 			if (!FunctionGeneric.stateStep("Ventana Resumen ", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = tras.validaResumenTraspaso(driver);
+			estado = Traspaso.validaResumenTraspaso(driver);
 			if (!FunctionGeneric.stateStep("Validar Resumen Traspaso", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			estado = tras.validaVentanaProductos(driver);
+			estado = Traspaso.validaVentanaProductos(driver);
 			if (!FunctionGeneric.stateStep("Validar Ventana Productos", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			estado = tras.validarFirmaContrato(driver);
+			estado = Traspaso.validarFirmaContrato(driver);
 			if (!FunctionGeneric.stateStep("Validar Firma Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
+
 		} catch (Exception e) {
 			System.out.println("Error Test: " + e.getMessage());
 			flagState = false;
@@ -149,7 +142,7 @@ public class TC001_Sucursal_Lean_Traspasos {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

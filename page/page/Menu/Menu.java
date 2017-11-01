@@ -1,6 +1,5 @@
 package page.Menu;
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -10,7 +9,7 @@ import util.FunctionGeneric;
 
 public class Menu {
 
-	public String menuAperturaInmediata(WebDriver driver) {
+	public static String menuAperturaInmediata(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -35,7 +34,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String menuBusquedaContrato(WebDriver driver) {
+	public static String menuBusquedaContrato(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -51,8 +50,11 @@ public class Menu {
 			if (!msg.equals("OK"))
 				return msg;
 
-			msg = FunctionGeneric.validarTexto("Número de Contrato",
-					"Acceder el Menú Atención al Cliente Busqueda de Contrato", driver);
+			driver.switchTo().frame((new WebDriverWait(driver, 30)).until(
+					ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/index.jsp']"))));
+
+			if (!FunctionGeneric.findObject("name", "NUMDOC", driver))
+				msg = "No se logró acceder a Busqueda Contrato";
 
 		} catch (Exception e) {
 			msg = "Error en Menú Busqueda Contrato";
@@ -61,7 +63,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String subMenuModificacionCupo(WebDriver driver) {
+	public static String subMenuModificacionCupo(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -76,27 +78,6 @@ public class Menu {
 
 			msg = FunctionGeneric.clickObject("Menú Modificar Cupo", "id",
 					"MenuOptionBarraMenuModificacionesModificar Cupo", "click", driver);
-			if (!msg.equals("OK"))
-				return msg;
-
-			driver.switchTo().frame((new WebDriverWait(driver, 30))
-					.until(ExpectedConditions.presenceOfElementLocated(By.name("InterfaceContrato"))));
-
-			msg = FunctionGeneric.setTextObject("Cupo", "name", "CUPOSOL", "300000", "set", false, driver);
-			if (!msg.equals("OK"))
-				return msg;
-
-			msg = FunctionGeneric.clickObject("Botón Aceptar Modificaciones", "name", "ACEPTAR", "click", driver);
-			if (!msg.equals("OK"))
-				return msg;
-
-			WebDriverWait wait = new WebDriverWait(driver, 15);
-			Alert myAlert = wait.until(ExpectedConditions.alertIsPresent());
-			myAlert.accept();
-
-			driver = FunctionGeneric.waitWindows(3, driver);
-
-			msg = FunctionGeneric.clickObject("Botón Crear", "name", "Enviar", "click", driver);
 
 		} catch (Exception e) {
 			msg = "Error al acceder al Menú Modificación de Cupo";
@@ -105,7 +86,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String menuAdmisionEvaluador(WebDriver driver) {
+	public static String menuAdmisionEvaluador(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -133,7 +114,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String subMenuDetalle(WebDriver driver) {
+	public static String subMenuDetalle(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -158,7 +139,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String subMenuSimulacionCC(WebDriver driver) {
+	public static String subMenuSimulacionCC(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -176,7 +157,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String menuSolicitud(WebDriver driver) {
+	public static String menuSolicitud(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -192,7 +173,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String menuComprasDeuda(WebDriver driver) {
+	public static String menuComprasDeuda(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -209,7 +190,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String menuFidelizacion(WebDriver driver) {
+	public static String menuFidelizacion(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -225,7 +206,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String subMenuFideEstadoCuenta(WebDriver driver) {
+	public static String subMenuFideEstadoCuenta(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -246,7 +227,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String subMenuFideCuentasGlobales(WebDriver driver) {
+	public static String subMenuFideCuentasGlobales(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -267,7 +248,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String menuTarjetasClaves(WebDriver driver) {
+	public static String menuTarjetasClaves(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -285,7 +266,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String menuRechazosMerchant(WebDriver driver) {
+	public static String menuRechazosMerchant(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -307,7 +288,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String menuMantenimientoMerchant(WebDriver driver) {
+	public static String menuMantenimientoMerchant(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -333,7 +314,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String menuNegocioEmisorContrato(WebDriver driver) {
+	public static String menuNegocioEmisorContrato(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -359,7 +340,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String menuNegocioEmisor(WebDriver driver) {
+	public static String menuNegocioEmisor(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -385,7 +366,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String menuSeguridadPerfil(WebDriver driver) {
+	public static String menuSeguridadPerfil(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -406,7 +387,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String menuSeguridadUsuario(WebDriver driver) {
+	public static String menuSeguridadUsuario(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -427,7 +408,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String menuVentaSeguros(WebDriver driver) {
+	public static String menuVentaSeguros(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -445,7 +426,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String menuVencimiento(WebDriver driver) {
+	public static String menuVencimiento(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -466,7 +447,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String menuModificacionContrato(WebDriver driver) {
+	public static String menuModificacionContrato(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -495,7 +476,7 @@ public class Menu {
 		return msg;
 	}
 
-	public String menuModificacionCliente(WebDriver driver) {
+	public static String menuModificacionCliente(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -519,6 +500,29 @@ public class Menu {
 
 		} catch (Exception e) {
 			msg = "Error en el Menú Modificaciones Cliente";
+		}
+
+		return msg;
+	}
+
+	public static String subMenuModificacionCupoSA(WebDriver driver) {
+
+		String msg = "OK";
+
+		try {
+
+			driver = FunctionGeneric.waitWindows(2, driver);
+
+			msg = FunctionGeneric.clickObject("Menú Modificaciones", "id", "BotonBarraMenuBarraMenuModificaciones",
+					"click", driver);
+			if (!msg.equals("OK"))
+				return msg;
+
+			msg = FunctionGeneric.clickObjectByXpath("Menú Modificar Cupo SA", "TD", "id",
+					"MenuOptionBarraMenuModificacionesModificar Cupo SA", "click", driver);
+
+		} catch (Exception e) {
+			msg = "Error al acceder al Menú Modificación de Cupo SA";
 		}
 
 		return msg;

@@ -20,10 +20,8 @@ public class TC004_Sucursal_Lean_Reestructuraciones {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -32,23 +30,17 @@ public class TC004_Sucursal_Lean_Reestructuraciones {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private BusquedaContrato busContrato;
-	private Reestructuracion reest;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			busContrato = new BusquedaContrato();
-			reest = new Reestructuracion();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -82,36 +74,36 @@ public class TC004_Sucursal_Lean_Reestructuraciones {
 				afterClass();
 			}
 			Thread.sleep(3000);
-			estado = menu.menuBusquedaContrato(driver);
+			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Login", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			estado = busContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
+			estado = BusquedaContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
+			estado = BusquedaContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Producto", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = menu.menuVencimiento(driver);
+			estado = Menu.menuVencimiento(driver);
 			if (!FunctionGeneric.stateStep("Menú Vencimiento", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = reest.formVencimientos("RESA", excel.valorCol("NumeroCuota", matriz), driver);
+			estado = Reestructuracion.formVencimientos("RESA", excel.valorCol("NumeroCuota", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Vencimiento", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = reest.formVencimientoImprimir(driver);
+			estado = Reestructuracion.formVencimientoImprimir(driver);
 			if (!FunctionGeneric.stateStep("Formulario Vencimiento Imprimir", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -135,7 +127,7 @@ public class TC004_Sucursal_Lean_Reestructuraciones {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

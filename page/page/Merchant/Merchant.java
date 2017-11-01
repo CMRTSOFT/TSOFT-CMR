@@ -21,9 +21,9 @@ import util.KeyboardClass;
 
 public class Merchant {
 	FunctionGeneric func = new FunctionGeneric();
-	KeyboardClass key;
+	static KeyboardClass key;
 
-	public String formBusquedaPAN(String numComercio, String pan, WebDriver driver) {
+	public static String formBusquedaPAN(String numComercio, String pan, WebDriver driver) {
 		String msg = "OK";
 		try {
 			Robot robot = new Robot();
@@ -88,7 +88,7 @@ public class Merchant {
 	}
 
 	/** MANTENIMIENTO MERCHANT ***/
-	public String formInsertMantMerchant(String oficina, String codComercio, String nomComercio, String rut,
+	public static String formInsertMantMerchant(String oficina, String codComercio, String nomComercio, String rut,
 			String retribucion, String numImport, String glosa, String ctaCargo, String tipoProveedor, String regimen,
 			String moneda, WebDriver driver) {
 		String msg = "OK";
@@ -127,7 +127,7 @@ public class Merchant {
 				return msg;
 			}
 
-			if (func.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 			}
 			// INPUT NAME CODCOM
@@ -466,7 +466,7 @@ public class Merchant {
 		return msg;
 	}
 
-	public String popupAceptarMerchant(WebDriver driver) {
+	public static String popupAceptarMerchant(WebDriver driver) {
 		String msg = "OK";
 		try {
 			// IMG id imgconfirmarmantMantenimientoFormMANTENIMIENTO}
@@ -483,9 +483,9 @@ public class Merchant {
 				return msg;
 			}
 
-			if (func.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
-				if (func.validaAlert(driver)) {
+				if (FunctionGeneric.validaAlert(driver)) {
 					driver.switchTo().alert().accept();
 				}
 			}
@@ -498,10 +498,10 @@ public class Merchant {
 	}
 
 	// Producto-Subproducto
-	public String validaMerchant(WebDriver driver) {
+	public static String validaMerchant(WebDriver driver) {
 		String msg = "OK";
 		try {
-			if (!func.validarTexto("Producto-Subproducto","Desplegar Pantalla Merchant", driver).equals("OK")) {
+			if (!FunctionGeneric.validarTexto("Producto-Subproducto","Desplegar Pantalla Merchant", driver).equals("OK")) {
 				msg = "No sé encontró el valor en la pantalla Merchant";
 			}
 
@@ -512,12 +512,12 @@ public class Merchant {
 		return msg;
 	}
 
-	public boolean ventanaIdentidadMerchant(String rut, WebDriver driver) {
+	public static boolean ventanaIdentidadMerchant(String rut, WebDriver driver) {
 		boolean flag = true;
 		try {
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(2, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
 				flag = false;
 				return flag;
 			}
@@ -557,7 +557,7 @@ public class Merchant {
 			Thread.sleep(3000);
 			winSet = driver.getWindowHandles();
 			winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(1, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(1, winList, driver)) {
 				flag = false;
 				return flag;
 			}
@@ -576,12 +576,12 @@ public class Merchant {
 		return flag;
 	}
 
-	public boolean ventanaProductoMerchant(WebDriver driver) {
+	public static boolean ventanaProductoMerchant(WebDriver driver) {
 		boolean flag = true;
 		try {
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(2, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
 				flag = false;
 				return flag;
 			}
@@ -603,7 +603,7 @@ public class Merchant {
 			Thread.sleep(3000);
 			winSet = driver.getWindowHandles();
 			winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(1, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(1, winList, driver)) {
 				flag = false;
 				return flag;
 			}
@@ -620,12 +620,12 @@ public class Merchant {
 		return flag;
 	}
 
-	public boolean ventanaCondicionEconomica(WebDriver driver) {
+	public static boolean ventanaCondicionEconomica(WebDriver driver) {
 		boolean flag = true;
 		try {
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(2, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
 				flag = false;
 				return flag;
 			}
@@ -647,7 +647,7 @@ public class Merchant {
 			Thread.sleep(3000);
 			winSet = driver.getWindowHandles();
 			winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(1, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(1, winList, driver)) {
 				flag = false;
 				return flag;
 			}
@@ -664,12 +664,12 @@ public class Merchant {
 		return flag;
 	}
 
-	public boolean ventanaActividad(WebDriver driver) {
+	public static boolean ventanaActividad(WebDriver driver) {
 		boolean flag = true;
 		try {
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(2, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
 				flag = false;
 				return flag;
 			}
@@ -703,7 +703,7 @@ public class Merchant {
 			Thread.sleep(3000);
 			winSet = driver.getWindowHandles();
 			winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(1, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(1, winList, driver)) {
 				flag = false;
 				return flag;
 			}
@@ -719,12 +719,12 @@ public class Merchant {
 		return flag;
 	}
 
-	private boolean ventanaEmisor(WebDriver driver) {
+	private static boolean ventanaEmisor(WebDriver driver) {
 		boolean flag = true;
 		try {
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(2, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
 				flag = false;
 				return flag;
 			}
@@ -746,7 +746,7 @@ public class Merchant {
 			Thread.sleep(3000);
 			winSet = driver.getWindowHandles();
 			winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(1, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(1, winList, driver)) {
 				flag = false;
 				return flag;
 			}
@@ -763,7 +763,7 @@ public class Merchant {
 		return flag;
 	}
 
-	public String busquedaComercio(WebDriver driver) {
+	public static String busquedaComercio(WebDriver driver) {
 		String msg = "OK";
 		try {
 			WebElement btnUpdate = (new WebDriverWait(driver, 60)).until(ExpectedConditions
@@ -775,7 +775,7 @@ public class Merchant {
 		return msg;
 	}
 
-	public String formUpdateMantMerchant(String numComercio, String nomComercio, WebDriver driver) {
+	public static String formUpdateMantMerchant(String numComercio, String nomComercio, WebDriver driver) {
 		String msg = "OK";
 		try {
 			Robot robot = new Robot();
@@ -927,21 +927,21 @@ public class Merchant {
 		return msg;
 	}
 
-	public String acceptUpdateMerchant(WebDriver driver) {
+	public static String acceptUpdateMerchant(WebDriver driver) {
 		String msg = "OK";
 		try {
 			Robot robot = new Robot();
-			if (func.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 				Thread.sleep(2000);
-				if (func.validaAlert(driver)) {
+				if (FunctionGeneric.validaAlert(driver)) {
 					driver.switchTo().alert().accept();
 				} else {
 					robot.keyPress(KeyEvent.VK_ENTER);
 					robot.keyRelease(KeyEvent.VK_ENTER);
 				}
 
-				if (!func.validarTexto("Producto-Subproducto","Desplegar Pantalla Merchant" ,driver).equals("OK")) {
+				if (!FunctionGeneric.validarTexto("Producto-Subproducto","Desplegar Pantalla Merchant" ,driver).equals("OK")) {
 					msg = "No sé completo el flujo de manera correcta";
 					return msg;
 				}
@@ -955,7 +955,7 @@ public class Merchant {
 	}
 
 	/**** Eliminar Merchant ****/
-	public String formDeleteMerchant(String numComercio,String motivoBaja, WebDriver driver) {
+	public static String formDeleteMerchant(String numComercio,String motivoBaja, WebDriver driver) {
 		String msg = "OK";
 		int index = 0;
 		try {
@@ -1051,7 +1051,7 @@ public class Merchant {
 		return msg;
 	}
 	
-	public String confirmDeleteMerchant(WebDriver driver) {
+	public static String confirmDeleteMerchant(WebDriver driver) {
 		String msg = "OK";
 		try {
 			//IMG id imgconfirmarmantMantenimientoFormMANTENIMIENTO
@@ -1067,10 +1067,10 @@ public class Merchant {
 				return msg;
 			} 
 			
-			if (func.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 				Thread.sleep(2000);
-				if (func.validaAlert(driver)) {
+				if (FunctionGeneric.validaAlert(driver)) {
 					driver.switchTo().alert().accept();
 				}
 			}
@@ -1081,7 +1081,7 @@ public class Merchant {
 		return msg ;
 	}
 	
-	public String rechazoMerchant(String numComercio, String pan,WebDriver driver) {
+	public static String rechazoMerchant(String numComercio, String pan,WebDriver driver) {
 		String msg = "OK";
 		try {
 			WebElement FrameInterContrato = (new WebDriverWait(driver, 25))

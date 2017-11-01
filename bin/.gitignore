@@ -1,10 +1,7 @@
-/Apertura/
-/Autorizaciones/
-/page/
-/util/
 /Atencion_Cliente/
 /Atencion_Cliente_Apertura/
 /Atencion_Cliente_Busqueda_Contrato/
+/Autorizaciones/
 /Cambio_Sucursal/
 /Fidelizacion/
 /Mantenimiento_Tarjeta/
@@ -13,3 +10,6 @@
 /Seguridad/
 /Simulacion_CC/
 /Sucursal_Lean/
+/page/
+/util/
+/Atencion_Cliente_Codeudor/

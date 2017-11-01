@@ -18,16 +18,16 @@ import util.FunctionGeneric;
 import util.KeyboardClass;
 
 public class Traspaso {
-	KeyboardClass keyBoa;
+	static KeyboardClass keyBoa;
 	FunctionGeneric func = new FunctionGeneric();
 	public static String ventana3;
 
-	public String presionaIMGTraspaso(WebDriver driver) {
+	public static String presionaIMGTraspaso(WebDriver driver) {
 		String msg = "OK";
 		try {
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(2, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
 				msg = msg + "No se encontró el ventana \n";
 				return msg;
 			} else {
@@ -62,13 +62,13 @@ public class Traspaso {
 		return msg;
 	}
 
-	public String seleccionaProducto(WebDriver driver) {
+	public static String seleccionaProducto(WebDriver driver) {
 		String msg = "OK";
 		try {
 			Thread.sleep(6000);
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(3, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(3, winList, driver)) {
 				msg = msg + "No se encontró el ventana \n";
 				return msg;
 			} else {
@@ -113,12 +113,12 @@ public class Traspaso {
 		return msg;
 	}
 
-	public String seleccionarSeguro(WebDriver driver) {
+	public static String seleccionarSeguro(WebDriver driver) {
 		String msg = "OK";
 		try {
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(4, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(4, winList, driver)) {
 				msg = msg + "No se encontró el ventana \n";
 				return msg;
 			}
@@ -147,13 +147,13 @@ public class Traspaso {
 		return msg;
 	}
 
-	public String ventanaResumenSeguro(WebDriver driver) {
+	public static String ventanaResumenSeguro(WebDriver driver) {
 		String msg = "OK";
 		try {
 			keyBoa = new util.KeyboardClass();
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(5, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(5, winList, driver)) {
 				msg = msg + "No se encontró el ventana \n";
 				return msg;
 			} else {
@@ -240,7 +240,7 @@ public class Traspaso {
 
 	}
 
-	public String validaResumenTraspaso(WebDriver driver) {
+	public static String validaResumenTraspaso(WebDriver driver) {
 		String msg = "OK";
 		try {
 
@@ -253,7 +253,7 @@ public class Traspaso {
 			if (driver.getWindowHandles().size() == 4) {
 				winSet = driver.getWindowHandles();
 				winList = new ArrayList<String>(winSet);
-				if (!func.waitWindows(4, winList, driver)) {
+				if (!FunctionGeneric.waitWindows(4, winList, driver)) {
 					msg = "No sé Encontró ventana 4";
 					return msg;
 				}
@@ -270,7 +270,7 @@ public class Traspaso {
 		return msg;
 	}
 
-	public String validaVentanaProductos(WebDriver driver) {
+	public static String validaVentanaProductos(WebDriver driver) {
 		String msg = "OK";
 		try {
 			Robot robot = new Robot();
@@ -280,7 +280,7 @@ public class Traspaso {
 
 			winSet = driver.getWindowHandles();
 			winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(3, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(3, winList, driver)) {
 				msg = "No sé Encontró ventana 3 Ventana Productos";
 				return msg;
 			}
@@ -291,7 +291,7 @@ public class Traspaso {
 			// System.out.println("HTML ventana productos
 			// "+driver.getPageSource().toString());
 			System.out.println("VALIDA VENTANA PRODUCTOS ");
-			if (func.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 				Thread.sleep(6000);
 				keyBoa.KeyPressTecl("ALT");
@@ -299,19 +299,22 @@ public class Traspaso {
 				robot.keyRelease(KeyEvent.VK_ALT);
 				robot.keyRelease(KeyEvent.VK_F4);
 				Thread.sleep(4000);
-				//System.out.println("Cantidad Ventana ANTES DE VALIDAR " + driver.getWindowHandles().size());
+				// System.out.println("Cantidad Ventana ANTES DE VALIDAR " +
+				// driver.getWindowHandles().size());
 				winSet = driver.getWindowHandles();
 				winList = new ArrayList<String>(winSet);
-				if (!func.waitWindows(4, winList, driver)) {
+				if (!FunctionGeneric.waitWindows(4, winList, driver)) {
 					msg = "NO ENCONTRÓ VENTANA 4";
 					System.out.println("NO ENCONTRÓ VENTANA 4");
 					return msg;
 				}
-				//System.out.println("Cantidad Ventana ANTES DE CERRAR" + driver.getWindowHandles().size());
-				func.closeWindows(driver, 3);
+				// System.out.println("Cantidad Ventana ANTES DE CERRAR" +
+				// driver.getWindowHandles().size());
+				FunctionGeneric.closeWindows(driver, 3);
 				Thread.sleep(3000);
-				//System.out.println("Cantidad Ventana DESPUES DE CERRAR" + driver.getWindowHandles().size());
-				
+				// System.out.println("Cantidad Ventana DESPUES DE CERRAR" +
+				// driver.getWindowHandles().size());
+
 			}
 
 		} catch (Exception e) {
@@ -321,7 +324,7 @@ public class Traspaso {
 		return msg;
 	}
 
-	public String validarFirmaContrato(WebDriver driver) {
+	public static String validarFirmaContrato(WebDriver driver) {
 		String msg = "OK";
 		try {
 			Robot robot = new Robot();
@@ -329,15 +332,15 @@ public class Traspaso {
 			List<String> winList;
 			winSet = driver.getWindowHandles();
 			winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(3, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(3, winList, driver)) {
 				msg = "No sé Encontró ventana 3 Ventana Productos";
 				return msg;
 			}
 			winSet = driver.getWindowHandles();
 			winList = new ArrayList<String>(winSet);
 			driver.switchTo().window(winList.get(winList.size() - 1));
-			
-			if (func.validaAlert(driver)) {
+
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 			}
 			Thread.sleep(6000);
@@ -347,35 +350,32 @@ public class Traspaso {
 			System.out.println("2.0 Cantidad Ventana ANTES DE CERRAR" + driver.getWindowHandles().size());
 			winSet = driver.getWindowHandles();
 			winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(4, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(4, winList, driver)) {
 				msg = "NO ENCONTRÓ VENTANA 4";
 				System.out.println("NO ENCONTRÓ VENTANA 4");
 			}
-			func.closeWindows(driver, 3);
+			FunctionGeneric.closeWindows(driver, 3);
 			System.out.println("2.0 Cantidad Ventana DESPUES DE CERRAR" + driver.getWindowHandles().size());
 			Thread.sleep(3000);
 			winSet = driver.getWindowHandles();
 			winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(4, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(4, winList, driver)) {
 				msg = "NO ENCONTRÓ VENTANA 4";
 				System.out.println("NO ENCONTRÓ VENTANA 4");
 			}
-			func.closeWindows(driver, 3);
-			
-			Thread.sleep(3000);
-			func.closeWindows(driver, 3);
-			
-			driver = func.waitWindows(3, driver);
-			Thread.sleep(3000);
-			if (func.validaAlert(driver)) {
-				//keyBoa.KeyPressTecl("ENTER");
-				//driver.switchTo().alert().accept();
-				msg = func.validaMensajeAlert("¿Cliente firmó Hoja de Resumen?",driver);
-			}
-			
-			
+			FunctionGeneric.closeWindows(driver, 3);
 
-			
+			Thread.sleep(3000);
+			FunctionGeneric.closeWindows(driver, 3);
+
+			driver = FunctionGeneric.waitWindows(3, driver);
+			Thread.sleep(3000);
+			if (FunctionGeneric.validaAlert(driver)) {
+				// keyBoa.KeyPressTecl("ENTER");
+				// driver.switchTo().alert().accept();
+				msg = FunctionGeneric.validaMensajeAlert("¿Cliente firmó Hoja de Resumen?", driver);
+			}
+
 		} catch (Exception e) {
 			System.out.println("ERROR AL MOMENTO VALIDAR LA FIRMA DE CONTRATO " + e.getMessage());
 			msg = "ERROR AL MOMENTO VALIDAR LA FIRMA DE CONTRATO " + e.getMessage();

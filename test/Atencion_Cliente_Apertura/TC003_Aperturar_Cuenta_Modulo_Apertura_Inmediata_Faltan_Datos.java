@@ -19,16 +19,12 @@ import page.Admision.Evaluador;
 public class TC003_Aperturar_Cuenta_Modulo_Apertura_Inmediata_Faltan_Datos {
 
 	private WebDriver driver;
-	private static Menu menu;
 	private String[][] matriz;
 	private static LeerExcel excel;
 	private static LoginSatif login;
 	private static Evidencia evi;
-	private static FunctionGeneric funge;
-	private static AperturaCuenta apertura;
 	private ALMServiceWrapper wrapper;
 	private ALM alm;
-	private Evaluador evaluador;
 	private String nameClass, lab, idLab, rutaAlm, estado, pathResultados;
 	private Boolean flagState = true;
 	private ITestCase ITestCase;
@@ -39,15 +35,11 @@ public class TC003_Aperturar_Cuenta_Modulo_Apertura_Inmediata_Faltan_Datos {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			login = new LoginSatif();
-			funge = new FunctionGeneric();
-			apertura = new AperturaCuenta();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			evaluador = new Evaluador();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -89,43 +81,43 @@ public class TC003_Aperturar_Cuenta_Modulo_Apertura_Inmediata_Faltan_Datos {
 				afterClass();
 			}
 
-			estado = menu.menuAperturaInmediata(driver);
+			estado = Menu.menuAperturaInmediata(driver);
 			if (!FunctionGeneric.stateStep("Menú Apertura Inmediata", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = apertura.solicitudApertura(driver, excel.valorCol("Rut", matriz),
+			estado = AperturaCuenta.solicitudApertura(driver, excel.valorCol("Rut", matriz),
 					excel.valorCol("Num_Serie", matriz));
 			if (!FunctionGeneric.stateStep("Solicitud de Apertura", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			funge.cerraALTF4();
+			FunctionGeneric.cerraALTF4();
 
-			estado = funge.validaMensajeAlert("1012 - Proceso de solicitud incompleta", driver);
+			estado = FunctionGeneric.validaMensajeAlert("1012 - Proceso de solicitud incompleta", driver);
 			if (!FunctionGeneric.stateStep("Validar Mensaje Proceso de Solicitud Incompleta", estado, ITestCaseRun,
 					wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = apertura.ingresoFormularioCliente(driver);
+			estado = AperturaCuenta.ingresoFormularioCliente(driver);
 			if (!FunctionGeneric.stateStep("Completar Datos del Cliente", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = evaluador.crearCuenta(driver);
+			estado = Evaluador.crearCuenta(driver);
 			if (!FunctionGeneric.stateStep("Crear Cuenta", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			funge.cerraALTF4();
+			FunctionGeneric.cerraALTF4();
 
-			estado = funge.validaMensajeAlert("¿Cliente Firmó Contrato?", driver);
+			estado = FunctionGeneric.validaMensajeAlert("¿Cliente Firmó Contrato?", driver);
 			if (!FunctionGeneric.stateStep("Validar Mensaje Cliente Firmó Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -143,7 +135,7 @@ public class TC003_Aperturar_Cuenta_Modulo_Apertura_Inmediata_Faltan_Datos {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

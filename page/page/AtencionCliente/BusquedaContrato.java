@@ -13,13 +13,11 @@ import util.FunctionGeneric;
 
 public class BusquedaContrato {
 
-	public String formularioContrato(String rut, WebDriver driver) {
+	public static String formularioContrato(String rut, WebDriver driver) {
 
 		String msg = "OK";
 
 		try {
-
-			driver.switchTo().frame(driver.findElement(By.xpath("//IFRAME[@src='paginas/index.jsp']")));
 
 			msg = FunctionGeneric.setTextObject("Número de Documento", "name", "NUMDOC", rut, "set", false, driver);
 			if (!msg.equals("OK"))
@@ -33,7 +31,7 @@ public class BusquedaContrato {
 		return msg;
 	}
 
-	public boolean validarCuentas(WebDriver driver) {
+	public static boolean validarCuentas(WebDriver driver) {
 		boolean exists = false;
 		try {
 			int cant = driver.findElements(By.xpath("//IMG[@src='imagenes/refrescar.gif']")).size();
@@ -51,7 +49,7 @@ public class BusquedaContrato {
 		return exists;
 	}
 
-	public String seleccionarProducto(String producto, WebDriver driver) {
+	public static String seleccionarProducto(String producto, WebDriver driver) {
 
 		String msg = "OK";
 
@@ -66,7 +64,7 @@ public class BusquedaContrato {
 		return msg;
 	}
 
-	public String formContratoPAN(String tipoTarjeta, String numTarjeta, WebDriver driver) {
+	public static String formContratoPAN(String tipoTarjeta, String numTarjeta, WebDriver driver) {
 		String msg = "OK";
 		int index = 0;
 		try {
@@ -118,7 +116,7 @@ public class BusquedaContrato {
 		return msg;
 	}
 
-	public String formContratoContrato(String numContrato, WebDriver driver) {
+	public static String formContratoContrato(String numContrato, WebDriver driver) {
 		String msg = "OK";
 		try {
 			if (driver.findElements(By.xpath("//INPUT[@name='ALTACUENTA']")).size() == 0) {
@@ -157,39 +155,86 @@ public class BusquedaContrato {
 		}
 		return msg;
 	}
-	
-	public String formContratoNombre(String nombre, WebDriver driver) {
+
+	public static String formContratoNombre(String nombre, WebDriver driver) {
+
 		String msg = "OK";
+
 		try {
-			
-			// <INPUT onkeydown=TeclaNombre(FormMANTENIMIENTO,this) style="FONT-SIZE: 7pt; BORDER-TOP: 1px solid; FONT-FAMILY: Verdana; BORDER-RIGHT: 1px solid; BORDER-BOTTOM: 1px solid; BACKGROUND-POSITION: 0% 0%; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); BORDER-LEFT: 1px solid" maxLength=30 size=40 name=NOMBRES tipo="Alfanumerico">
-			
+
 			msg = FunctionGeneric.setTextObjectByXpath("Nombre", "INPUT", "name", "NOMBRES", nombre, "set", driver);
 			if (!msg.equals("OK"))
 				return msg;
 
 			msg = FunctionGeneric.clickObjectByXpath("Botón Aceptar", "INPUT", "name", "ELIMINAR", "click", driver);
-			if(!msg.equals("OK"))
+			if (!msg.equals("OK"))
 				return msg;
-			
-			List<WebElement> listUser = (new WebDriverWait(driver, 30)).until(ExpectedConditions
-					.presenceOfAllElementsLocatedBy((By.tagName("A"))));
-			if(listUser.size() > 0) {
-				listUser.get(0).click();
-			}else {
-				msg ="No se encontraron usuarios con ese nombre";
+
+			List<WebElement> listUser = (new WebDriverWait(driver, 30))
+					.until(ExpectedConditions.presenceOfAllElementsLocatedBy((By.tagName("A"))));
+
+			if (listUser.size() < 0) {
+				msg = "No se encontraron usuarios con el nombre " + nombre;
 				return msg;
 			}
-				
-			
-			driver.switchTo().frame((new WebDriverWait(driver, 60))
-					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/esperaAux.jsp']"))));
-			
-			
+
+			listUser.get(0).click();
+			FunctionGeneric.waitWindows(2, driver);
+			driver.switchTo().frame((new WebDriverWait(driver, 30)).until(
+					ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/esperaAux.jsp']"))));
+
 		} catch (Exception e) {
-			System.out.println("Error con el Formulario de Contrato CONTRATO " + e.toString());
-			msg = "Error con el Formulario de Contrato CONTRATO " + e.toString();
+			msg = "Error en el Formulario de Contrato";
 		}
+
+		return msg;
+	}
+
+	public static String formContratoApellido(String apellido, WebDriver driver) {
+
+		String msg = "OK";
+
+		try {
+
+			msg = FunctionGeneric.setTextObject("Nombre", "name", "APELLI1", apellido, "set", false, driver);
+			if (!msg.equals("OK"))
+				return msg;
+
+			msg = FunctionGeneric.clickObject("Botón Aceptar", "name", "ELIMINAR", "click", driver);
+			if (!msg.equals("OK"))
+				return msg;
+
+			List<WebElement> listUser = (new WebDriverWait(driver, 30))
+					.until(ExpectedConditions.presenceOfAllElementsLocatedBy((By.tagName("A"))));
+
+			if (listUser.size() > 1) {
+				listUser.get(1).click();
+			} else {
+				msg = "No se encontraron usuarios con ese Apellido";
+				return msg;
+			}
+
+			FunctionGeneric.addScreenEvi("Formulario contrato Apellido", "Pass");
+
+			listUser = (new WebDriverWait(driver, 30))
+					.until(ExpectedConditions.presenceOfAllElementsLocatedBy((By.tagName("A"))));
+			if (listUser.size() > 1) {
+				listUser.get(1).click();
+			} else {
+				msg = "No se encontraron usuarios con ese Apellido";
+				return msg;
+			}
+
+			Thread.sleep(7000);
+			FunctionGeneric.waitWindows(2, driver);
+
+			driver.switchTo().frame((new WebDriverWait(driver, 30)).until(
+					ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/esperaAux.jsp']"))));
+
+		} catch (Exception e) {
+			msg = "Error en el Formulario de Contrato";
+		}
+
 		return msg;
 	}
 }

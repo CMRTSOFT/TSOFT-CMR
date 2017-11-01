@@ -18,9 +18,7 @@ import util.FunctionGeneric;
 
 public class NegocioEmisor {
 
-	private FunctionGeneric func = new FunctionGeneric();
-
-	public String formBusquedaPAN(String pan, WebDriver driver) {
+	public static String formBusquedaPAN(String pan, WebDriver driver) {
 		String msg = "OK";
 		Actions action = new Actions(driver);
 		try {
@@ -72,7 +70,7 @@ public class NegocioEmisor {
 		return msg;
 	}
 
-	public String presionLinkPlastico(WebDriver driver) {
+	public static String presionLinkPlastico(WebDriver driver) {
 		String msg = "OK";
 		try {
 			WebElement lnkPlastico = (new WebDriverWait(driver, 60))
@@ -88,7 +86,8 @@ public class NegocioEmisor {
 			}
 
 			// Ult.renovación
-			if (!func.validarTexto("Ult.renovación","Desplegar Pantalla Pestaña Plástico", driver).equals("OK")) {
+			if (!FunctionGeneric.validarTexto("Ult.renovación", "Desplegar Pantalla Pestaña Plástico", driver)
+					.equals("OK")) {
 				msg = "No se encontró el texto a buscar \n";
 				return msg;
 			}
@@ -99,7 +98,7 @@ public class NegocioEmisor {
 		return msg;
 	}
 
-	public String formBusquedaPANContrato(String pan, WebDriver driver) {
+	public static String formBusquedaPANContrato(String pan, WebDriver driver) {
 		String msg = "OK";
 		Actions action = new Actions(driver);
 		try {
@@ -152,7 +151,7 @@ public class NegocioEmisor {
 		return msg;
 	}
 
-	public String selectOptionContract(WebDriver driver) {
+	public static String selectOptionContract(WebDriver driver) {
 		String msg = "OK";
 		try {
 			// table id = BotonBarraMenumOptions
@@ -187,7 +186,7 @@ public class NegocioEmisor {
 		return msg;
 	}
 
-	public String selectAccountPending(WebDriver driver) {
+	public static String selectAccountPending(WebDriver driver) {
 		String msg = "OK";
 		try {
 			List<WebElement> lnkAccountPending = (new WebDriverWait(driver, 60))
@@ -224,7 +223,7 @@ public class NegocioEmisor {
 		return msg;
 	}
 
-	public String insertarDatosPAN(String pan, String transaccion, String monto, String comercio, String pais,
+	public static String insertarDatosPAN(String pan, String transaccion, String monto, String comercio, String pais,
 			String factura, String moneda, String actividad, String nombre, WebDriver driver) {
 		String msg = "OK";
 		int index = 0;
@@ -385,12 +384,12 @@ public class NegocioEmisor {
 		return msg;
 	}
 
-	public String formVentana(WebDriver driver) {
+	public static String formVentana(WebDriver driver) {
 		String msg = "OK";
 		try {
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(2, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
 				msg = msg + "No se encontró Ventana Principal \n";
 				return msg;
 			}
@@ -448,7 +447,7 @@ public class NegocioEmisor {
 		return msg;
 	}
 
-	private boolean selectFactura(String factura, WebDriver driver) {
+	public static boolean selectFactura(String factura, WebDriver driver) {
 		boolean flag = false;
 		try {
 
@@ -473,14 +472,14 @@ public class NegocioEmisor {
 		return flag;
 	}
 
-	public String confirmMoviExtractos(WebDriver driver) {
+	public static String confirmMoviExtractos(WebDriver driver) {
 		String msg = "OK";
 		try {
 			Robot robot = new Robot();
 			// IMG id=imgconfirmarmantMantenimientoFormEXTRACTOS
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(1, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(1, winList, driver)) {
 				msg = msg + "No se encontró Ventana Principal \n";
 				return msg;
 			}
@@ -504,10 +503,10 @@ public class NegocioEmisor {
 				return msg;
 			}
 
-			if (func.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 				Thread.sleep(3000);
-				if (func.validaAlert(driver)) {
+				if (FunctionGeneric.validaAlert(driver)) {
 					driver.switchTo().alert().accept();
 				} else {
 					robot.keyPress(KeyEvent.VK_ENTER);
@@ -534,12 +533,12 @@ public class NegocioEmisor {
 		return msg;
 	}
 
-	public String validarMovimiento(WebDriver driver) {
+	public static String validarMovimiento(WebDriver driver) {
 		String msg = "OK";
 		try {
 			// INPUT name = MOVIMIENTOS
-			WebElement btnMovimientos = (new WebDriverWait(driver, 60)).until(ExpectedConditions
-					.presenceOfElementLocated(By.xpath("//INPUT[@name='MOVIMIENTOS']")));
+			WebElement btnMovimientos = (new WebDriverWait(driver, 60))
+					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//INPUT[@name='MOVIMIENTOS']")));
 			if (btnMovimientos.isDisplayed()) {
 				btnMovimientos.click();
 			} else {
@@ -555,5 +554,5 @@ public class NegocioEmisor {
 		}
 		return msg;
 	}
-	
+
 }

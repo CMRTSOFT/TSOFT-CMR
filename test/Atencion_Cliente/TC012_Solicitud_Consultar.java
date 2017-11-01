@@ -17,13 +17,11 @@ import util.FunctionGeneric;
 import util.LeerExcel;
 
 public class TC012_Solicitud_Consultar {
-	
+
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -32,23 +30,17 @@ public class TC012_Solicitud_Consultar {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private BusquedaContrato busContrato;
-	private Solicitud solici;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
-			busContrato = new BusquedaContrato();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			solici = new Solicitud();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -83,32 +75,32 @@ public class TC012_Solicitud_Consultar {
 			}
 
 			Thread.sleep(3000);
-			estado = menu.menuBusquedaContrato(driver);
+			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
+			estado = BusquedaContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
+			estado = BusquedaContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
 			Thread.sleep(3000);
-			estado = menu.menuSolicitud(driver);
+			estado = Menu.menuSolicitud(driver);
 			if (!FunctionGeneric.stateStep("Formulario Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = solici.formularioSolicitud(driver);
+			estado = Solicitud.formularioSolicitud(driver);
 			if (!FunctionGeneric.stateStep("Formulario Solicitud", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -125,7 +117,7 @@ public class TC012_Solicitud_Consultar {
 	public void afterClass() {
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

@@ -19,10 +19,8 @@ public class TC001_Mantenimiento_Contrato_Inclusion_Mov_Extractos {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -31,21 +29,17 @@ public class TC001_Mantenimiento_Contrato_Inclusion_Mov_Extractos {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private NegocioEmisor negocio;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			negocio = new NegocioEmisor();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -79,32 +73,33 @@ public class TC001_Mantenimiento_Contrato_Inclusion_Mov_Extractos {
 				afterClass();
 			}
 
-			estado = menu.menuNegocioEmisorContrato(driver);
+			estado = Menu.menuNegocioEmisorContrato(driver);
 			if (!FunctionGeneric.stateStep("Login", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = negocio.formBusquedaPANContrato(excel.valorCol("Pan", matriz), driver);
+			estado = NegocioEmisor.formBusquedaPANContrato(excel.valorCol("Pan", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Busqueda PAN", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = negocio.selectOptionContract(driver);
+			estado = NegocioEmisor.selectOptionContract(driver);
 			if (!FunctionGeneric.stateStep("Opciones de CONTRATO", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = negocio.selectAccountPending(driver);
+			estado = NegocioEmisor.selectAccountPending(driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Cuenta Pendiente", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = negocio.insertarDatosPAN(excel.valorCol("Pan", matriz), excel.valorCol("Transaccion", matriz),
-					excel.valorCol("Monto", matriz), excel.valorCol("Comercio", matriz), excel.valorCol("Pais", matriz),
+			estado = NegocioEmisor.insertarDatosPAN(excel.valorCol("Pan", matriz),
+					excel.valorCol("Transaccion", matriz), excel.valorCol("Monto", matriz),
+					excel.valorCol("Comercio", matriz), excel.valorCol("Pais", matriz),
 					excel.valorCol("Factura", matriz), excel.valorCol("Moneda", matriz),
 					excel.valorCol("Factura", matriz), excel.valorCol("Nombre", matriz), driver);
 			if (!FunctionGeneric.stateStep("Datos PAN", estado, ITestCaseRun, wrapper)) {
@@ -112,19 +107,19 @@ public class TC001_Mantenimiento_Contrato_Inclusion_Mov_Extractos {
 				afterClass();
 			}
 
-			estado = negocio.formVentana(driver);
+			estado = NegocioEmisor.formVentana(driver);
 			if (!FunctionGeneric.stateStep("Formulario Ventana", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = negocio.confirmMoviExtractos(driver);
+			estado = NegocioEmisor.confirmMoviExtractos(driver);
 			if (!FunctionGeneric.stateStep("Confirmar Movimientos Extractos", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = negocio.validarMovimiento(driver);
+			estado = NegocioEmisor.validarMovimiento(driver);
 			if (!FunctionGeneric.stateStep("Validar Movimientos Extractos", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -142,7 +137,7 @@ public class TC001_Mantenimiento_Contrato_Inclusion_Mov_Extractos {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

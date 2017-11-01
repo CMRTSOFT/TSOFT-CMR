@@ -18,15 +18,14 @@ import util.FunctionGeneric;
 
 public class Usuario {
 
-	FunctionGeneric func = new FunctionGeneric();
-
 	public String FormBusquedaUsuario(String usuario, WebDriver driver) {
+
 		String msg = "OK";
+
 		try {
 
-			WebElement FrameInterContrato = (new WebDriverWait(driver, 60))
-					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/index.jsp']")));
-			driver.switchTo().frame(FrameInterContrato);
+			driver.switchTo().frame((new WebDriverWait(driver, 30)).until(
+					ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/index.jsp']"))));
 
 			Actions action = new Actions(driver);
 			if (driver.findElements(By.xpath("//INPUT[@name='usuarios']")).size() == 0) {
@@ -124,7 +123,7 @@ public class Usuario {
 				return msg;
 			}
 
-			if (func.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				if (driver.switchTo().alert().getText().contains("¿Desea modificar")) {
 					driver.switchTo().alert().accept();
 				} else {
@@ -236,7 +235,7 @@ public class Usuario {
 				return msg;
 			}
 
-			if (!func.waitWindows(1, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(1, winList, driver)) {
 				msg = msg + "No se encontró Ventana Principal \n";
 				return msg;
 			}
@@ -262,7 +261,7 @@ public class Usuario {
 				msg = msg + "No se seleccionó Oficina en Ventana \n";
 				return msg;
 			}
-			if (!func.waitWindows(1, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(1, winList, driver)) {
 				msg = msg + "No se encontró Ventana Principal \n";
 				return msg;
 			}
@@ -288,7 +287,7 @@ public class Usuario {
 				return msg;
 			}
 
-			if (!func.waitWindows(1, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(1, winList, driver)) {
 				msg = msg + "No se encontró Ventana Principal \n";
 				return msg;
 			}
@@ -378,7 +377,7 @@ public class Usuario {
 			Thread.sleep(2000);
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(2, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
 				// msg = msg + "No se encontró el ventana de menú \n";
 				flag = false;
 				return flag;
@@ -408,11 +407,11 @@ public class Usuario {
 	private boolean formWindowOficina(WebDriver driver) {
 		boolean flag = true;
 		try {
-			func = new FunctionGeneric();
+
 			Thread.sleep(3000);
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(2, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
 				flag = false;
 				return flag;
 			}
@@ -457,7 +456,7 @@ public class Usuario {
 			Thread.sleep(3000);
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(2, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
 				return msg;
 			}
 			winSet = driver.getWindowHandles();
@@ -572,16 +571,20 @@ public class Usuario {
 	}
 
 	public String validarEliminarUser(WebDriver driver) {
+		
 		String msg = "OK";
+		
 		try {
+			
 			Thread.sleep(3000);
-			if (func.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 			}
+			
 		} catch (Exception e) {
-			System.out.println("ERROR AL VALIDAR MENSAJE DE ELIMINACIÓN USUARIO " + e.getMessage());
-			msg = "ERROR AL VALIDAR MENSAJE DE ELIMINACIÓN USUARIO " + e.getMessage();
+			msg = "ERROR AL VALIDAR MENSAJE DE ELIMINACIÓN USUARIO ";
 		}
+		
 		return msg;
 	}
 

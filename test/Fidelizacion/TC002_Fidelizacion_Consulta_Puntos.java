@@ -19,10 +19,8 @@ public class TC002_Fidelizacion_Consulta_Puntos {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -31,21 +29,17 @@ public class TC002_Fidelizacion_Consulta_Puntos {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private Fidelizacion fide;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			fide = new Fidelizacion();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -80,35 +74,36 @@ public class TC002_Fidelizacion_Consulta_Puntos {
 			}
 			Thread.sleep(3000);
 
-			estado = menu.menuFidelizacion(driver);
+			estado = Menu.menuFidelizacion(driver);
 			if (!FunctionGeneric.stateStep("Menú Fidelización", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = menu.subMenuFideCuentasGlobales(driver);
+			estado = Menu.subMenuFideCuentasGlobales(driver);
 			if (!FunctionGeneric.stateStep("Menú Fidelización Cuentas Globales", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = fide.formBusqueda(excel.valorCol("Rut", matriz), driver);
+			estado = Fidelizacion.formBusqueda(excel.valorCol("Rut", matriz), driver);
 			if (!FunctionGeneric.stateStep("Menú Fidelización Cuentas Globales", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = fide.selectAccountmovements(driver);
+			estado = Fidelizacion.selectAccountmovements(driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Movimientos en Cuenta", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = fide.validarMovimientos(driver);
+			estado = Fidelizacion.validarMovimientos(driver);
 			if (!FunctionGeneric.stateStep("Validar Movimientos en Cuenta", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
+
 		} catch (Exception e) {
 			System.out.println("Error Test: " + e.getMessage());
 			flagState = false;
@@ -121,7 +116,7 @@ public class TC002_Fidelizacion_Consulta_Puntos {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

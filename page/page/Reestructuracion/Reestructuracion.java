@@ -18,9 +18,9 @@ import util.KeyboardClass;
 
 public class Reestructuracion {
 	FunctionGeneric func = new FunctionGeneric();
-	KeyboardClass keyBoa;
+	static KeyboardClass keyBoa;
 
-	public String formVencimientos(String tipoFinanciacion, String cuotas, WebDriver driver) {
+	public static String formVencimientos(String tipoFinanciacion, String cuotas, WebDriver driver) {
 		String msg = "OK";
 		try {
 			int index = 0;
@@ -90,7 +90,7 @@ public class Reestructuracion {
 				return msg;
 			}
 
-			if (func.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 			}
 
@@ -101,7 +101,7 @@ public class Reestructuracion {
 		return msg;
 	}
 
-	public String formVencimientoImprimir(WebDriver driver) {
+	public static String formVencimientoImprimir(WebDriver driver) {
 		String msg = "";
 		try {
 			keyBoa = new KeyboardClass();
@@ -121,7 +121,7 @@ public class Reestructuracion {
 				return msg;
 			}
 			Thread.sleep(2000);
-			if (func.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 			}
 			Thread.sleep(6000);
@@ -133,18 +133,18 @@ public class Reestructuracion {
 
 			winSet = driver.getWindowHandles();
 			winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(3, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(3, winList, driver)) {
 				msg = msg + "No se encontró el ventana 3 \n";
 				return msg;
 			}
 			winSet = driver.getWindowHandles();
 			winList = new ArrayList<String>(winSet);
 			driver.switchTo().window(winList.get(winList.size() - 1));
-			func.closeWindows(driver, 2);
+			FunctionGeneric.closeWindows(driver, 2);
 			Thread.sleep(2000);
 			winSet = driver.getWindowHandles();
 			winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(2, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
 				msg = msg + "No se encontró el ventana 2 \n";
 				return msg;
 			}
@@ -152,17 +152,17 @@ public class Reestructuracion {
 			winList = new ArrayList<String>(winSet);
 			driver.switchTo().window(winList.get(winList.size() - 1));
 			Thread.sleep(3000);
-			if (func.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 			}
 			Thread.sleep(3000);
 
-			if (func.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 			}
 			Thread.sleep(3000);
 
-			if (func.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 			}
 
@@ -172,6 +172,5 @@ public class Reestructuracion {
 		}
 		return msg;
 	}
-	
-	
+
 }

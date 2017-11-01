@@ -20,8 +20,6 @@ public class TC003_Cambios_Historicos {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
-	private BusquedaContrato busContrato;
 	private ALMServiceWrapper wrapper;
 	private ALM alm;
 	private String nameClass, lab, idLab, rutaAlm, estado, pathResultados;
@@ -31,22 +29,16 @@ public class TC003_Cambios_Historicos {
 	private static LeerExcel excel;
 	private ITestCase ITestCase;
 	private ITestCaseRun ITestCaseRun;
-	private FunctionGeneric funge;
-	private Detalle detalle;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
-			busContrato = new BusquedaContrato();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
-			detalle = new Detalle();
 			login = new LoginSatif();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
@@ -56,13 +48,13 @@ public class TC003_Cambios_Historicos {
 			lab = excel.valorCol("LABORATORIO", matriz);
 			idLab = excel.valorCol("ID_LABORATORIO", matriz);
 			rutaAlm = excel.valorCol("RUTA_ALM", matriz);
-			
+
 			pathResultados = rutaAlm + "\\" + lab + "\\";
 
 			ITestCase = alm.createItestCase(wrapper, lab, idLab, nameClass, rutaAlm);
 			ITestCaseRun = alm.createITestCaseRun(wrapper, ITestCase);
-			
-			LeerExcel.setTextRow("ID_RUN",Integer.toString(ALM.returnIDRun(ITestCase)-1),nameClass);
+
+			LeerExcel.setTextRow("ID_RUN", Integer.toString(ALM.returnIDRun(ITestCase) - 1), nameClass);
 
 		} catch (Exception e) {
 			System.out.println("Error BeforeClass: " + e.getMessage());
@@ -82,38 +74,38 @@ public class TC003_Cambios_Historicos {
 				flagState = false;
 				afterClass();
 			}
-			
+
 			estado = login.ingresoLogin(excel.valorCol("Usuario", matriz), excel.valorCol("Password", matriz), driver);
 			if (!FunctionGeneric.stateStep("Login", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = menu.menuBusquedaContrato(driver);
+			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda de Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
+			estado = BusquedaContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
 			if (!FunctionGeneric.stateStep("Buscar Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
+			estado = BusquedaContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Producto", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = menu.subMenuDetalle(driver);
+			estado = Menu.subMenuDetalle(driver);
 			if (!FunctionGeneric.stateStep("Sub Menú Detalles", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = detalle.lnkCambioHistorico(driver);
+			estado = Detalle.lnkCambioHistorico(driver);
 			if (!FunctionGeneric.stateStep("Link Cambio Histórico", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -137,7 +129,7 @@ public class TC003_Cambios_Historicos {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

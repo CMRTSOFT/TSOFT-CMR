@@ -20,7 +20,6 @@ public class TC001_Cambio_Sucursal {
 	private LoginSatif login;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -29,7 +28,6 @@ public class TC001_Cambio_Sucursal {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private CambioSucursal camSuc;
 
 	@BeforeClass
 	public void beforeClass() {
@@ -40,9 +38,7 @@ public class TC001_Cambio_Sucursal {
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			camSuc = new CambioSucursal();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -77,7 +73,7 @@ public class TC001_Cambio_Sucursal {
 			}
 
 			Thread.sleep(3000);
-			estado = camSuc.cambioOficina(excel.valorCol("Oficina", matriz), driver);
+			estado = CambioSucursal.cambioOficina(excel.valorCol("Oficina", matriz), driver);
 			if (!FunctionGeneric.stateStep("Login", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -96,7 +92,7 @@ public class TC001_Cambio_Sucursal {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

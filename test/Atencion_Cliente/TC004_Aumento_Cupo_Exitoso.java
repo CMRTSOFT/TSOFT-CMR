@@ -9,6 +9,7 @@ import atu.alm.wrapper.ITestCase;
 import atu.alm.wrapper.ITestCaseRun;
 import page.Login.LoginSatif;
 import page.Menu.Menu;
+import page.AtencionCliente.AumentoCupo;
 import page.AtencionCliente.BusquedaContrato;
 import util.ALM;
 import util.Evidencia;
@@ -17,12 +18,10 @@ import util.LeerExcel;
 
 public class TC004_Aumento_Cupo_Exitoso {
 
-	private Menu menu;
 	private LeerExcel excel;
 	private WebDriver driver;
 	private LoginSatif login;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -30,7 +29,6 @@ public class TC004_Aumento_Cupo_Exitoso {
 	private ITestCase ITestCase;
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
-	private BusquedaContrato busContrato;
 	private String estado;
 
 	@BeforeClass
@@ -38,13 +36,10 @@ public class TC004_Aumento_Cupo_Exitoso {
 
 		try {
 
-			menu = new Menu();
-			busContrato = new BusquedaContrato();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
@@ -79,26 +74,32 @@ public class TC004_Aumento_Cupo_Exitoso {
 				afterClass();
 			}
 
-			estado = menu.menuBusquedaContrato(driver);
+			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
+			estado = BusquedaContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Busqueda Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
+			estado = BusquedaContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Producto", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = menu.subMenuModificacionCupo(driver);
+			estado = Menu.subMenuModificacionCupo(driver);
 			if (!FunctionGeneric.stateStep("Menú Modificación Cupo", estado, ITestCaseRun, wrapper)) {
+				flagState = false;
+				afterClass();
+			}
+
+			estado = AumentoCupo.formAumentoCupoAprobado(excel.valorCol("Cupo", matriz), driver);
+			if (!FunctionGeneric.stateStep("Modificación de Cupo", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
@@ -115,7 +116,7 @@ public class TC004_Aumento_Cupo_Exitoso {
 	public void afterClass() {
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

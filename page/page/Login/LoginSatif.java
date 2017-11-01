@@ -83,11 +83,12 @@ public class LoginSatif {
 	}
 
 	public String validarURL(String title) {
+		
 		String msg = "OK";
-		if (!title.equals(driver.getTitle())) {
-
+		
+		if (!title.equals(driver.getTitle()))
 			msg = "No se ha logrado acceder a la URL " + title;
-		}
+		
 		return msg;
 	}
 }

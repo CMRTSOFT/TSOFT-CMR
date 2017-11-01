@@ -14,15 +14,13 @@ import util.FunctionGeneric;
 
 public class Fidelizacion {
 
-	private FunctionGeneric func = new FunctionGeneric();
-
-	public String formBusqueda(String rut, WebDriver driver) {
+	public static String formBusqueda(String rut, WebDriver driver) {
 		String msg = "OK";
 		try {
 			WebElement FrameInterContrato = (new WebDriverWait(driver, 60)).until(
 					ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/index1.jsp']")));
 			driver.switchTo().frame(FrameInterContrato);
-			
+
 			WebElement txtRut = (new WebDriverWait(driver, 60))
 					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//INPUT[@name='SIDCLIENT']")));
 			// INPUT value=Entrar
@@ -54,7 +52,7 @@ public class Fidelizacion {
 		return msg;
 	}
 
-	public String selectAccountmovements(WebDriver driver) {
+	public static String selectAccountmovements(WebDriver driver) {
 		String msg = "OK";
 		try {
 			// paginas/index1.jsp
@@ -89,12 +87,13 @@ public class Fidelizacion {
 		return msg;
 	}
 
-	public String validarMovimientos(WebDriver driver) {
+	public static String validarMovimientos(WebDriver driver) {
 		String msg = "OK";
 
 		try {
 			// NO SE HAN ENCONTRADO DATOS PARA ESTA CONSULTA
-			if (func.validarTexto("NO SE HAN ENCONTRADO DATOS PARA ESTA CONSULTA","Desplegar pantalla movimientos", driver).equals("OK")) {
+			if (FunctionGeneric.validarTexto("NO SE HAN ENCONTRADO DATOS PARA ESTA CONSULTA",
+					"Desplegar pantalla movimientos", driver).equals("OK")) {
 				msg = "No se encontraron datos de movimientos";
 				return msg;
 			}
@@ -108,7 +107,7 @@ public class Fidelizacion {
 
 	/** Estado Cuenta ***/
 
-	public String formEstadoCuenta(WebDriver driver) {
+	public static String formEstadoCuenta(WebDriver driver) {
 		String msg = "OK";
 		try {
 			// IMG src /imagenes/buscar.gif
@@ -137,12 +136,12 @@ public class Fidelizacion {
 		return msg;
 	}
 
-	public String formWindowUser(String rut, WebDriver driver) {
+	public static String formWindowUser(String rut, WebDriver driver) {
 		String msg = "OK";
 		try {
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(2, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
 				msg = msg + "No se encontró Ventana 2 \n";
 				return msg;
 			}
@@ -191,12 +190,12 @@ public class Fidelizacion {
 		return msg;
 	}
 
-	public String formEstateAccount(WebDriver driver) {
+	public static String formEstateAccount(WebDriver driver) {
 		String msg = "OK";
 		try {
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(1, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(1, winList, driver)) {
 				msg = msg + "No se encontró Ventana principal \n";
 				return msg;
 			}
@@ -222,7 +221,7 @@ public class Fidelizacion {
 				return msg;
 			}
 
-			if (!func.validarTexto("Puntos a Caducar","Desplegar pantalla Puntos", driver).equals("OK")) {
+			if (!FunctionGeneric.validarTexto("Puntos a Caducar", "Desplegar pantalla Puntos", driver).equals("OK")) {
 				msg = "No se encontraron datos en la Busqueda";
 				return msg;
 			}
@@ -232,6 +231,5 @@ public class Fidelizacion {
 		}
 		return msg;
 	}
-	
-	
+
 }

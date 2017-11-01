@@ -21,10 +21,8 @@ public class TC013_Compras_Deudas {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -33,23 +31,17 @@ public class TC013_Compras_Deudas {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private ComprasDeudas compra;
-	private BusquedaContrato busContrato;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
-			busContrato = new BusquedaContrato();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			compra = new ComprasDeudas();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -83,32 +75,32 @@ public class TC013_Compras_Deudas {
 				afterClass();
 			}
 
-			estado = menu.menuBusquedaContrato(driver);
+			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
+			estado = BusquedaContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
 			Thread.sleep(3000);
-			estado = busContrato.seleccionarProducto((excel.valorCol("Producto", matriz)), driver);
+			estado = BusquedaContrato.seleccionarProducto((excel.valorCol("Producto", matriz)), driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = menu.menuComprasDeuda(driver);
+			estado = Menu.menuComprasDeuda(driver);
 			if (!FunctionGeneric.stateStep("Menú Compras Deuda", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = compra.validarTextoCompra(driver);
+			estado = ComprasDeudas.validarTextoCompra(driver);
 			if (!FunctionGeneric.stateStep("Validar Compra Deuda", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -126,7 +118,7 @@ public class TC013_Compras_Deudas {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

@@ -2,12 +2,7 @@ package page.AtencionCliente;
 
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import org.apache.http.impl.io.SocketOutputBuffer;
-import org.apache.poi.hslf.record.Sound;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,19 +14,18 @@ import util.FunctionGeneric;
 import util.KeyboardClass;
 
 public class SimulacionCC {
-	private KeyboardClass keyBoa;
-	private FunctionGeneric func = new FunctionGeneric();
 
-	public String formularioSimulacionCC(String monto, String numCuota, String mesDiferido, String valCbo,
+	private static KeyboardClass keyBoa;
+
+	public static String formularioSimulacionCC(String monto, String numCuota, String mesDiferido, String valCbo,
 			WebDriver driver) {
 		String msg = "OK";
 
 		int index = 0;
 		try {
+
 			keyBoa = new KeyboardClass();
 			Robot robot = new Robot();
-			Set<String> winSet = driver.getWindowHandles();
-			List<String> winList = new ArrayList<String>(winSet);
 
 			WebElement FrameInterContrato = (new WebDriverWait(driver, 60)).until(
 					ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/esperaAux.jsp']")));
@@ -98,49 +92,48 @@ public class SimulacionCC {
 			Thread.sleep(3000);
 			// System.out.println(driver.switchTo().alert().getText());
 
-			if (func.validaAlert(driver)) {
-					driver.switchTo().alert().accept();
-					Thread.sleep(3000);
-					WebElement btnImprimir = (new WebDriverWait(driver, 60))
-							.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//INPUT[@value='Imprimir']")));
-					if (btnImprimir.isDisplayed()) {
-						btnImprimir.click();
-					} else {
-						if (msg.equals("OK")) {
-							msg = "";
-						}
-						msg = msg + "No se encontró el botón Imprimir \n";
-					}
-				
-			}
-			/*Thread.sleep(3000);
-			if (func.validaAlert(driver))
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
-*/
+				Thread.sleep(3000);
+				WebElement btnImprimir = (new WebDriverWait(driver, 60))
+						.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//INPUT[@value='Imprimir']")));
+				if (btnImprimir.isDisplayed()) {
+					btnImprimir.click();
+				} else {
+					if (msg.equals("OK")) {
+						msg = "";
+					}
+					msg = msg + "No se encontró el botón Imprimir \n";
+				}
+
+			}
+			/*
+			 * Thread.sleep(3000); if (func.validaAlert(driver))
+			 * driver.switchTo().alert().accept();
+			 */
 			Thread.sleep(4000);
 			keyBoa.KeyPressTecl("ESC");
 			Thread.sleep(4000);
 
-			System.out.println("Cantidad Ventana antes de cerrar "+driver.getWindowHandles().size());
+			System.out.println("Cantidad Ventana antes de cerrar " + driver.getWindowHandles().size());
 			if (driver.getWindowHandles().size() == 3) {
-				func.closeWindows(driver, 2);
-			}else {
-				keyBoa.KeyPressTecl("ALT"); 
+				FunctionGeneric.closeWindows(driver, 2);
+			} else {
+				keyBoa.KeyPressTecl("ALT");
 				keyBoa.KeyPressTecl("F4");
-				 robot.keyRelease(KeyEvent.VK_ALT); robot.keyRelease(KeyEvent.VK_F4);
+				robot.keyRelease(KeyEvent.VK_ALT);
+				robot.keyRelease(KeyEvent.VK_F4);
 			}
-			
-			System.out.println("Cantidad Ventana despues de cerrar "+driver.getWindowHandles().size());
+
+			System.out.println("Cantidad Ventana despues de cerrar " + driver.getWindowHandles().size());
 			Thread.sleep(4000);
-			driver = func.waitWindows(2, driver);
-			if (func.validaAlert(driver))
+			driver = FunctionGeneric.waitWindows(2, driver);
+			if (FunctionGeneric.validaAlert(driver))
 				driver.switchTo().alert().accept();
-			
-		
-			driver.switchTo().frame((new WebDriverWait(driver, 60))
-					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/esperaAux.jsp']"))));
-			
-			
+
+			driver.switchTo().frame((new WebDriverWait(driver, 60)).until(
+					ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/esperaAux.jsp']"))));
+
 		} catch (Exception e) {
 			System.out.println("Error Formulario Simulación " + e.toString());
 			msg = "Error Formulario Simulación " + e.toString();
@@ -148,17 +141,19 @@ public class SimulacionCC {
 		return msg;
 	}
 
-	public String transferirCuenta(String banco, String tipoCuenta, String numCuenta, String email, WebDriver driver) {
+	public static String transferirCuenta(String banco, String tipoCuenta, String numCuenta, String email,
+			WebDriver driver) {
 		String msg = "OK";
 		int index = 0;
 		try {
 
-			//msg = func.clickObjectByXpath("Botón Transferir", "INPUT", "name","TRANSFERIR", "click", driver);
-			
-			msg = func.clickObject("Botón Transferir", "name", "TRANSFERIR", "click", driver);
-			System.out.println("msg "+msg);
+			// msg = func.clickObjectByXpath("Botón Transferir", "INPUT",
+			// "name","TRANSFERIR", "click", driver);
+
+			msg = FunctionGeneric.clickObject("Botón Transferir", "name", "TRANSFERIR", "click", driver);
+			System.out.println("msg " + msg);
 			Thread.sleep(4000);
-			//System.out.println(driver.getPageSource());
+			// System.out.println(driver.getPageSource());
 
 			List<WebElement> lstAccount = (new WebDriverWait(driver, 60))
 					.until(ExpectedConditions.presenceOfAllElementsLocatedBy((By.tagName("a"))));
@@ -181,8 +176,8 @@ public class SimulacionCC {
 				WebElement txtEmail = (new WebDriverWait(driver, 60)).until(
 						ExpectedConditions.presenceOfElementLocated(By.xpath("//INPUT[@name='MP675_MAILCLIENTE']")));
 				// INPUT name=Agregar
-				WebElement btnAgregar = (new WebDriverWait(driver, 60)).until(
-						ExpectedConditions.presenceOfElementLocated(By.xpath("//INPUT[@name='Agregar']")));
+				WebElement btnAgregar = (new WebDriverWait(driver, 60))
+						.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//INPUT[@name='Agregar']")));
 				if (cboBanco.isDisplayed())
 					index = FunctionGeneric.returnPositionDataCBO(cboBanco, banco);
 				if (index >= 0) {
@@ -228,9 +223,9 @@ public class SimulacionCC {
 					msg = msg + "No se encontró el Botón Agregar \n";
 					System.exit(0);
 				}
-				
+
 			}
-			
+
 			WebElement btnConfirmar = (new WebDriverWait(driver, 60)).until(
 					ExpectedConditions.presenceOfElementLocated(By.xpath("//INPUT[@value='Confirmar Transferencia']")));
 			if (btnConfirmar.isDisplayed()) {
@@ -242,10 +237,10 @@ public class SimulacionCC {
 				msg = msg + "No se encontró el Botón Confirmar Transferencia \n";
 				System.exit(0);
 			}
-			
-			func.waitTOC("Favor Realizar Proceso TOC o AUTENTIA, luego presionar Botón 'ACEPTAR'");
-			
-			if (func.validaAlert(driver)) 
+
+			FunctionGeneric.waitTOC("Favor Realizar Proceso TOC o AUTENTIA, luego presionar Botón 'ACEPTAR'");
+
+			if (FunctionGeneric.validaAlert(driver))
 				driver.switchTo().alert().accept();
 
 		} catch (Exception e) {
@@ -254,21 +249,21 @@ public class SimulacionCC {
 		}
 		return msg;
 	}
-	
-	public String validaPantallaImprimir(WebDriver driver ) {
+
+	public static String validaPantallaImprimir(WebDriver driver) {
 		String msg = "";
 		try {
 			Thread.sleep(60000);
-			System.out.println("HTML "+driver.getPageSource());
-			msg = func.clickObject("Botón Imprimir", "name", "IMPRIMIR", "click", driver);
+			System.out.println("HTML " + driver.getPageSource());
+			msg = FunctionGeneric.clickObject("Botón Imprimir", "name", "IMPRIMIR", "click", driver);
 			Thread.sleep(60000);
 			keyBoa.KeyPressTecl("ESC");
 			Thread.sleep(4000);
-			func.addScreenEvi("Comprobante de Transferencia", "Pass");
-			
+			FunctionGeneric.addScreenEvi("Comprobante de Transferencia", "Pass");
+
 		} catch (Exception e) {
 			System.out.println("ERROR AL VALIDAR PANTALLA IMPRIMIR");
-			
+
 		}
 		return msg;
 	}

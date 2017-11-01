@@ -10,7 +10,7 @@ import util.FunctionGeneric;
 
 public class Evaluador {
 
-	public String evaluarCliente(String rut, WebDriver driver) {
+	public static String evaluarCliente(String rut, WebDriver driver) {
 
 		String msg = "OK";
 
@@ -18,10 +18,12 @@ public class Evaluador {
 
 			driver.switchTo().frame(driver.findElement(By.xpath("//IFRAME[@src='paginas/index.jsp']")));
 
-			msg = FunctionGeneric.setTextObject("Número de Documento", "name", "MPMF_NUMDOC", rut, "set", false, driver);
+			msg = FunctionGeneric.setTextObject("Número de Documento", "name", "MPMF_NUMDOC", rut, "set", false,
+					driver);
 			if (!msg.equals("OK"))
 				return msg;
-			msg = FunctionGeneric.setTextObject("Número de Documento", "name", "MPMF_NUMDOC", rut, "enter", false, driver);
+			msg = FunctionGeneric.setTextObject("Número de Documento", "name", "MPMF_NUMDOC", rut, "enter", false,
+					driver);
 			if (!msg.equals("OK"))
 				return msg;
 
@@ -36,7 +38,7 @@ public class Evaluador {
 		return msg;
 	}
 
-	public String validaEstado(String resolucion, String rechazo, WebDriver driver) {
+	public static String validaEstado(String resolucion, String rechazo, WebDriver driver) {
 
 		String msg = "OK";
 
@@ -60,7 +62,7 @@ public class Evaluador {
 		return msg;
 	}
 
-	public String crearCuenta(WebDriver driver) {
+	public static String crearCuenta(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -68,7 +70,7 @@ public class Evaluador {
 
 			msg = FunctionGeneric.clickObjectByXpath("Botón Seguros y PAT", "input", "value", "SEGUROS Y PAT", "click",
 					driver);
-			
+
 			driver = FunctionGeneric.waitWindows(2, driver);
 
 			msg = FunctionGeneric.clickObject("Seguro 1", "name", "INDENVCENTPIN1", "click", driver);
@@ -87,7 +89,7 @@ public class Evaluador {
 			FunctionGeneric.clickObject("Seguro 3", "name", "INDENVCENTPIN3", "click", driver);
 
 			FunctionGeneric.addScreenEvi("Crear Cuenta", "Pass");
-			
+
 			driver.close();
 
 			driver = FunctionGeneric.waitWindows(1, driver);

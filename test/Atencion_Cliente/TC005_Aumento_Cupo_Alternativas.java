@@ -1,14 +1,14 @@
-package Simulacion_CC;
+package Atencion_Cliente;
 
-import org.junit.AfterClass;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import atu.alm.wrapper.ALMServiceWrapper;
 import atu.alm.wrapper.ITestCase;
 import atu.alm.wrapper.ITestCaseRun;
+import page.AtencionCliente.AumentoCupo;
 import page.AtencionCliente.BusquedaContrato;
-import page.AtencionCliente.SimulacionCC;
 import page.Login.LoginSatif;
 import page.Menu.Menu;
 import util.ALM;
@@ -16,11 +16,11 @@ import util.Evidencia;
 import util.FunctionGeneric;
 import util.LeerExcel;
 
-public class TC001_Compra_Cuotas {
+public class TC005_Aumento_Cupo_Alternativas {
 
+	private LeerExcel excel;
 	private WebDriver driver;
 	private LoginSatif login;
-	private LeerExcel excel;
 	private String[][] matriz;
 	private ALM alm;
 	private Evidencia evi;
@@ -29,7 +29,7 @@ public class TC001_Compra_Cuotas {
 	private ITestCase ITestCase;
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
-	private String estado = "";
+	private String estado;
 
 	@BeforeClass
 	public void beforeClass() {
@@ -73,16 +73,15 @@ public class TC001_Compra_Cuotas {
 				flagState = false;
 				afterClass();
 			}
-			Thread.sleep(3000);
+
 			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			Thread.sleep(3000);
 			estado = BusquedaContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
-			if (!FunctionGeneric.stateStep("Formulario Contrato", estado, ITestCaseRun, wrapper)) {
+			if (!FunctionGeneric.stateStep("Formulario Busqueda Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
@@ -93,26 +92,23 @@ public class TC001_Compra_Cuotas {
 				afterClass();
 			}
 
-			estado = Menu.subMenuSimulacionCC(driver);
-			if (!FunctionGeneric.stateStep("Menú Simulación CC", estado, ITestCaseRun, wrapper)) {
+			estado = Menu.subMenuModificacionCupo(driver);
+			if (!FunctionGeneric.stateStep("Menú Modificación Cupo", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			Thread.sleep(3000);
-			estado = SimulacionCC.formularioSimulacionCC(excel.valorCol("Monto", matriz),
-					excel.valorCol("NumeroCuota", matriz), excel.valorCol("MesDiferido", matriz), "TUNI", driver);
-			if (!FunctionGeneric.stateStep("Formulario Simulación CC", estado, ITestCaseRun, wrapper)) {
+			estado = AumentoCupo.formAumentoCupoAlternativo(excel.valorCol("Cupo", matriz), driver);
+			if (!FunctionGeneric.stateStep("Elevar Solicitud Modificación de Cupo", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
 		} catch (Exception e) {
-			System.out.println("Error Test: " + e.toString());
+			System.out.println("Error Test: " + e.getMessage());
 			flagState = false;
 			afterClass();
 		}
-
 	}
 
 	@AfterClass

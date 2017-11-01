@@ -18,12 +18,10 @@ import util.LeerExcel;
 
 public class TC002_Modificacion_Cliente {
 
-	private Menu menu;
 	private LeerExcel excel;
 	private WebDriver driver;
 	private LoginSatif login;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -31,23 +29,17 @@ public class TC002_Modificacion_Cliente {
 	private ITestCase ITestCase;
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
-	private Cliente cliente;
-	private BusquedaContrato busContrato;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			cliente = new Cliente();
-			busContrato = new BusquedaContrato();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -89,31 +81,31 @@ public class TC002_Modificacion_Cliente {
 				afterClass();
 			}
 
-			estado = menu.menuBusquedaContrato(driver);
+			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda de Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
+			estado = BusquedaContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
 			if (!FunctionGeneric.stateStep("Buscar Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
+			estado = BusquedaContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Producto", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = menu.menuModificacionCliente(driver);
+			estado = Menu.menuModificacionCliente(driver);
 			if (!FunctionGeneric.stateStep("Menú Modificación Cliente", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = cliente.formModificaCliente(excel.valorCol("CalidadVivienda", matriz),
+			estado = Cliente.formModificaCliente(excel.valorCol("CalidadVivienda", matriz),
 					excel.valorCol("Celular", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Modificación Cliente", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
@@ -132,7 +124,7 @@ public class TC002_Modificacion_Cliente {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

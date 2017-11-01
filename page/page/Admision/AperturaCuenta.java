@@ -11,7 +11,7 @@ import util.FunctionGeneric;
 
 public class AperturaCuenta {
 
-	public String solicitudApertura(WebDriver driver, String rut, String numSerie) {
+	public static String solicitudApertura(WebDriver driver, String rut, String numSerie) {
 
 		String msg = "OK";
 
@@ -20,11 +20,13 @@ public class AperturaCuenta {
 			driver.switchTo().frame((new WebDriverWait(driver, 30)).until(
 					ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/index.jsp']"))));
 
-			msg = FunctionGeneric.setTextObject("Número de Documento", "name", "MPMF_NUMDOC", rut, "set", false, driver);
+			msg = FunctionGeneric.setTextObject("Número de Documento", "name", "MPMF_NUMDOC", rut, "set", false,
+					driver);
 			if (!msg.equals("OK"))
 				return msg;
 
-			msg = FunctionGeneric.setTextObject("Número de Serie", "name", "MPMF_SERIE", numSerie, "set", false, driver);
+			msg = FunctionGeneric.setTextObject("Número de Serie", "name", "MPMF_SERIE", numSerie, "set", false,
+					driver);
 			if (!msg.equals("OK"))
 				return msg;
 
@@ -40,8 +42,8 @@ public class AperturaCuenta {
 		return msg;
 	}
 
-	public String validarDatosCliente(String producto, String fchPago, String cadena, String cargo, String sueldo,
-			WebDriver driver) {
+	public static String validarDatosCliente(String producto, String fchPago, String cadena, String cargo,
+			String sueldo, WebDriver driver) {
 
 		String msg = "OK";
 
@@ -60,7 +62,7 @@ public class AperturaCuenta {
 					return msg;
 
 				driver = FunctionGeneric.waitWindows(2, driver);
-				
+
 				msg = FunctionGeneric.setTextObject("Comuna", "name", "COMUNA", "SANTIAGO", "set", false, driver);
 				if (!msg.equals("OK"))
 					return msg;
@@ -135,7 +137,7 @@ public class AperturaCuenta {
 		return msg;
 	}
 
-	public String ingresoFormularioCliente(WebDriver driver) throws AWTException {
+	public static String ingresoFormularioCliente(WebDriver driver) throws AWTException {
 
 		String msg = "OK";
 		String actividad = "04 - ADMINISTRATIVO";
@@ -144,8 +146,8 @@ public class AperturaCuenta {
 
 			driver.switchTo().window(driver.getWindowHandle());
 
-			driver.switchTo().frame((new WebDriverWait(driver, 30))
-					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/index.jsp']"))));
+			driver.switchTo().frame((new WebDriverWait(driver, 30)).until(
+					ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/index.jsp']"))));
 
 			msg = FunctionGeneric.selecCBO("Nacionalidad", "name", "MPMF_NACIONALIDAD", "152 - CHILENA", true, driver);
 			if (!msg.equals("OK"))
@@ -159,7 +161,7 @@ public class AperturaCuenta {
 				msg = FunctionGeneric.clickObject("Carpeta Dirección", "name", "IMGDIR", "click", driver);
 				if (!msg.equals("OK"))
 					return msg;
-				
+
 				driver = FunctionGeneric.waitWindows(2, driver);
 
 				msg = FunctionGeneric.setTextObject("Comuna", "name", "COMUNA", "SANTIAGO", "set", false, driver);
@@ -188,11 +190,11 @@ public class AperturaCuenta {
 					return msg;
 
 			}
-			
+
 			msg = FunctionGeneric.setTextObject("Celular", "name", "MPMF_CELULAR", "987654321", "set", true, driver);
 			if (!msg.equals("OK"))
 				return msg;
-			
+
 			msg = FunctionGeneric.setTextObject("Email", "name", "MPMF_EMAIL", "a@a.cl", "set", true, driver);
 			if (!msg.equals("OK"))
 				return msg;
@@ -200,11 +202,11 @@ public class AperturaCuenta {
 			msg = FunctionGeneric.selecCBO("Tipo Vivienda", "name", "MPMF_TIPVIVIEN", "0 - PROPIA", true, driver);
 			if (!msg.equals("OK"))
 				return msg;
-			
+
 			msg = FunctionGeneric.setTextObject("Email", "name", "MPMF_ANTIGUEDAD", "1", "set", true, driver);
 			if (!msg.equals("OK"))
 				return msg;
-			
+
 			WebElement cboActividad = driver.findElement(By.xpath("//SELECT[@name='MPMF_CARGOAD']"));
 			if (FunctionGeneric.returnItemActual(cboActividad).equals("99 - NO INFORMADO")) {
 				cboActividad.sendKeys(actividad);
@@ -281,7 +283,7 @@ public class AperturaCuenta {
 			cboCadena.sendKeys("1 - CMR");
 
 			FunctionGeneric.addScreenEvi("Completar Formulario de Apertura", "Pass");
-			
+
 			WebElement btnFin = driver.findElement(By.xpath("//INPUT[@name='FIN']"));
 			btnFin.click();
 

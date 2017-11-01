@@ -20,10 +20,8 @@ public class TC002_Sucursal_Lean_Ventas_Seguros {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -32,23 +30,17 @@ public class TC002_Sucursal_Lean_Ventas_Seguros {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private BusquedaContrato busContrato;
-	private VentaSeguro venta;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			venta = new VentaSeguro();
-			busContrato = new BusquedaContrato();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -81,40 +73,41 @@ public class TC002_Sucursal_Lean_Ventas_Seguros {
 				flagState = false;
 				afterClass();
 			}
-			estado = menu.menuBusquedaContrato(driver);
+			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			estado = busContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
+			estado = BusquedaContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Contrato ", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
+			estado = BusquedaContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Producto", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
 			Thread.sleep(3000);
-			estado = menu.menuVentaSeguros(driver);
+			estado = Menu.menuVentaSeguros(driver);
 			if (!FunctionGeneric.stateStep("Menú Venta Seguros", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			estado = venta.iniciarContratacionSeguro(excel.valorCol("NumeroCelular", matriz),
+			estado = VentaSeguro.iniciarContratacionSeguro(excel.valorCol("NumeroCelular", matriz),
 					excel.valorCol("RutCaptador", matriz), driver);
 			if (!FunctionGeneric.stateStep("Iniciar Contratación Seguro", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			estado = venta.ventanaSeguro(driver);
+			estado = VentaSeguro.ventanaSeguro(driver);
 			if (!FunctionGeneric.stateStep("Ventana Seguro", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
+
 		} catch (Exception e) {
 			System.out.println("Error Test: " + e.toString());
 			flagState = false;
@@ -127,7 +120,7 @@ public class TC002_Sucursal_Lean_Ventas_Seguros {
 	public void afterClass() {
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

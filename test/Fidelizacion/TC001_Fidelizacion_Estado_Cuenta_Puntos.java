@@ -19,10 +19,8 @@ public class TC001_Fidelizacion_Estado_Cuenta_Puntos {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -31,21 +29,17 @@ public class TC001_Fidelizacion_Estado_Cuenta_Puntos {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private Fidelizacion fide;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			fide = new Fidelizacion();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -68,9 +62,9 @@ public class TC001_Fidelizacion_Estado_Cuenta_Puntos {
 
 	@Test
 	public void Test() {
-		
+
 		try {
-			
+
 			driver = login.openUrlSatif(excel.valorCol("AMBIENTE", matriz));
 
 			estado = login.ingresoLogin(excel.valorCol("Usuario", matriz), excel.valorCol("Password", matriz), driver);
@@ -80,31 +74,31 @@ public class TC001_Fidelizacion_Estado_Cuenta_Puntos {
 			}
 			Thread.sleep(3000);
 
-			estado = menu.menuFidelizacion(driver);
+			estado = Menu.menuFidelizacion(driver);
 			if (!FunctionGeneric.stateStep("Menú Fidelización", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = menu.subMenuFideEstadoCuenta(driver);
+			estado = Menu.subMenuFideEstadoCuenta(driver);
 			if (!FunctionGeneric.stateStep("Menú Fidelización Estado Cuenta", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = fide.formEstadoCuenta(driver);
+			estado = Fidelizacion.formEstadoCuenta(driver);
 			if (!FunctionGeneric.stateStep("Formulario Estado Cuenta", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = fide.formWindowUser(excel.valorCol("Rut", matriz), driver);
+			estado = Fidelizacion.formWindowUser(excel.valorCol("Rut", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Ventana Usuario", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = fide.formEstateAccount(driver);
+			estado = Fidelizacion.formEstateAccount(driver);
 			if (!FunctionGeneric.stateStep("Formulario Estado Cuenta", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -121,7 +115,7 @@ public class TC001_Fidelizacion_Estado_Cuenta_Puntos {
 	public void afterClass() {
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

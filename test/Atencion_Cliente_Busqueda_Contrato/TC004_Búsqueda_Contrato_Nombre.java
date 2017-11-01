@@ -1,4 +1,4 @@
-package Simulacion_CC;
+package Atencion_Cliente_Busqueda_Contrato;
 
 import org.junit.AfterClass;
 import org.openqa.selenium.WebDriver;
@@ -8,7 +8,6 @@ import atu.alm.wrapper.ALMServiceWrapper;
 import atu.alm.wrapper.ITestCase;
 import atu.alm.wrapper.ITestCaseRun;
 import page.AtencionCliente.BusquedaContrato;
-import page.AtencionCliente.SimulacionCC;
 import page.Login.LoginSatif;
 import page.Menu.Menu;
 import util.ALM;
@@ -16,7 +15,7 @@ import util.Evidencia;
 import util.FunctionGeneric;
 import util.LeerExcel;
 
-public class TC001_Compra_Cuotas {
+public class TC004_Búsqueda_Contrato_Nombre {
 
 	private WebDriver driver;
 	private LoginSatif login;
@@ -54,6 +53,7 @@ public class TC001_Compra_Cuotas {
 
 			ITestCase = alm.createItestCase(wrapper, lab, idLab, nameClass, rutaAlm);
 			ITestCaseRun = alm.createITestCaseRun(wrapper, ITestCase);
+
 			LeerExcel.setTextRow("ID_RUN", Integer.toString(ALM.returnIDRun(ITestCase) - 1), nameClass);
 
 		} catch (Exception e) {
@@ -73,7 +73,7 @@ public class TC001_Compra_Cuotas {
 				flagState = false;
 				afterClass();
 			}
-			Thread.sleep(3000);
+
 			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
@@ -81,28 +81,14 @@ public class TC001_Compra_Cuotas {
 			}
 
 			Thread.sleep(3000);
-			estado = BusquedaContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
-			if (!FunctionGeneric.stateStep("Formulario Contrato", estado, ITestCaseRun, wrapper)) {
+			estado = BusquedaContrato.formContratoNombre(excel.valorCol("NumeroContrato", matriz), driver);
+			if (!FunctionGeneric.stateStep("Formulario Busqueda Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = BusquedaContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
-			if (!FunctionGeneric.stateStep("Seleccionar Producto", estado, ITestCaseRun, wrapper)) {
-				flagState = false;
-				afterClass();
-			}
-
-			estado = Menu.subMenuSimulacionCC(driver);
-			if (!FunctionGeneric.stateStep("Menú Simulación CC", estado, ITestCaseRun, wrapper)) {
-				flagState = false;
-				afterClass();
-			}
-
-			Thread.sleep(3000);
-			estado = SimulacionCC.formularioSimulacionCC(excel.valorCol("Monto", matriz),
-					excel.valorCol("NumeroCuota", matriz), excel.valorCol("MesDiferido", matriz), "TUNI", driver);
-			if (!FunctionGeneric.stateStep("Formulario Simulación CC", estado, ITestCaseRun, wrapper)) {
+			estado = FunctionGeneric.validarTexto("Documento", "Despliegue de Contrato", driver);
+			if (!FunctionGeneric.stateStep("Validar Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
@@ -112,7 +98,6 @@ public class TC001_Compra_Cuotas {
 			flagState = false;
 			afterClass();
 		}
-
 	}
 
 	@AfterClass

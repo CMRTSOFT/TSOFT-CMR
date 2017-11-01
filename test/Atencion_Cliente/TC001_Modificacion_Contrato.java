@@ -17,13 +17,11 @@ import page.AtencionCliente.BusquedaContrato;
 import page.AtencionCliente.Contrato;
 
 public class TC001_Modificacion_Contrato {
-	
-	private Menu menu;
+
 	private LeerExcel excel;
 	private WebDriver driver;
 	private LoginSatif login;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -31,24 +29,18 @@ public class TC001_Modificacion_Contrato {
 	private ITestCase ITestCase;
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
-	private Contrato contrato;
-	private BusquedaContrato busContrato;
 
 	@BeforeClass
 	public void beforeClass() {
-		
+
 		try {
-			
-			menu = new Menu();
+
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			contrato = new Contrato();
-			busContrato = new BusquedaContrato();
-			
+
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
 			matriz = LeerExcel.retornaDatosExcel(this.getClass().getPackage().getName(), nameClass);
@@ -56,20 +48,20 @@ public class TC001_Modificacion_Contrato {
 			lab = excel.valorCol("LABORATORIO", matriz);
 			idLab = excel.valorCol("ID_LABORATORIO", matriz);
 			rutaAlm = excel.valorCol("RUTA_ALM", matriz);
-			
+
 			pathResultados = rutaAlm + "\\" + lab + "\\";
 
 			ITestCase = alm.createItestCase(wrapper, lab, idLab, nameClass, rutaAlm);
 			ITestCaseRun = alm.createITestCaseRun(wrapper, ITestCase);
-			
-			LeerExcel.setTextRow("ID_RUN",Integer.toString(ALM.returnIDRun(ITestCase)-1),nameClass);
+
+			LeerExcel.setTextRow("ID_RUN", Integer.toString(ALM.returnIDRun(ITestCase) - 1), nameClass);
 
 		} catch (Exception e) {
 			System.out.println("Error BeforeClass: " + e.getMessage());
 			System.exit(0);
 		}
 	}
-	
+
 	@Test
 	public void Test() {
 
@@ -89,30 +81,30 @@ public class TC001_Modificacion_Contrato {
 				afterClass();
 			}
 
-			estado = menu.menuBusquedaContrato(driver);
+			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda de Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
+			estado = BusquedaContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
 			if (!FunctionGeneric.stateStep("Buscar Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
+			estado = BusquedaContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Producto", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			estado = menu.menuModificacionContrato(driver);
+			estado = Menu.menuModificacionContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Modificación Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			
-			estado = contrato.formModificaContrato(excel.valorCol("DiaPago", matriz), driver);
+
+			estado = Contrato.formModificaContrato(excel.valorCol("DiaPago", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Modificación Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -130,7 +122,7 @@ public class TC001_Modificacion_Contrato {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

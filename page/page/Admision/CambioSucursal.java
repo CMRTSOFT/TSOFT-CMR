@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,12 +15,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import util.FunctionGeneric;
 
 public class CambioSucursal {
-	FunctionGeneric func;
 
-	public String cambioOficina(String sucursal, WebDriver driver) {
+	public static String cambioOficina(String sucursal, WebDriver driver) {
+
 		String msg = "OK";
 		int index = 0;
-		func = new FunctionGeneric();
+
 		try {
 			Thread.sleep(2000);
 			Robot robot = new Robot();
@@ -33,7 +32,6 @@ public class CambioSucursal {
 			Select cboTipoOficina;// = new Select(driver.findElement(By.xpath("//SELECT[@name='TIPDOCAUX1']")));
 			WebElement btnAceptar;
 
-			
 			if (imgCarpet.size() > 0) {
 				imgCarpet.get(0).click();
 				robot.keyPress(KeyEvent.VK_ENTER);
@@ -44,8 +42,8 @@ public class CambioSucursal {
 				msg = msg + "No se encontró la Imagen de la carpeta \n";
 				return msg;
 			}
-			
-			if (!func.waitWindows(2, winList, driver)) {
+
+			if (!FunctionGeneric.waitWindows(2, winList, driver)) {
 				msg = "No se encontró ventana";
 				return msg;
 			}
@@ -56,7 +54,7 @@ public class CambioSucursal {
 			cboOficina = (new WebDriverWait(driver, 25))
 					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//SELECT[@name='CODOFICINA']")));
 			cboTipoOficina = new Select(driver.findElement(By.xpath("//SELECT[@name='CODOFICINA']")));
-			
+
 			if (cboOficina.isDisplayed())
 				index = FunctionGeneric.returnPositionDataCBO(cboOficina, sucursal);
 			if (index >= 0) {
@@ -65,9 +63,9 @@ public class CambioSucursal {
 				msg = "No se encontró el valor en Combobox de TIPO DOCUMENTO \n";
 				return msg;
 			}
-			
+
 			btnAceptar = (new WebDriverWait(driver, 25))
-						.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//INPUT[@value='Aceptar']")));
+					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//INPUT[@value='Aceptar']")));
 			if (btnAceptar.isDisplayed()) {
 				btnAceptar.click();
 			} else {
@@ -77,7 +75,7 @@ public class CambioSucursal {
 				msg = msg + "No se encontró el Botón Aceptar \n";
 				return msg;
 			}
-			
+
 		} catch (Exception e) {
 			System.out.println("ERROR AL MODIFICAR EL CAMBIO DE SUCURSAL " + e.getMessage());
 			msg = "ERROR AL MODIFICAR EL CAMBIO DE SUCURSAL " + e.getMessage();

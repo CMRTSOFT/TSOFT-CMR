@@ -2,47 +2,32 @@ package page.AtencionCliente;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import util.FunctionGeneric;
+
 public class Solicitud {
-	public String formularioSolicitud(WebDriver driver) {
+
+	public static String formularioSolicitud(WebDriver driver) {
+
 		String msg = "OK";
+
 		try {
-			WebElement FrameInterContrato = (new WebDriverWait(driver, 60)).until(
-					ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/esperaAux.jsp']")));
-			driver.switchTo().frame(FrameInterContrato);
 
-			WebElement btnSiguiente = (new WebDriverWait(driver, 60))
-					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//INPUT[@id='SIGUIENTE']")));
+			driver.switchTo().frame((new WebDriverWait(driver, 60)).until(
+					ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/esperaAux.jsp']"))));
 
-			if (btnSiguiente.isDisplayed()) {
-				btnSiguiente.click();
-			} else {
-				if (msg.equals("OK"))
-					msg = "";
-
-				msg = msg + "No se encontró el Botón Siguiente \n";
+			msg = FunctionGeneric.clickObject("Botón Siguiente", "id", "SIGUIENTE", "click", driver);
+			if (!msg.equals("OK"))
 				return msg;
-			}
-			Thread.sleep(3000);
-			WebElement btnAnterior = (new WebDriverWait(driver, 25))
-					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//INPUT[@value='Anterior']")));
-			if (btnAnterior.isDisplayed()) {
-				btnAnterior.click();
-			} else {
-				if (msg.equals("OK"))
-					msg = "";
 
-				msg = msg + "No se encontró el Botón Anterior \n";
-				return msg;
-			}
-			System.out.println(driver.getPageSource());
+			msg = FunctionGeneric.clickObjectByXpath("Botón Anterior", "input", "value", "Anterior", "click", driver);
+
 		} catch (Exception e) {
-			System.out.println("ERROR EN EL FORMULARIO SOLICITUD " + e.getMessage());
-			msg = "ERROR EN EL FORMULARIO SOLICITUD " + e.getMessage();
+			msg = "Error en el formulario de solicitud";
 		}
+
 		return msg;
 	}
 

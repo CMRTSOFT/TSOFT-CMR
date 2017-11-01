@@ -4,6 +4,7 @@ import org.junit.AfterClass;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 import atu.alm.wrapper.ALMServiceWrapper;
 import atu.alm.wrapper.ITestCase;
 import atu.alm.wrapper.ITestCaseRun;
@@ -15,14 +16,12 @@ import util.Evidencia;
 import util.FunctionGeneric;
 import util.LeerExcel;
 
-public class TC004_Búsqueda_contrato_Nombre {
+public class TC005_Busqueda_Contrato_Apellido {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -30,7 +29,6 @@ public class TC004_Búsqueda_contrato_Nombre {
 	private ITestCase ITestCase;
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
-	private BusquedaContrato busContrato;
 	private String estado = "";
 
 	@BeforeClass
@@ -38,14 +36,11 @@ public class TC004_Búsqueda_contrato_Nombre {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			busContrato = new BusquedaContrato();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -55,12 +50,8 @@ public class TC004_Búsqueda_contrato_Nombre {
 			idLab = excel.valorCol("ID_LABORATORIO", matriz);
 			rutaAlm = excel.valorCol("RUTA_ALM", matriz);
 
-			pathResultados = rutaAlm + "\\" + lab + "\\";
-
 			ITestCase = alm.createItestCase(wrapper, lab, idLab, nameClass, rutaAlm);
 			ITestCaseRun = alm.createITestCaseRun(wrapper, ITestCase);
-
-			LeerExcel.setTextRow("ID_RUN", Integer.toString(ALM.returnIDRun(ITestCase) - 1), nameClass);
 
 		} catch (Exception e) {
 			System.out.println("Error BeforeClass: " + e.getMessage());
@@ -68,12 +59,9 @@ public class TC004_Búsqueda_contrato_Nombre {
 	}
 
 	@Test
-	public void test() {
+	public void Test() {
 
 		try {
-
-			login = new LoginSatif();
-			menu = new Menu();
 
 			driver = login.openUrlSatif(excel.valorCol("AMBIENTE", matriz));
 
@@ -83,27 +71,27 @@ public class TC004_Búsqueda_contrato_Nombre {
 				afterClass();
 			}
 
-			estado = menu.menuBusquedaContrato(driver);
+			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
 			Thread.sleep(3000);
-			estado = busContrato.formContratoNombre(excel.valorCol("NumeroContrato", matriz), driver);
+			estado = BusquedaContrato.formContratoApellido(excel.valorCol("Apellido", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Busqueda Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
 			estado = FunctionGeneric.validarTexto("Documento", "Despliegue de Contrato", driver);
-			if (!FunctionGeneric.stateStep("Validar Contrato", estado, ITestCaseRun, wrapper)) {
+			if (!FunctionGeneric.stateStep("Despliegue de Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
 		} catch (Exception e) {
-			System.out.println("Error Test: " + e.toString());
+			System.out.println("Error Test:" + e.toString());
 			flagState = false;
 			afterClass();
 		}
@@ -113,7 +101,7 @@ public class TC004_Búsqueda_contrato_Nombre {
 	public void afterClass() {
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

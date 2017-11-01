@@ -13,9 +13,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import util.FunctionGeneric;
 
 public class VentaSeguro {
-	public static FunctionGeneric func = new FunctionGeneric();
 
-	public String iniciarContratacionSeguro(String celular, String rutCaptador, WebDriver driver) {
+	public static String iniciarContratacionSeguro(String celular, String rutCaptador, WebDriver driver) {
 		String msg = "OK";
 		try {
 			WebElement FrameInterContrato = (new WebDriverWait(driver, 60)).until(
@@ -79,12 +78,12 @@ public class VentaSeguro {
 		return msg;
 	}
 
-	public String ventanaSeguro(WebDriver driver) {
+	public static String ventanaSeguro(WebDriver driver) {
 		String msg = "OK";
 		try {
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
-			if (!func.waitWindows(3, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(3, winList, driver)) {
 				msg = "No se encontró Ventana de Seguros";
 				return msg;
 			}

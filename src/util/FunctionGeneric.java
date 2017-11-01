@@ -40,7 +40,7 @@ public class FunctionGeneric {
 	protected static WebDriver driver;
 	private static ALM alm;
 	// static String curDir = System.getProperty("user.dir");
-	private KeyboardClass keyBoa;
+	private static KeyboardClass keyBoa;
 
 	public WebDriver getDriver() {
 		return driver;
@@ -52,7 +52,7 @@ public class FunctionGeneric {
 		file.delete();
 	}
 
-	public void closeWindows(WebDriver driver, int winEsperadas) {
+	public static void closeWindows(WebDriver driver, int winEsperadas) {
 
 		try {
 
@@ -72,7 +72,7 @@ public class FunctionGeneric {
 		}
 	}
 
-	public void closeAlert(WebDriver driver) {
+	public static void closeAlert(WebDriver driver) {
 		try {
 			if (validaAlert(driver)) {
 				driver.switchTo().alert().accept();
@@ -251,7 +251,7 @@ public class FunctionGeneric {
 		return ruta;
 	}
 
-	public String validaMensajeAlert(String mensaje, WebDriver driver) {
+	public static String validaMensajeAlert(String mensaje, WebDriver driver) {
 
 		String flag = "OK";
 
@@ -354,7 +354,7 @@ public class FunctionGeneric {
 		return msg;
 	}
 
-	public void cerraALTF4() {
+	public static void cerraALTF4() {
 		try {
 
 			keyBoa = new KeyboardClass();
@@ -567,7 +567,7 @@ public class FunctionGeneric {
 				obj = (new WebDriverWait(driver, 30)).until(ExpectedConditions.presenceOfElementLocated(By.id(value)));
 				break;
 
-			case "value":
+			case "tagname":
 				obj = (new WebDriverWait(driver, 30))
 						.until(ExpectedConditions.presenceOfElementLocated(By.tagName(value)));
 				break;

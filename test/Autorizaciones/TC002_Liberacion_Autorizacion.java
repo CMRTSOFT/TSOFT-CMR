@@ -20,8 +20,6 @@ public class TC002_Liberacion_Autorizacion {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
-	private BusquedaContrato busContrato;
 	private ALMServiceWrapper wrapper;
 	private ALM alm;
 	private String nameClass, lab, idLab, rutaAlm, estado, pathResultados;
@@ -31,22 +29,16 @@ public class TC002_Liberacion_Autorizacion {
 	private static LeerExcel excel;
 	private ITestCase ITestCase;
 	private ITestCaseRun ITestCaseRun;
-	private FunctionGeneric funge;
-	private Detalle detalle;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
-			busContrato = new BusquedaContrato();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
-			detalle = new Detalle();
 			login = new LoginSatif();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
@@ -62,8 +54,8 @@ public class TC002_Liberacion_Autorizacion {
 
 			ITestCase = alm.createItestCase(wrapper, lab, idLab, nameClass, rutaAlm);
 			ITestCaseRun = alm.createITestCaseRun(wrapper, ITestCase);
-			
-			LeerExcel.setTextRow("ID_RUN",Integer.toString(ALM.returnIDRun(ITestCase)-1), nameClass);
+
+			LeerExcel.setTextRow("ID_RUN", Integer.toString(ALM.returnIDRun(ITestCase) - 1), nameClass);
 
 		} catch (Exception e) {
 			System.out.println("Error BeforeClass: " + e.getMessage());
@@ -90,37 +82,37 @@ public class TC002_Liberacion_Autorizacion {
 				afterClass();
 			}
 
-			estado = menu.menuBusquedaContrato(driver);
+			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda de Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
+			estado = BusquedaContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
 			if (!FunctionGeneric.stateStep("Buscar Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
+			estado = BusquedaContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Producto", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = menu.subMenuDetalle(driver);
+			estado = Menu.subMenuDetalle(driver);
 			if (!FunctionGeneric.stateStep("Sub Menú Detalles", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = detalle.lnkAutorizaciones(driver);
+			estado = Detalle.lnkAutorizaciones(driver);
 			if (!FunctionGeneric.stateStep("Link Autorizaciones", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = detalle.liberarAutorizacion(driver);
+			estado = Detalle.liberarAutorizacion(driver);
 			if (!FunctionGeneric.stateStep("Liberación de Autorización", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -138,7 +130,7 @@ public class TC002_Liberacion_Autorizacion {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);
