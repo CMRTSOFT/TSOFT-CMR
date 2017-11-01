@@ -19,11 +19,8 @@ public class TC001_Merchant_Rechazo {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
-	private Merchant merch;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -38,14 +35,11 @@ public class TC001_Merchant_Rechazo {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			merch = new Merchant();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -79,13 +73,13 @@ public class TC001_Merchant_Rechazo {
 				afterClass();
 			}
 
-			estado = menu.menuRechazosMerchant(driver);
+			estado = Menu.menuRechazosMerchant(driver);
 			if (!FunctionGeneric.stateStep("Menú Rechazo Merchant", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = merch.rechazoMerchant(excel.valorCol("NumeroComercio", matriz),
+			estado = Merchant.rechazoMerchant(excel.valorCol("NumeroComercio", matriz),
 					excel.valorCol("PanTarjeta", matriz), driver);
 			if (!FunctionGeneric.stateStep("Rechazo Merchant", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
@@ -104,7 +98,7 @@ public class TC001_Merchant_Rechazo {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

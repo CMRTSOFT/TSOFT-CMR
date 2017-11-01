@@ -16,7 +16,7 @@ public class TarjetaClave {
 
 	static FunctionGeneric funge = new FunctionGeneric();
 
-	public String generarPIN(WebDriver driver) {
+	public static String generarPIN(WebDriver driver) {
 		String msg = "OK";
 		try {
 			WebElement FrameInterContrato = (new WebDriverWait(driver, 60)).until(
@@ -47,13 +47,14 @@ public class TarjetaClave {
 				System.exit(0);
 			}
 
-			if (funge.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 			}
-			
-			funge.waitTOC("Favor Realizar Proceso Manual de TOC o Autentia, Luego Presionar el Botón Aceptar");
+
+			FunctionGeneric
+					.waitTOC("Favor Realizar Proceso Manual de TOC o Autentia, Luego Presionar el Botón Aceptar");
 			// System.out.println(driver.getPageSource());
-			
+
 			System.out.println("tERMINO DESPUES DE PRESIONAR ACEPTAR");
 		} catch (Exception e) {
 			System.out.println("ERROR AL GENERAR TARJETA CLAVE " + e.getMessage());
@@ -62,7 +63,7 @@ public class TarjetaClave {
 		return msg;
 	}
 
-	public String bloquearPIN(WebDriver driver) {
+	public static String bloquearPIN(WebDriver driver) {
 		String msg = "OK";
 		try {
 			WebElement FrameInterContrato = (new WebDriverWait(driver, 60)).until(
@@ -94,7 +95,7 @@ public class TarjetaClave {
 			}
 
 			Thread.sleep(2000);
-			if (funge.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 			}
 
@@ -105,7 +106,7 @@ public class TarjetaClave {
 		return msg;
 	}
 
-	public String validaActivaPIN(WebDriver driver) {
+	public static String validaActivaPIN(WebDriver driver) {
 		String msg = "OK";
 		try {
 
@@ -127,8 +128,8 @@ public class TarjetaClave {
 		}
 		return msg;
 	}
-	
-	public String validaBloqueoPIN(WebDriver driver) {
+
+	public static String validaBloqueoPIN(WebDriver driver) {
 		String msg = "OK";
 		try {
 
@@ -175,7 +176,7 @@ public class TarjetaClave {
 		return msg;
 	}
 
-	public String usosPIN(WebDriver driver) {
+	public static String usosPIN(WebDriver driver) {
 		String msg = "OK";
 		try {
 
@@ -215,7 +216,7 @@ public class TarjetaClave {
 		return msg;
 	}
 
-	public String ventaUsosPin(WebDriver driver) {
+	public static String ventaUsosPin(WebDriver driver) {
 		String msg = "OK";
 		try {
 			Thread.sleep(6000);
@@ -224,7 +225,7 @@ public class TarjetaClave {
 			winSet = driver.getWindowHandles();
 			winList = new ArrayList<String>(winSet);
 
-			if (!funge.waitWindows(3, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(3, winList, driver)) {
 				msg = "No encuentra ventana 3 ";
 				System.exit(0);
 			}
@@ -233,7 +234,7 @@ public class TarjetaClave {
 			driver.switchTo().window(winList.get(winList.size() - 1));
 
 			// System.out.println("HTML 3 uso pin " + driver.getPageSource());
-			if (!funge.validarTexto("Usos de Pin","Validar Ventana Uso PIN" , driver).equals("OK")) {
+			if (!FunctionGeneric.validarTexto("Usos de Pin", "Validar Ventana Uso PIN", driver).equals("OK")) {
 				msg = "No ha encontrado texto en la Ventana Uso Pin";
 				System.exit(0);
 			}
@@ -244,7 +245,7 @@ public class TarjetaClave {
 		return msg;
 	}
 
-	public String generaClave(WebDriver driver) {
+	public static String generaClave(WebDriver driver) {
 		String msg = "OK";
 		try {
 			// name=GENERARCLAVE
@@ -275,8 +276,9 @@ public class TarjetaClave {
 				msg = msg + "No se encontró el botón Generar Clave \n";
 				System.exit(0);
 			}
-			
-			funge.waitTOC("Favor Realizar Proceso Manual de TOC o Autentia, Luego Presionar el Botón Aceptar");
+
+			FunctionGeneric
+					.waitTOC("Favor Realizar Proceso Manual de TOC o Autentia, Luego Presionar el Botón Aceptar");
 		} catch (Exception e) {
 			System.out.println("ERROR AL MOMENTO DE GENERAR CLAVE " + e.getMessage());
 			msg = "ERROR AL MOMENTO DE GENERAR CLAVE " + e.getMessage();
@@ -284,7 +286,7 @@ public class TarjetaClave {
 		return msg;
 	}
 
-	public String bloquearClave(WebDriver driver) {
+	public static String bloquearClave(WebDriver driver) {
 		String msg = "OK";
 		try {
 
@@ -323,7 +325,7 @@ public class TarjetaClave {
 		return msg;
 	}
 
-	public String validarActivaClave(WebDriver driver) {
+	public static String validarActivaClave(WebDriver driver) {
 		String msg = "OK";
 		try {
 			Thread.sleep(4000);
@@ -345,7 +347,7 @@ public class TarjetaClave {
 		return msg;
 	}
 
-	public String validarBloqueoTarjeta(WebDriver driver) {
+	public static String validarBloqueoTarjeta(WebDriver driver) {
 		String msg = "OK";
 		try {
 			Thread.sleep(4000);
@@ -391,7 +393,7 @@ public class TarjetaClave {
 		return msg;
 	}
 
-	public String usoClave(WebDriver driver) {
+	public static String usoClave(WebDriver driver) {
 		String msg = "OK";
 		try {
 			// name=USOSCLAVE
@@ -429,7 +431,7 @@ public class TarjetaClave {
 		return msg;
 	}
 
-	public String ventanaUsoClave(WebDriver driver) {
+	public static String ventanaUsoClave(WebDriver driver) {
 		String msg = "OK";
 		try {
 			Thread.sleep(6000);
@@ -438,7 +440,7 @@ public class TarjetaClave {
 			winSet = driver.getWindowHandles();
 			winList = new ArrayList<String>(winSet);
 
-			if (!funge.waitWindows(3, winList, driver)) {
+			if (!FunctionGeneric.waitWindows(3, winList, driver)) {
 				msg = "No encuentra ventana 3 ";
 				System.exit(0);
 			}
@@ -449,7 +451,7 @@ public class TarjetaClave {
 
 			Thread.sleep(2000);
 			// System.out.println("HTML 3 " + driver.getPageSource());
-			if (!funge.validarTexto("Usos de Clave","Validar Ventana Uso Clave" , driver).equals("OK")) {
+			if (!FunctionGeneric.validarTexto("Usos de Clave", "Validar Ventana Uso Clave", driver).equals("OK")) {
 				msg = "No ha encontrado texto en la Ventana Uso Pin";
 				System.exit(0);
 			}
@@ -459,5 +461,5 @@ public class TarjetaClave {
 		return msg;
 
 	}
-	
+
 }

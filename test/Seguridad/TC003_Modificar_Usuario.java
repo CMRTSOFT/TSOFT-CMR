@@ -16,13 +16,11 @@ import util.FunctionGeneric;
 import util.LeerExcel;
 
 public class TC003_Modificar_Usuario {
-	
+
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -31,21 +29,17 @@ public class TC003_Modificar_Usuario {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private Usuario usu;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			usu = new Usuario();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -80,26 +74,26 @@ public class TC003_Modificar_Usuario {
 			}
 			Thread.sleep(3000);
 
-			estado = menu.menuSeguridadUsuario(driver);
+			estado = Menu.menuSeguridadUsuario(driver);
 			if (!FunctionGeneric.stateStep("Menú Seguridad Usuario", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = usu.FormBusquedaUsuario(excel.valorCol("Usuario", matriz), driver);
+			estado = Usuario.FormBusquedaUsuario(excel.valorCol("Usuario", matriz), driver);
 			if (!FunctionGeneric.stateStep("Menú Seguridad Usuario", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = usu.updateDataUser(excel.valorCol("Perfil", matriz), driver);
+			estado = Usuario.updateDataUser(excel.valorCol("Perfil", matriz), driver);
 			if (!FunctionGeneric.stateStep("Menú Seguridad Usuario", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
 		} catch (Exception e) {
-			System.out.println("ERROR EN EL CASO MODIFICAR USUARIO " + e.getMessage());
+			System.out.println("Error Test: " + e.getMessage());
 			flagState = false;
 			afterClass();
 		}
@@ -110,7 +104,7 @@ public class TC003_Modificar_Usuario {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

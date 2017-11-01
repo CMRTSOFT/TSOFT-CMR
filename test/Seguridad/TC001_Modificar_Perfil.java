@@ -19,10 +19,8 @@ public class TC001_Modificar_Perfil {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -31,21 +29,17 @@ public class TC001_Modificar_Perfil {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private PerfilUsuario perfil;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			perfil = new PerfilUsuario();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -80,37 +74,37 @@ public class TC001_Modificar_Perfil {
 			}
 			Thread.sleep(3000);
 
-			estado = menu.menuSeguridadPerfil(driver);
+			estado = Menu.menuSeguridadPerfil(driver);
 			if (!FunctionGeneric.stateStep("Menú Seguridad Perfil", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = perfil.seleccionarPerfil("BACKOFFICE RIESGO", driver);
+			estado = PerfilUsuario.seleccionarPerfil("BACKOFFICE RIESGO", driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Perfil", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = perfil.selectTreeInicio(driver);
+			estado = PerfilUsuario.selectTreeInicio(driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Arból Inicio", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = perfil.permisoAdmisionConsulta(driver);
+			estado = PerfilUsuario.permisoAdmisionConsulta(driver);
 			if (!FunctionGeneric.stateStep("Permiso Admisión Consulta", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = perfil.selectTreeInicio(driver);
+			estado = PerfilUsuario.selectTreeInicio(driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Arból Inicio", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = perfil.permisoAdmisionConsulta(driver);
+			estado = PerfilUsuario.permisoAdmisionConsulta(driver);
 			if (!FunctionGeneric.stateStep("Permiso Admisión Consulta", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -129,7 +123,7 @@ public class TC001_Modificar_Perfil {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

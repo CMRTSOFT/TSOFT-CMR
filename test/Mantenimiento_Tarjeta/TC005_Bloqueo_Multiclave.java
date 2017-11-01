@@ -20,10 +20,8 @@ public class TC005_Bloqueo_Multiclave {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -32,23 +30,17 @@ public class TC005_Bloqueo_Multiclave {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private BusquedaContrato busContrato;
-	private TarjetaClave tarClave;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			busContrato = new BusquedaContrato();
-			tarClave = new TarjetaClave();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -83,34 +75,34 @@ public class TC005_Bloqueo_Multiclave {
 			}
 
 			Thread.sleep(3000);
-			estado = menu.menuBusquedaContrato(driver);
+			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			estado = busContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
+			estado = BusquedaContrato.formularioContrato(excel.valorCol("Rut", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 			Thread.sleep(3000);
-			estado = busContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
+			estado = BusquedaContrato.seleccionarProducto(excel.valorCol("Producto", matriz), driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Producto", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = menu.menuTarjetasClaves(driver);
+			estado = Menu.menuTarjetasClaves(driver);
 			if (!FunctionGeneric.stateStep("Menú Tarjetas Claves", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			estado = tarClave.bloquearClave(driver);
+			estado = TarjetaClave.bloquearClave(driver);
 			if (!FunctionGeneric.stateStep("Bloquear Clave", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			estado = tarClave.validarBloqueoTarjeta(driver);
+			estado = TarjetaClave.validarBloqueoTarjeta(driver);
 			if (!FunctionGeneric.stateStep("Validar bloqueo Tarjeta", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -129,7 +121,7 @@ public class TC005_Bloqueo_Multiclave {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

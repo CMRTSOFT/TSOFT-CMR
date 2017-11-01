@@ -19,8 +19,6 @@ public class TC001_Busqueda_Contrato_PAN {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
-	private BusquedaContrato busContrato;
 	private ALMServiceWrapper wrapper;
 	private ALM alm;
 	private String nameClass, lab, idLab, rutaAlm, pathResultados;
@@ -30,7 +28,6 @@ public class TC001_Busqueda_Contrato_PAN {
 	private static LeerExcel excel;
 	private ITestCase ITestCase;
 	private ITestCaseRun ITestCaseRun;
-	private FunctionGeneric funge;
 	private String estado;
 
 	@BeforeClass
@@ -38,14 +35,11 @@ public class TC001_Busqueda_Contrato_PAN {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			busContrato = new BusquedaContrato();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -80,14 +74,14 @@ public class TC001_Busqueda_Contrato_PAN {
 				afterClass();
 			}
 
-			estado = menu.menuBusquedaContrato(driver);
+			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda Contrato ", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.formContratoPAN(excel.valorCol("Tipo_Tarjeta", matriz), excel.valorCol("PAN", matriz),
-					driver);
+			estado = BusquedaContrato.formContratoPAN(excel.valorCol("Tipo_Tarjeta", matriz),
+					excel.valorCol("PAN", matriz), driver);
 			if (!FunctionGeneric.stateStep("Buscar Contrato ", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -111,7 +105,7 @@ public class TC001_Busqueda_Contrato_PAN {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

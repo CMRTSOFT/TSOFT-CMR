@@ -19,10 +19,8 @@ public class TC004_Eliminar_Usuario {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -31,21 +29,17 @@ public class TC004_Eliminar_Usuario {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private Usuario usu;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			usu = new Usuario();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -79,25 +73,25 @@ public class TC004_Eliminar_Usuario {
 				afterClass();
 			}
 
-			estado = menu.menuSeguridadUsuario(driver);
+			estado = Menu.menuSeguridadUsuario(driver);
 			if (!FunctionGeneric.stateStep("Menú Seguridad Usuario", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = usu.FormBusquedaUsuario(excel.valorCol("Usuario", matriz), driver);
+			estado = Usuario.FormBusquedaUsuario(excel.valorCol("Usuario", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Busqueda Usuario", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = usu.deleteUser(driver);
+			estado = Usuario.deleteUser(driver);
 			if (!FunctionGeneric.stateStep("Formulario Busqueda Usuario", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = usu.validarEliminarUser(driver);
+			estado = Usuario.validarEliminarUser(driver);
 			if (!FunctionGeneric.stateStep("Validar Eliminar Usuario", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -116,7 +110,7 @@ public class TC004_Eliminar_Usuario {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

@@ -18,7 +18,7 @@ import util.FunctionGeneric;
 
 public class Usuario {
 
-	public String FormBusquedaUsuario(String usuario, WebDriver driver) {
+	public static String FormBusquedaUsuario(String usuario, WebDriver driver) {
 
 		String msg = "OK";
 
@@ -79,7 +79,7 @@ public class Usuario {
 		return msg;
 	}
 
-	public String updateDataUser(String nomPerfil, WebDriver driver) {
+	public static String updateDataUser(String nomPerfil, WebDriver driver) {
 		String msg = "OK";
 		int index = 0;
 		try {
@@ -141,7 +141,7 @@ public class Usuario {
 		return msg;
 	}
 
-	public String formInsertDataUser(String doc, String perfil, String perfilFidelizacion, String password,
+	public static String formInsertDataUser(String doc, String perfil, String perfilFidelizacion, String password,
 			String usuario, String numDoc, WebDriver driver) {
 		String msg = "OK";
 		int index = 0;
@@ -371,7 +371,7 @@ public class Usuario {
 		return msg;
 	}
 
-	private boolean formWindowPerfil(String perfil, WebDriver driver) {
+	private static boolean formWindowPerfil(String perfil, WebDriver driver) {
 		boolean flag = true;
 		try {
 			Thread.sleep(2000);
@@ -404,7 +404,7 @@ public class Usuario {
 		return flag;
 	}
 
-	private boolean formWindowOficina(WebDriver driver) {
+	private static boolean formWindowOficina(WebDriver driver) {
 		boolean flag = true;
 		try {
 
@@ -436,7 +436,7 @@ public class Usuario {
 		return flag;
 	}
 
-	public String activeUserNew(WebDriver driver) {
+	public static String activeUserNew(WebDriver driver) {
 		String msg = "OK";
 		try {
 			// input name= ACTIVAR
@@ -481,7 +481,7 @@ public class Usuario {
 		return msg;
 	}
 
-	public String FormSearchUser(String usuario, WebDriver driver) {
+	public static String FormSearchUser(String usuario, WebDriver driver) {
 		String msg = "OK";
 		try {
 			Actions action = new Actions(driver);
@@ -536,7 +536,7 @@ public class Usuario {
 
 	}
 
-	public String deleteUser(WebDriver driver) {
+	public static String deleteUser(WebDriver driver) {
 		String msg = "OK";
 		try {
 			WebElement btnEliminar = (new WebDriverWait(driver, 60))
@@ -570,21 +570,21 @@ public class Usuario {
 		return msg;
 	}
 
-	public String validarEliminarUser(WebDriver driver) {
-		
+	public static String validarEliminarUser(WebDriver driver) {
+
 		String msg = "OK";
-		
+
 		try {
-			
+
 			Thread.sleep(3000);
 			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 			}
-			
+
 		} catch (Exception e) {
 			msg = "ERROR AL VALIDAR MENSAJE DE ELIMINACIÓN USUARIO ";
 		}
-		
+
 		return msg;
 	}
 

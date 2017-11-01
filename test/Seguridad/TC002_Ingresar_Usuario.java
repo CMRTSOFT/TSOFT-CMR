@@ -19,10 +19,8 @@ public class TC002_Ingresar_Usuario {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -31,21 +29,17 @@ public class TC002_Ingresar_Usuario {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private Usuario usu;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			usu = new Usuario();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -79,13 +73,13 @@ public class TC002_Ingresar_Usuario {
 				afterClass();
 			}
 
-			estado = menu.menuSeguridadUsuario(driver);
+			estado = Menu.menuSeguridadUsuario(driver);
 			if (!FunctionGeneric.stateStep("Menú Seguridad Usuario", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = usu.formInsertDataUser(excel.valorCol("Documento", matriz), excel.valorCol("Perfil", matriz),
+			estado = Usuario.formInsertDataUser(excel.valorCol("Documento", matriz), excel.valorCol("Perfil", matriz),
 					excel.valorCol("PerfilFidelizacion", matriz), excel.valorCol("Clave", matriz),
 					excel.valorCol("NombreUsuario", matriz), excel.valorCol("NumeroDocumento", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Insertar Datos Usuario", estado, ITestCaseRun, wrapper)) {
@@ -93,13 +87,13 @@ public class TC002_Ingresar_Usuario {
 				afterClass();
 			}
 
-			estado = usu.FormSearchUser(excel.valorCol("NombreUsuario", matriz), driver);
+			estado = Usuario.FormSearchUser(excel.valorCol("NombreUsuario", matriz), driver);
 			if (!FunctionGeneric.stateStep("Formulario Busqueda Usuario", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = usu.activeUserNew(driver);
+			estado = Usuario.activeUserNew(driver);
 			if (!FunctionGeneric.stateStep("Activar Usuario Nuevo", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -118,7 +112,7 @@ public class TC002_Ingresar_Usuario {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

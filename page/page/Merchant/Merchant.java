@@ -5,10 +5,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -96,7 +93,6 @@ public class Merchant {
 		try {
 			Robot robot = new Robot();
 			key = new KeyboardClass();
-			Actions action = new Actions(driver);
 
 			WebElement FrameInterContrato = (new WebDriverWait(driver, 60))
 					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/index.jsp']")));
@@ -501,7 +497,8 @@ public class Merchant {
 	public static String validaMerchant(WebDriver driver) {
 		String msg = "OK";
 		try {
-			if (!FunctionGeneric.validarTexto("Producto-Subproducto","Desplegar Pantalla Merchant", driver).equals("OK")) {
+			if (!FunctionGeneric.validarTexto("Producto-Subproducto", "Desplegar Pantalla Merchant", driver)
+					.equals("OK")) {
 				msg = "No sé encontró el valor en la pantalla Merchant";
 			}
 
@@ -766,8 +763,10 @@ public class Merchant {
 	public static String busquedaComercio(WebDriver driver) {
 		String msg = "OK";
 		try {
-			WebElement btnUpdate = (new WebDriverWait(driver, 60)).until(ExpectedConditions
+			WebElement btnUpdate = (new WebDriverWait(driver, 30)).until(ExpectedConditions
 					.presenceOfElementLocated(By.xpath("//IMG[@id='imgeditarmantMantenimientoFormMANTENIMIENTO']")));
+			if (btnUpdate.isDisplayed())
+				return msg;
 		} catch (Exception e) {
 			System.out.println("ERROR EN LA BUSQUEDA DE COMERCIO MODIFICACIÓN MERCHANT " + e.getMessage());
 			msg = "ERROR EN LA BUSQUEDA DE COMERCIO MODIFICACIÓN MERCHANT " + e.getMessage();
@@ -778,7 +777,7 @@ public class Merchant {
 	public static String formUpdateMantMerchant(String numComercio, String nomComercio, WebDriver driver) {
 		String msg = "OK";
 		try {
-			Robot robot = new Robot();
+
 			Actions action = new Actions(driver);
 			WebElement FrameInterContrato = (new WebDriverWait(driver, 60))
 					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/index.jsp']")));
@@ -907,8 +906,8 @@ public class Merchant {
 			 * (btnModificar.isDisplayed()) { btnModificar.click(); } else { if
 			 * (msg.equals("OK")) msg = "";
 			 * 
-			 * msg = msg + "No se encontró el Botón Modificar \n"; return msg; } //
-			 * INPUT name = NOMCOMRED
+			 * msg = msg + "No se encontró el Botón Modificar \n"; return msg; } // INPUT
+			 * name = NOMCOMRED
 			 * 
 			 * WebElement txtNomComer = (new WebDriverWait(driver, 60))
 			 * .until(ExpectedConditions.presenceOfElementLocated(By.xpath(
@@ -941,7 +940,8 @@ public class Merchant {
 					robot.keyRelease(KeyEvent.VK_ENTER);
 				}
 
-				if (!FunctionGeneric.validarTexto("Producto-Subproducto","Desplegar Pantalla Merchant" ,driver).equals("OK")) {
+				if (!FunctionGeneric.validarTexto("Producto-Subproducto", "Desplegar Pantalla Merchant", driver)
+						.equals("OK")) {
 					msg = "No sé completo el flujo de manera correcta";
 					return msg;
 				}
@@ -955,12 +955,11 @@ public class Merchant {
 	}
 
 	/**** Eliminar Merchant ****/
-	public static String formDeleteMerchant(String numComercio,String motivoBaja, WebDriver driver) {
+	public static String formDeleteMerchant(String numComercio, String motivoBaja, WebDriver driver) {
 		String msg = "OK";
 		int index = 0;
 		try {
-			// IMG id imgborrarmantMantenimientoFormMANTENIMIENTO
-			Robot robot = new Robot();
+
 			Actions action = new Actions(driver);
 			WebElement FrameInterContrato = (new WebDriverWait(driver, 25))
 					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/index.jsp']")));
@@ -1017,10 +1016,10 @@ public class Merchant {
 				msg = msg + "No se encontró el Botón Eliminar \n";
 				return msg;
 			}
-			
-			//a name LinkSolapaSOLAPA2
-			WebElement lnkOtrosDatos = (new WebDriverWait(driver, 60)).until(ExpectedConditions
-					.presenceOfElementLocated(By.xpath("//A[@name='LinkSolapaSOLAPA2']")));
+
+			// a name LinkSolapaSOLAPA2
+			WebElement lnkOtrosDatos = (new WebDriverWait(driver, 60))
+					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//A[@name='LinkSolapaSOLAPA2']")));
 			if (lnkOtrosDatos.isDisplayed()) {
 				lnkOtrosDatos.click();
 			} else {
@@ -1030,7 +1029,7 @@ public class Merchant {
 				msg = msg + "No se encontró el Botón Eliminar \n";
 				return msg;
 			}
-			
+
 			// SELECT name MOTBAJA
 			WebElement cboMotivoBaja = (new WebDriverWait(driver, 60))
 					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//SELECT[@name='MOTBAJA']")));
@@ -1050,11 +1049,11 @@ public class Merchant {
 		}
 		return msg;
 	}
-	
+
 	public static String confirmDeleteMerchant(WebDriver driver) {
 		String msg = "OK";
 		try {
-			//IMG id imgconfirmarmantMantenimientoFormMANTENIMIENTO
+			// IMG id imgconfirmarmantMantenimientoFormMANTENIMIENTO
 			WebElement btnAceptar = (new WebDriverWait(driver, 60)).until(ExpectedConditions
 					.presenceOfElementLocated(By.xpath("//IMG[@id='imgconfirmarmantMantenimientoFormMANTENIMIENTO']")));
 			if (btnAceptar.isDisplayed()) {
@@ -1065,8 +1064,8 @@ public class Merchant {
 
 				msg = msg + "No se encontró el Botón Aceptar \n";
 				return msg;
-			} 
-			
+			}
+
 			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 				Thread.sleep(2000);
@@ -1075,13 +1074,13 @@ public class Merchant {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("ERROR AL VALIDAR ELIMINACIÓN MERCHANT "+e.getMessage());
-			msg = "ERROR AL VALIDAR ELIMINACIÓN MERCHANT "+e.getMessage();
+			System.out.println("ERROR AL VALIDAR ELIMINACIÓN MERCHANT " + e.getMessage());
+			msg = "ERROR AL VALIDAR ELIMINACIÓN MERCHANT " + e.getMessage();
 		}
-		return msg ;
+		return msg;
 	}
-	
-	public static String rechazoMerchant(String numComercio, String pan,WebDriver driver) {
+
+	public static String rechazoMerchant(String numComercio, String pan, WebDriver driver) {
 		String msg = "OK";
 		try {
 			WebElement FrameInterContrato = (new WebDriverWait(driver, 25))
@@ -1089,14 +1088,14 @@ public class Merchant {
 			driver.switchTo().frame(FrameInterContrato);
 			WebElement txtNumComercio = (new WebDriverWait(driver, 25))
 					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//INPUT[@name='CODCOMF']")));
-			
+
 			WebElement txtPan = (new WebDriverWait(driver, 25))
 					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//INPUT[@name='PANF']")));
-			
+
 			WebElement btnConsultar = (new WebDriverWait(driver, 25))
 					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//INPUT[@value='Consultar']")));
 			// value Consultar
-			
+
 			if (txtNumComercio.isDisplayed()) {
 				txtNumComercio.sendKeys(numComercio);
 			} else {
@@ -1106,7 +1105,7 @@ public class Merchant {
 				msg = msg + "No se encontró el Campo Número comercio \n";
 				return msg;
 			}
-			
+
 			if (txtPan.isDisplayed()) {
 				txtPan.sendKeys(pan);
 			} else {
@@ -1125,45 +1124,45 @@ public class Merchant {
 				msg = msg + "No se encontró el Botón Consultar. \n";
 				return msg;
 			}
-					
-			WebElement table = (new WebDriverWait(driver, 25))
-					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//TABLE[@id='Listado_ListRechazosMerchant']")));
-				
-			List<WebElement> lnkRechazos =table.findElements(By.tagName("a")); 
+
+			WebElement table = (new WebDriverWait(driver, 25)).until(ExpectedConditions
+					.presenceOfElementLocated(By.xpath("//TABLE[@id='Listado_ListRechazosMerchant']")));
+
+			List<WebElement> lnkRechazos = table.findElements(By.tagName("a"));
 			if (lnkRechazos.size() != 0) {
 				lnkRechazos.get(0).click();
-			}else {
+			} else {
 				if (msg.equals("OK"))
 					msg = "";
 
 				msg = msg + "No se encontraron Rechazos en Merchant \n";
 				return msg;
 			}
-			
+
 			WebElement pestañaAdi = (new WebDriverWait(driver, 25))
 					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@name='LinkSolapaSOLAPA2']")));
 			if (pestañaAdi.isDisplayed()) {
 				pestañaAdi.click();
-			}else {
+			} else {
 				if (msg.equals("OK"))
 					msg = "";
 
 				msg = msg + "No se encontró Pestaña \n";
 				return msg;
 			}
-			//input name=SECOPE
+			// input name=SECOPE
 			WebElement secuOperacion = (new WebDriverWait(driver, 25))
 					.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//INPUT[@name='SECOPE']")));
 			if (secuOperacion.isDisplayed()) {
 				secuOperacion.getText();
-			}else {
+			} else {
 				if (msg.equals("OK"))
 					msg = "";
 
 				msg = msg + "No se encontró Campo Secu. Operación  \n";
 				return msg;
 			}
-			
+
 		} catch (Exception e) {
 			System.out.println("ERROR EN RECHAZO MERCHANT " + e.getMessage());
 			msg = "ERROR EN RECHAZO MERCHANT " + e.getMessage();

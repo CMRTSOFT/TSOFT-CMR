@@ -17,12 +17,10 @@ import util.LeerExcel;
 
 public class TC002_Merchant_Crear {
 
-	private Menu menu;
 	private LeerExcel excel;
 	private WebDriver driver;
 	private LoginSatif login;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -30,7 +28,6 @@ public class TC002_Merchant_Crear {
 	private ITestCase ITestCase;
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
-	private Merchant merchant;
 	private String estado;
 
 	@BeforeClass
@@ -38,14 +35,11 @@ public class TC002_Merchant_Crear {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			merchant = new Merchant();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -79,13 +73,13 @@ public class TC002_Merchant_Crear {
 				afterClass();
 			}
 
-			estado = menu.menuMantenimientoMerchant(driver);
+			estado = Menu.menuMantenimientoMerchant(driver);
 			if (!FunctionGeneric.stateStep("Menú Mantenimiento Merchant", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = merchant.formInsertMantMerchant(excel.valorCol("Oficina", matriz),
+			estado = Merchant.formInsertMantMerchant(excel.valorCol("Oficina", matriz),
 					excel.valorCol("CodigoComercio", matriz), excel.valorCol("NombreComercio", matriz),
 					excel.valorCol("Rut", matriz), excel.valorCol("Retribucion", matriz),
 					excel.valorCol("NumeroImporte", matriz), excel.valorCol("Glosa", matriz),
@@ -96,14 +90,14 @@ public class TC002_Merchant_Crear {
 				afterClass();
 			}
 
-			estado = merchant.popupAceptarMerchant(driver);
+			estado = Merchant.popupAceptarMerchant(driver);
 			if (!FunctionGeneric.stateStep("Aceptar Solicitud Creación Comercio Merchant", estado, ITestCaseRun,
 					wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = merchant.validaMerchant(driver);
+			estado = Merchant.validaMerchant(driver);
 			if (!FunctionGeneric.stateStep("Validar Creación Comercio Merchant", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -122,7 +116,7 @@ public class TC002_Merchant_Crear {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

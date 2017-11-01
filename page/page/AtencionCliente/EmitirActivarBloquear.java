@@ -15,14 +15,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import util.FunctionGeneric;
 
 public class EmitirActivarBloquear {
-	FunctionGeneric func;
 
-	public String bloquearTarjeta(WebDriver driver) {
+	public static String bloquearTarjeta(WebDriver driver) {
 		String msg = "OK";
 		try {
 			Robot robot = new Robot();
 			Thread.sleep(3000);
-			func = new FunctionGeneric();
+
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
 			WebElement FrameInterContrato = (new WebDriverWait(driver, 30)).until(
@@ -67,16 +66,16 @@ public class EmitirActivarBloquear {
 				return msg;
 			}
 
-			if (func.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 				robot.keyPress(KeyEvent.VK_ESCAPE);
 				robot.keyRelease(KeyEvent.VK_ESCAPE);
 
 				Thread.sleep(2000);
-				func = new FunctionGeneric();
+
 				winSet = driver.getWindowHandles();
 				winList = new ArrayList<String>(winSet);
-				if (!func.waitWindows(3, winList, driver)) {
+				if (!FunctionGeneric.waitWindows(3, winList, driver)) {
 					msg = msg + "No se encontró el ventana de menú \n";
 					return msg;
 				}
@@ -111,10 +110,10 @@ public class EmitirActivarBloquear {
 		return msg;
 	}
 
-	public String emitirTarjetas(WebDriver driver) {
+	public static String emitirTarjetas(WebDriver driver) {
 		String msg = "OK";
 		try {
-			func = new FunctionGeneric();
+
 			Robot robot = new Robot();
 			Set<String> winSet = driver.getWindowHandles();
 			List<String> winList = new ArrayList<String>(winSet);
@@ -147,14 +146,14 @@ public class EmitirActivarBloquear {
 				return msg;
 			}
 			Thread.sleep(6000);
-			if (func.validaAlert(driver)) {
+			if (FunctionGeneric.validaAlert(driver)) {
 				driver.switchTo().alert().accept();
 				Thread.sleep(3000);
 				robot.keyPress(KeyEvent.VK_ESCAPE);
 				robot.keyRelease(KeyEvent.VK_ESCAPE);
 				winSet = driver.getWindowHandles();
 				winList = new ArrayList<String>(winSet);
-				if (!func.waitWindows(3, winList, driver)) {
+				if (!FunctionGeneric.waitWindows(3, winList, driver)) {
 					msg = msg + "No se encontró el ventana de menú \n";
 					return msg;
 				}
@@ -163,21 +162,21 @@ public class EmitirActivarBloquear {
 				driver.switchTo().window(winList.get(winList.size() - 1));
 
 				driver.close();
-				
+
 				winSet = driver.getWindowHandles();
 				winList = new ArrayList<String>(winSet);
-				if (!func.waitWindows(2, winList, driver)) {
+				if (!FunctionGeneric.waitWindows(2, winList, driver)) {
 					msg = msg + "No se encontró el ventana de menú \n";
 					return msg;
 				}
 				winSet = driver.getWindowHandles();
 				winList = new ArrayList<String>(winSet);
 				driver.switchTo().window(winList.get(winList.size() - 1));
-				
-				FrameInterContrato = (new WebDriverWait(driver, 30)).until(
-						ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/esperaAux.jsp']")));
+
+				FrameInterContrato = (new WebDriverWait(driver, 30)).until(ExpectedConditions
+						.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/esperaAux.jsp']")));
 				driver.switchTo().frame(FrameInterContrato);
-				if (!func.validarTexto("Aprobación","Desplegar Pantalla", driver).equals("OK")) {
+				if (!FunctionGeneric.validarTexto("Aprobación", "Desplegar Pantalla", driver).equals("OK")) {
 					msg = "Valor no se encontró en HTML \n";
 					return msg;
 				}
@@ -190,11 +189,11 @@ public class EmitirActivarBloquear {
 		return msg;
 	}
 
-	public String activarTarjeta(WebDriver driver) {
+	public static String activarTarjeta(WebDriver driver) {
 		String msg = "OK";
 		try {
-			func = new FunctionGeneric();
-			//Robot robot = new Robot();
+
+			// Robot robot = new Robot();
 			WebElement FrameInterContrato = (new WebDriverWait(driver, 30)).until(
 					ExpectedConditions.presenceOfElementLocated(By.xpath("//IFRAME[@src='paginas/esperaAux.jsp']")));
 			driver.switchTo().frame(FrameInterContrato);
@@ -225,7 +224,7 @@ public class EmitirActivarBloquear {
 
 		} catch (Exception e) {
 			System.out.println("ERROR EN ACTIVACIÓN DE TARJETA " + e.getMessage());
-			msg = "ERROR EN ACTIVACIÓN DE TARJETA " ;
+			msg = "ERROR EN ACTIVACIÓN DE TARJETA ";
 		}
 		return msg;
 	}

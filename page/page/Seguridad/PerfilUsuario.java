@@ -8,7 +8,7 @@ import util.FunctionGeneric;
 
 public class PerfilUsuario {
 
-	public String seleccionarPerfil(String perfil, WebDriver driver) {
+	public static String seleccionarPerfil(String perfil, WebDriver driver) {
 
 		String msg = "OK";
 
@@ -36,7 +36,7 @@ public class PerfilUsuario {
 		return msg;
 	}
 
-	public String selectTreeInicio(WebDriver driver) {
+	public static String selectTreeInicio(WebDriver driver) {
 
 		String msg = "OK";
 
@@ -51,17 +51,17 @@ public class PerfilUsuario {
 		return msg;
 	}
 
-	public String permisoAdmisionConsulta(WebDriver driver) {
-		
+	public static String permisoAdmisionConsulta(WebDriver driver) {
+
 		String msg = "OK";
-		
+
 		try {
 
 			msg = FunctionGeneric.clickObjectByXpath("Checkbox Admisión Consulta", "INPUT", "name",
 					"checkboxInicioAdmisiónConsulta", "click", driver);
 			if (!msg.equals("OK"))
 				return msg;
-			
+
 			msg = FunctionGeneric.clickObjectByXpath("Botón Guardar Cambios", "INPUT", "name", "ACTUALIZAR", "click",
 					driver);
 			if (!msg.equals("OK"))
@@ -72,7 +72,7 @@ public class PerfilUsuario {
 		} catch (Exception e) {
 			msg = "Error al presionar Checkbox Admisión Consulta";
 		}
-		
+
 		return msg;
 	}
 }

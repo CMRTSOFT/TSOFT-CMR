@@ -20,10 +20,8 @@ public class TC006_Usos_Multiclave {
 
 	private WebDriver driver;
 	private LoginSatif login;
-	private Menu menu;
 	private LeerExcel excel;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -32,23 +30,17 @@ public class TC006_Usos_Multiclave {
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
 	private String estado = "";
-	private BusquedaContrato busContrato;
-	private TarjetaClave tarClave;
 
 	@BeforeClass
 	public void beforeClass() {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			busContrato = new BusquedaContrato();
-			tarClave = new TarjetaClave();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -81,36 +73,36 @@ public class TC006_Usos_Multiclave {
 				flagState = false;
 				afterClass();
 			}
-			estado = menu.menuBusquedaContrato(driver);
+			estado = Menu.menuBusquedaContrato(driver);
 			if (!FunctionGeneric.stateStep("Menú Busqueda Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
-			estado = busContrato.formularioContrato("10.811.649-8", driver);
+			estado = BusquedaContrato.formularioContrato("10.811.649-8", driver);
 			if (!FunctionGeneric.stateStep("Formulario Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = busContrato.seleccionarProducto("CMR VISA", driver);
+			estado = BusquedaContrato.seleccionarProducto("CMR VISA", driver);
 			if (!FunctionGeneric.stateStep("Seleccionar Contrato", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 			Thread.sleep(3000);
-			estado = menu.menuTarjetasClaves(driver);
+			estado = Menu.menuTarjetasClaves(driver);
 			if (!FunctionGeneric.stateStep("Menú Tarjetas Claves", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = tarClave.usoClave(driver);
+			estado = TarjetaClave.usoClave(driver);
 			if (!FunctionGeneric.stateStep("Uso Clave", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = tarClave.ventanaUsoClave(driver);
+			estado = TarjetaClave.ventanaUsoClave(driver);
 			if (!FunctionGeneric.stateStep("Ventana Uso Clave", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -127,7 +119,7 @@ public class TC006_Usos_Multiclave {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

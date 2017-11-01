@@ -17,12 +17,10 @@ import util.LeerExcel;
 
 public class TC004_Merchant_Eliminar {
 
-	private Menu menu;
 	private LeerExcel excel;
 	private WebDriver driver;
 	private LoginSatif login;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -30,7 +28,6 @@ public class TC004_Merchant_Eliminar {
 	private ITestCase ITestCase;
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
-	private Merchant merchant;
 	private String estado;
 
 	@BeforeClass
@@ -38,14 +35,11 @@ public class TC004_Merchant_Eliminar {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			merchant = new Merchant();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -79,20 +73,20 @@ public class TC004_Merchant_Eliminar {
 				afterClass();
 			}
 
-			estado = menu.menuMantenimientoMerchant(driver);
+			estado = Menu.menuMantenimientoMerchant(driver);
 			if (!FunctionGeneric.stateStep("Menú Mantenimiento Merchant", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = merchant.formDeleteMerchant(excel.valorCol("NumeroComercio", matriz),
+			estado = Merchant.formDeleteMerchant(excel.valorCol("NumeroComercio", matriz),
 					excel.valorCol("MotivoBaja", matriz), driver);
 			if (!FunctionGeneric.stateStep("Eliminar Comecio Merchant", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = merchant.confirmDeleteMerchant(driver);
+			estado = Merchant.confirmDeleteMerchant(driver);
 			if (!FunctionGeneric.stateStep("Confirmar Eliminar Comercio Merchant", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -111,7 +105,7 @@ public class TC004_Merchant_Eliminar {
 
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);

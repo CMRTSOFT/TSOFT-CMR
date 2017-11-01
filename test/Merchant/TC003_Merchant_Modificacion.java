@@ -18,12 +18,10 @@ import util.LeerExcel;
 
 public class TC003_Merchant_Modificacion {
 
-	private Menu menu;
 	private LeerExcel excel;
 	private WebDriver driver;
 	private LoginSatif login;
 	private String[][] matriz;
-	private FunctionGeneric funge;
 	private ALM alm;
 	private Evidencia evi;
 	private ALMServiceWrapper wrapper;
@@ -31,7 +29,6 @@ public class TC003_Merchant_Modificacion {
 	private ITestCase ITestCase;
 	private ITestCaseRun ITestCaseRun;
 	private boolean flagState = true;
-	private Merchant merchant;
 	private String estado = "";
 
 	public static FunctionGeneric func = new FunctionGeneric();
@@ -41,14 +38,11 @@ public class TC003_Merchant_Modificacion {
 
 		try {
 
-			menu = new Menu();
 			excel = new LeerExcel();
 			alm = new ALM();
 			evi = new Evidencia();
 			wrapper = alm.conectALM();
-			funge = new FunctionGeneric();
 			login = new LoginSatif();
-			merchant = new Merchant();
 
 			nameClass = this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1,
 					this.getClass().getName().length());
@@ -82,20 +76,20 @@ public class TC003_Merchant_Modificacion {
 				afterClass();
 			}
 
-			estado = menu.menuMantenimientoMerchant(driver);
+			estado = Menu.menuMantenimientoMerchant(driver);
 			if (!FunctionGeneric.stateStep("Menú Mantenimiento Merchant", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = merchant.formUpdateMantMerchant(excel.valorCol("NumeroComercio", matriz),
+			estado = Merchant.formUpdateMantMerchant(excel.valorCol("NumeroComercio", matriz),
 					excel.valorCol("NombreComercio", matriz), driver);
 			if (!FunctionGeneric.stateStep("Modificar Comercio Merchant", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
 			}
 
-			estado = merchant.acceptUpdateMerchant(driver);
+			estado = Merchant.acceptUpdateMerchant(driver);
 			if (!FunctionGeneric.stateStep("Aceptar Modificación Comercio Merchant", estado, ITestCaseRun, wrapper)) {
 				flagState = false;
 				afterClass();
@@ -112,7 +106,7 @@ public class TC003_Merchant_Modificacion {
 	public void afterClass() {
 		try {
 
-			funge.closeWindows(driver, 0);
+			FunctionGeneric.closeWindows(driver, 0);
 			evi.createPDF(FunctionGeneric.arrEvidencia, nameClass, pathResultados, flagState);
 			FunctionGeneric.updateStateTestCase(flagState, nameClass);
 			FunctionGeneric.moveFileXLSX(pathResultados, nameClass);
